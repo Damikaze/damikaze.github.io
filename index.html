@@ -1,0 +1,257 @@
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Application Vigenere</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <!-- -- Accueil -- -->
+
+        <div class="container">
+            <div id="home">
+                <div class="row">
+                    <h1 id="titre">Chiffre de Vigenere : l'application</h1>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-default center-block" id="goto_part1">Crypter / Décrypter</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default center-block" id="goto_part2">Cryptanalyse</button>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <button class="btn btn-warning center-block" data-toggle="modal" data-target="#modalPresentation">
+                        Le chiffre de Vigenere, c'est quoi ?
+                    </button>
+                </div>
+            </div>
+
+            <!-- -- Cryptage / Décryptage -- -->
+
+            <div id="part1" style="display:none;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <button class="goto_home btn btn-primary">&lt;&lt; Retour à la page d'accueil</button>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <legend>Informations d'entrée</legend>
+                    Texte :
+                    <textarea rows=5 id="input" class="form-control"></textarea>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        Action :
+                        <br/>
+                        <label for="crypter">Crypter</label>
+                        <input type="radio" name="action" value="crypter" id="crypter" checked=true />
+                        <br/>
+                        <label for="decrypter">Décrypter</label>
+                        <input type="radio" name="action" value="decrypter" id="decrypter" />
+                    </div>
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <label for="cle" class="col-md-3">Clé:</label>
+                            <div class="col-md-6">
+                                <input type="text" id="cle1" name="cle" class="form-control"/>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="action1" class="btn btn-primary">Crypter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <legend>Sortie</legend>
+                    <textarea rows=5 id="output" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <!-- -- Cryptanalyse -- -->
+
+            <div id="part2" style="display:none;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <button class="goto_home btn btn-primary">&lt;&lt; Retour à la page d'accueil</button>
+                    </div>
+                    <div class="col-xs-offset-3 col-xs-3">
+                        <select id="menu_langue" class="form-control">
+                            <option selected="selected" disabled="true" style="display:none;">Langage du texte ? (Défaut : fr)</option>
+                            <option value="fr">Français</option>
+                            <option value="en">Anglais</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-offset-1 col-xs-2">
+                        <button id="aide" class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalAide">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                            Aide
+                        </button>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <legend>Cryptanalyse</legend>
+                    <p>Copiez-collez dans la zone de texte ci-dessous le texte crypté, l'analyse sera lancée automatiquement.</p>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" id="oubli">
+                            Oublié de crypter le texte ? Cliquez !
+                        </div>
+                        <div class="panel-body" id="div_cryptage" style="display:none;">
+                            <p>Rentrez, si ce n'est pas déjà fait, le texte non chiffré dans la zone de texte en-dessous du panneau,
+                                la clé de chiffrage dans le champ ci-dessous. L'analyse sera lancée juste après le cryptage.</p>
+                            Clé :
+                            <input type="text" id="cle2" name="cle"/>
+                            <button id="action2">Crypter</button>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <textarea rows=6 id="cryptedText" class="form-control"></textarea>
+                    <br/>
+                    <button id="refresh" class="btn btn-default">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        Recommencer l'analyse
+                    </button>
+                    <button id="resultat_cryptanalyse" class="btn btn-success" data-toggle="modal" data-target="#modalResultat">
+                        <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                        Afficher le texte décrypté
+                    </button>
+                </div>
+                <br/>
+
+                <legend>Résultats</legend>
+
+                <table class="table table-bordered">
+                    <caption>
+                        <h4>Clé à deviner</h4>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2 text-center">Taille</th>
+                            <th class="col-xs-7 text-center">Changer de caractère</th>
+                            <th class="col-xs-3 text-center" colspan=2>Indices de coincidence</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <td rowspan=2>
+                                <div class="btn-group">
+                                    <button class="btn btn-danger" id="cle_moins">-</button>
+                                    <button class="btn btn-primary" id="cle_plus">+</button>
+                                </div>
+                            </td>
+                            <td rowspan=2>
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <button class="btn btn-default pull-right" id="cle_gauche">&lt;</button>
+                                    </div>
+                                    <div class="col-xs-8" id="cle_trouvee_div">
+                                        <p id="cle_trouvee"></p>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button class="btn btn-default pull-left" id="cle_droite">&gt;</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Texte :</td>
+                            <td> <span id="ic_texte"></span> </td>
+                        </tr>
+                        <tr>
+                            <td>Théorique :</td>
+                            <td> <span id="ic_theorique"></span> </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+
+                <div class="row">
+                    <label for="apercu">Voici ce que donne le décryptage si la clé ci-dessus est correcte ...</label>
+                    <input type="text" id="apercu" class="form-control" disabled />
+                </div>
+                <br/>
+
+                <div class="row">
+                    <div id="chart_div" class="center-block"></div>
+                </div>
+            </div>
+
+            <object id="E" type="image/svg+xml" data="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.eu.svg">
+            </object>
+        </div>
+
+        <!-- -- Modal de présentation du chiffre de Vigenere -- -->
+
+        <div class="modal fade" id="modalPresentation" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Présentation du chiffre de Vigenère</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Une définition plus pédagogique ici !</p>
+
+                        <p>Pour plus d'informations ... <a href="http://fr.wikipedia.org/wiki/Chiffre_de_Vigen%C3%A8re" target="_blank">la page Wikipédia !</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal de présentation du texte décrypté par cryptanalyse -- -->
+
+        <div class="modal fade" id="modalResultat" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Résultat de la cryptanalyse</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="decryptedText"></p>
+                    </div>
+                    <div class="modal-footer">
+                        Merci d'avoir utilisé notre application !
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal d'aide à l'utilisation du module de cryptanalyse -- -->
+
+        <div class="modal fade" id="modalAide" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Comment utiliser l'application de cryptanalyse ?</h4>
+                    </div>
+                    <div class="modal-body">
+                        Des explications, des illustrations de l'application ici !
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="charcycle.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>

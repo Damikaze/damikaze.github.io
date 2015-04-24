@@ -1,0 +1,47 @@
+body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-image: url(home_4.jpg);
+    background-size: 100% auto;
+}
+
+body, legend {
+    color: white;
+}
+
+select, option, #div_cryptage, .modal-content {
+    color: black;
+}
+
+.container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    min-height: 100%;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+#cle_trouvee_div {
+    color: black;
+    height: 2.4em;
+    background-color: white;
+    padding-top: 6px;
+}
+
+#cle_trouvee {
+    text-align: center;
+}
+
+#titre {
+    text-align: center;
+    visibility: hidden;
+    margin-bottom: 50px;
+}
+
+#decryptedText {
+    word-wrap: break-word;
+}
