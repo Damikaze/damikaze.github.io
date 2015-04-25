@@ -1,0 +1,984 @@
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Application Vigenere</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="shortcut icon" href="https://cas.utc.fr/cas/favicon.ico">
+        <style>
+            body {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                background-image: url(https://c1.staticflickr.com/9/8676/16058020663_2b111a6210_b.jpg);
+                background-size: 100% auto;
+            }
+
+            body, legend {
+                color: white;
+            }
+
+            select, option, #div_cryptage, .modal-content {
+                color: black;
+            }
+
+            body > .container {
+                background-color: rgba(0, 0, 0, 0.7);
+                padding-top: 15px;
+                padding-bottom: 15px;
+                min-height: calc(100% - 50px);
+            }
+
+            footer {
+                height: 42px;
+            }
+
+            footer > .container {
+                margin-top: 8px;
+            }
+
+            .row {
+                margin-right: 0px;
+                margin-left: 0px;
+            }
+
+            #cle_trouvee_div {
+                color: black;
+                height: 1.75em;
+                background-color: white;
+                padding-top: 4px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            #titre {
+                text-align: center;
+                visibility: hidden;
+                margin-bottom: 50px;
+            }
+
+            #decryptedText {
+                word-wrap: break-word;
+            }
+
+            #apercu {
+                cursor: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- -- Accueil -- -->
+
+            <div id="home">
+                <div class="row">
+                    <h1 id="titre">Chiffre de Vigenere : l'application</h1>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-default center-block" id="goto_part1">Crypter / Décrypter</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default center-block" id="goto_part2">Cryptanalyse</button>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <button class="btn btn-warning center-block" data-toggle="modal" data-target="#modalPresentation">
+                        Le chiffre de Vigenere, c'est quoi ?
+                    </button>
+                </div>
+            </div>
+
+            <!-- -- Cryptage / Décryptage -- -->
+
+            <div id="part1" style="display:none;">
+                <div class="row">
+                    <button class="goto_home btn btn-primary col-xs-3">
+                        <div class="hidden-xs hidden-sm">
+                            <span class="glyphicon glyphicon-chevron-left"></span> Retour à la page d'accueil
+                        </div>
+                        <span class="visible-xs visible-sm glyphicon glyphicon-home"></span>
+                    </button>
+                </div>
+                <br/>
+                <div class="row">
+                    <legend>Informations d'entrée</legend>
+                    Texte :
+                    <textarea rows=5 id="input" class="form-control"></textarea>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        Action :
+                        <br/>
+                        <label for="crypter">Crypter</label>
+                        <input type="radio" name="action" value="crypter" id="crypter" checked=true />
+                        <br/>
+                        <label for="decrypter">Décrypter</label>
+                        <input type="radio" name="action" value="decrypter" id="decrypter" />
+                    </div>
+                    <div class="form-group col-md-8">
+                        <div class="row">
+                            <label for="cle" class="col-md-3">Clé:</label>
+                            <div class="col-md-6">
+                                <input type="text" id="cle1" name="cle" class="form-control"/>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="action1" class="btn btn-primary">Crypter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <legend>Sortie</legend>
+                    <textarea rows=5 id="output" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <!-- -- Cryptanalyse -- -->
+
+            <div id="part2" style="display:none;">
+                <div class="row">
+                    <button class="goto_home btn btn-primary col-sm-3 col-xs-2">
+                        <div class="hidden-xs hidden-sm">
+                            <span class="glyphicon glyphicon-chevron-left"></span> Retour à la page d'accueil
+                        </div>
+                        <span class="visible-xs visible-sm glyphicon glyphicon-home"></span>
+                    </button>
+                    <div class="col-sm-offset-1 col-sm-5 col-xs-8">
+                        <select id="menu_langue" class="form-control">
+                            <option selected="selected" disabled="true" style="display:none;">
+                                Langage ? (Défaut : fr)
+                            </option>
+                            <option value="fr">Français</option>
+                            <option value="en">Anglais</option>
+                        </select>
+                    </div>
+                    <button id="aide" class="btn btn-warning pull-right col-sm-offset-1 col-sm-2 col-xs-2" data-toggle="modal" data-target="#modalAide">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        <span class="hidden-xs hidden-sm"> Aide</span>
+                    </button>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <legend>Cryptanalyse</legend>
+                    <p>Copiez-collez dans la zone de texte ci-dessous le texte crypté, l'analyse sera lancée automatiquement.</p>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" id="oubli">
+                            Oublié de crypter le texte ? Cliquez !
+                        </div>
+                        <div class="panel-body" id="div_cryptage" style="display:none;">
+                            <p>Rentrez, si ce n'est pas déjà fait, le texte non chiffré dans la zone de texte en-dessous du panneau, la clé de chiffrage dans le champ ci-dessous. L'analyse sera lancée juste après le cryptage.</p>
+                            Clé :
+                            <input type="text" id="cle2" name="cle"/>
+                            <button id="action2">Crypter</button>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <textarea rows=6 id="cryptedText" class="form-control"></textarea>
+                    <br/>
+                    <button id="restart" class="btn btn-default">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        Recommencer l'analyse
+                    </button>
+                    <button id="resultat_cryptanalyse" class="btn btn-success" data-toggle="modal" data-target="#modalResultat">
+                        <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                        Afficher le texte décrypté
+                    </button>
+                </div>
+                <br/>
+
+                <legend>Résultats</legend>
+
+                <table class="table table-bordered">
+                    <caption>
+                        <h4>Clé à deviner</h4>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2 text-center">Taille</th>
+                            <th class="col-xs-7 text-center">Changer de caractère</th>
+                            <th class="col-xs-3 text-center" colspan=2>Indices de coincidence</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <td rowspan=2>
+                                <div class="btn-group btn-group-lg hidden-xs">
+                                    <button class="btn btn-danger cle_moins">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                    </button>
+                                    <button class="btn btn-primary cle_plus">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div class="btn-group-vertical btn-group-lg visible-xs">
+                                    <button class="btn btn-primary cle_plus">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                    <button class="btn btn-danger cle_moins">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                            </td>
+                            <td rowspan=2>
+                                <div class="row">
+                                    <div class="col-sm-2 hidden-xs">
+                                        <button class="btn btn-default pull-right cle_gauche">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8" id="cle_trouvee_div">
+                                        <p id="cle_trouvee"></p>
+                                    </div>
+                                    <div class="col-sm-2 hidden-xs">
+                                        <button class="btn btn-default pull-left cle_droite">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <br/>
+                                    <a class="btn btn-default col-xs-6 visible-xs cle_gauche"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+                                    <a class="btn btn-default col-xs-6 visible-xs cle_droite"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                                </div>
+                            </td>
+                            <td>Texte</td>
+                            <td> <span id="ic_texte"></span> </td>
+                        </tr>
+                        <tr>
+                            <td>Langue</td>
+                            <td> <span id="ic_theorique"></span> </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+
+                <div class="row">
+                    <label for="apercu">Voici ce que donne le décryptage si la clé ci-dessus est correcte ...</label>
+                    <input type="text" id="apercu" class="form-control" disabled />
+                </div>
+                <br/>
+
+                <div class="row">
+                    <div id="chart_div" class="center-block"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <p>Image fournie par Razlan sur 
+                            <a href="https://www.flickr.com/">flickr.com</a>
+                             sous licence 
+                            <a href="http://creativecommons.org/">CreativeCommons</a>
+                        </p>
+                    </div>
+                    <div class="col-xs-4">
+                        <object id="E" class="pull-right" type="image/svg+xml" data="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.eu.svg">
+                        </object>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- -- Modal de présentation du chiffre de Vigenere -- -->
+
+        <div class="modal fade" id="modalPresentation" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Présentation du chiffre de Vigenère</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Une définition plus pédagogique ici !</p>
+
+                        <p>Pour plus d'informations ... <a href="http://fr.wikipedia.org/wiki/Chiffre_de_Vigen%C3%A8re" target="_blank">la page Wikipédia !</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal de présentation du texte décrypté par cryptanalyse -- -->
+
+        <div class="modal fade" id="modalResultat" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Résultat de la cryptanalyse</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="decryptedText"></p>
+                    </div>
+                    <div class="modal-footer">
+                        Merci d'avoir utilisé notre application !
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal d'aide à l'utilisation du module de cryptanalyse -- -->
+
+        <div class="modal fade" id="modalAide" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Comment utiliser l'application de cryptanalyse ?</h4>
+                    </div>
+                    <div class="modal-body">
+                        Des explications, des illustrations de l'application ici !
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scripts exterieurs : jQuery, Bootstrap et Google Charts -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+        <!-- Script interne -->
+        <script type="text/javascript">
+            var TAILLE_ALPHABET = 26;
+            var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            var popup_text = "Il y a des caractères illégaux dans le texte. \
+            Il se peut que le texte ne soit pas encore crypté. Que voulez-vous faire ? \
+            \n\nOK : Les caractères illégaux sont échappés \
+            \nAnnuler : Activer le module de cryptage";
+
+            var frequences = {
+                'fr': [
+                    8.122, 0.901, 3.345, 3.669, 17.124, // A --> E
+                    1.066, 0.866, 0.737, 7.580, 0.545, // F --> J
+                    0.049, 5.456, 2.968, 7.095, 5.387, // K --> O
+                    3.021, 1.362, 6.553, 7.948, 7.244, // P --> T
+                    6.369, 1.628, 0.114, 0.387, 0.308, 0.136 // U --> Z
+                ],
+                'en': [
+                    8.167, 1.492, 2.782, 4.253, 12.702, // A --> E
+                    2.228, 2.015, 6.094, 6.966, 0.153, // F --> J
+                    0.772, 4.025, 2.406, 6.749, 7.507, // K --> O
+                    1.929, 0.095, 5.987, 6.327, 9.056, // P --> T
+                    2.758, 0.978, 2.360, 0.150, 1.974, 0.074 // U --> Z
+                ]
+            }
+
+            var indice_coincidence = {
+                'fr': 0.0778,
+                'en': 0.0667
+            }
+
+            var data; // Objet Google des données de l'histogramme
+            var chart; // Objet Google de l'histogramme
+            var options; // Objet des options de l'histogramme
+
+            /*
+             *  Démarrage de l'API Google pour l'histogramme des fréquences
+             */
+            google.load('visualization', '1.0', {'packages':['corechart']});
+            google.setOnLoadCallback(dessineHistogrammeInitial);
+
+            /*
+             *  Fonction callback appelée au chargement de l'application
+             *  Construit l'histogramme avec les fréquences théoriques de la langue
+             *  Langue par défaut : français
+             */
+            function dessineHistogrammeInitial() {
+                data = new google.visualization.DataTable();
+                data.addColumn('string', 'Lettres');
+                data.addColumn('number', 'Fréquences théoriques');
+                data.addColumn('number', 'Fréquences du texte crypté');
+
+                // Données de base : fréquences théoriques des lettres
+                // de l'alphabet dans la langue française
+                var rows = [];
+                var frequences_theoriques = frequences['fr'];
+                for (var i = 0; i < TAILLE_ALPHABET; i++) {
+                    rows.push(
+                        [alphabet.charAt(i), frequences_theoriques[i], 0]
+                    );
+                }
+                data.addRows(rows);
+
+                // Options globales de l'histogramme
+                options = {
+                    'title'  :  'Histogramme des fréquences',
+                    'legend' :  { 'position' : 'bottom' },
+                    'height' :  350,
+                    'vAxis'  :  {
+                        'viewWindow' : { 'max' : 20 }
+                    }
+                };
+
+                // Instancie, dessine l'histogramme et l'affiche dans la div "chart_div"
+                var div_chart = document.getElementById('chart_div');
+                chart = new google.visualization.ColumnChart(div_chart);
+                chart.draw(data, options);
+            }
+
+            /*
+             *  Fonction interne pour formater le texte pour une potentielle cryptanalyse :
+             *  En majuscule, accents et caractères non alphabétiques échappés 
+             */
+            function cleanText(inputText) { return inputText.toUpperCase().echapperAccents().replace(/[^A-Z]/g, ""); }
+
+            /*
+             *  Prototype de chaine Javascript pour échapper les accents des lettres majuscules
+             */
+            String.prototype.echapperAccents = function(){
+                var accents = [
+                    /[\300-\306]/g, // A
+                    /[\310-\313]/g, // E
+                    /[\314-\317]/g, // I
+                    /[\322-\330]/g, // O
+                    /[\331-\334]/g, // U
+                    /[\321]/g, // N
+                    /[\307]/g, // C
+                ];
+                var sansAccents = ['A', 'E', 'I', 'O', 'U', 'N', 'C'];
+                 
+                var str = this;
+                for(var i = 0; i < accents.length; i++){
+                    str = str.replace(accents[i], sansAccents[i]);
+                }
+                return str;
+            }
+
+            /* 
+             *  Fonction interne de calcul de modulo pour toujours retourner un modulo positif  
+             *  @n : dividende
+             *  @m : diviseur
+             */
+            function mod(n, m) { return ((n % m) + m) % m; }
+
+            /*
+             *  Fonction principale de cryptage / decryptage
+             *  @inputText : texte à crypter ou décrypter
+             *  @inputKey : clé de chiffrage
+             *  @sensCryptage : booléen, valeur : vrai -> cryptage, faux -> décryptage
+             */
+            function crypter(inputText, inputKey, sensCryptage) {
+                var cleanedText = cleanText(inputText);
+                var cleanedKey = cleanText(inputKey);
+
+                var longueurTexte = cleanedText.length;
+                var longueurCle = cleanedKey.length;
+                var texteSortie = "";
+
+                for (var i = 0; i < longueurTexte; i++) {
+                    // On récupère le "i-ème" caractère du texte et on recupere sa position dans l'alphabet
+                    var positionCaractereTexte = alphabet.indexOf(cleanedText.charAt(i));
+                    // On récupère le "i-ème" caractère de la clé (modulo la taille de la clé) et on recupere sa position dans l'alphabet
+                    var positionCaractereCle = alphabet.indexOf(cleanedKey.charAt(mod(i, longueurCle)));
+
+                    if (sensCryptage == true) {
+                        // Lettre chiffrée : on somme les 2 positions, et on détermine la lettre à cet index
+                        texteSortie += alphabet.charAt(mod((positionCaractereTexte + positionCaractereCle), TAILLE_ALPHABET));
+                        //console.log(texteChiffre);
+                    }
+                    else {
+                        texteSortie += alphabet.charAt(mod((positionCaractereTexte - positionCaractereCle), TAILLE_ALPHABET));
+                    }
+                }
+
+                return {
+                    'texte' : texteSortie, 
+                    'cle': cleanedKey
+                };
+            }
+
+            /*
+             *  Méthode de calcul des fréquences
+             */
+            function calculFrequences() {
+                var cle = $("#cle_trouvee").children();
+                var focusedChar = $("#focusedChar"); // caractère de la clé sur lequel on est concentré
+                var texteCrypte = $("#cryptedText").val();
+
+                var cptLettresAnalysees = 1;
+                var tableFrequences = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                var icTexte = 0; // indice de coincidence
+
+                // modulo : taille de la clé, correspond au saut entre les lettres à analyser
+                var modulo = cle.length;
+
+                if (modulo > 0) {
+                    // offset : position du caractère de la clé à trouver, position également de la première lettre du texte à analyser
+                    var offset = cle.index( focusedChar );
+                    
+                    cptLettresAnalysees = 0;
+                    for (var i = offset; i < texteCrypte.length; i += modulo) {
+                        var position = alphabet.indexOf(texteCrypte.charAt(i));
+                        tableFrequences[position]++;
+                        cptLettresAnalysees++;
+                    }
+                }
+
+                // Variable qui permet de rétablir l'histogramme à l'emplacement qu'on l'a laissé 
+                // si on a essayé de chercher les bon caractères en le décalant
+                var decalage = alphabet.indexOf(focusedChar.html());
+
+                for (var j = 0; j < TAILLE_ALPHABET; j++) {
+                    var indexReel = mod(j + decalage, TAILLE_ALPHABET);
+                    // On divise par le nombre de lettres analysees pour obtenir des pourcentages.
+                    tableFrequences[indexReel] = tableFrequences[indexReel] * 100 / cptLettresAnalysees;
+                    icTexte += Math.pow(tableFrequences[indexReel] / 100, 2);
+                    data.setValue(j, 2, tableFrequences[indexReel]);
+                }
+
+                $("#ic_texte").html(icTexte.toPrecision(3));
+
+                chart.draw(data, options);
+            }
+
+            /*
+             *  Procédure de décalage à gauche du focus sur un caractère de la clé de cryptage à déterminer
+             */
+            function decalageGauche() {
+                var focusedChar = $("#focusedChar");
+                var predecesseur = focusedChar.prev();
+
+                // Si le pointeur sur le predecesseur existe, on décale
+                if (predecesseur.length != 0) { 
+
+                    predecesseur.attr('id', 'focusedChar');
+                    predecesseur.css('font-weight', 'bold');
+
+                    focusedChar.attr('id', '');
+                    focusedChar.css('font-weight', 'normal');
+                }
+            }
+
+            /*
+             *  Procédure de décalage à droite du focus sur un caractère de la clé de cryptage à déterminer
+             */
+            function decalageDroite() {
+                var focusedChar = $( "#focusedChar" );
+                var successeur = focusedChar.next();
+
+                // Si le pointeur sur le successeur existe, on décale
+                if (successeur.length != 0) { 
+
+                    successeur.attr('id', 'focusedChar');
+                    successeur.css('font-weight', 'bold');
+
+                    focusedChar.attr('id', '');
+                    focusedChar.css('font-weight', 'normal');
+                }
+            }
+
+            /*
+             *  Procédure de décryptage du début du texte (40 premiers caractères max)
+             */
+            function apercuDecryptage() {
+                var cle = "";
+                $( "#cle_trouvee" ).children().each(function() {
+                    cle += $(this).html();
+                });
+
+                texteFinalDebut = crypter($( "#cryptedText").val().substr(0,40), cle, false);
+                $( "#apercu" ).val(texteFinalDebut.texte);
+            }
+
+
+            /*
+             *  Evenement : Tour de molette sur l'histogramme
+             *  Resultat :
+             *       - Décalage de l'histogramme des fréquences du texte (gauche ou droite)
+             *       - Modification du caractère de la clé sur lequel il y a le focus
+             *       - Nouvel apercu du decryptage
+             */
+            $('#chart_div').on('mousewheel', function(event) {
+
+                if ($("#cle_trouvee").children().length == 0) {
+                    return;
+                }
+                    
+                if (event.originalEvent.wheelDelta > 0) {
+                    // Scroll vers le haut : on décale l'histogramme à gauche
+                    var tmp = data.getValue(0, 2);
+                    for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
+                        data.setValue(i, 2, data.getValue(i + 1, 2));
+                    }
+                    data.setValue((TAILLE_ALPHABET - 1), 2, tmp);
+
+                    // On décale le caractère de la clé : A -> B
+                    var caractereActif = $("#focusedChar").html();
+                    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
+                    $("#focusedChar").html( caractereSuivant );
+                }
+                else {
+                    // Scroll vers le bas : on décale l'histogramme à droite
+                    var tmp = data.getValue((TAILLE_ALPHABET - 1), 2);
+                    for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
+                        data.setValue((TAILLE_ALPHABET - 1) - i, 2, data.getValue((TAILLE_ALPHABET - 1) - (i + 1), 2));
+                    }
+                    data.setValue(0, 2, tmp);
+
+                    // On décale le caractère de la clé : B -> A
+                    var caractereActif = $("#focusedChar").html();
+                    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
+                    $("#focusedChar").html( caractereSuivant );
+                }
+
+                // On échappe le scroll de la page si elle déborde de l'écran.
+                event.preventDefault();
+                chart.draw(data, options);
+                apercuDecryptage();
+            });
+
+            /*
+             *  Evenement : Touche de clavier sur le champ du texte à analyser
+             *  Résultat : Vérifier le format du texte, proposer un cryptage si besoin,
+             *       et lancer la cryptanalyse (calcul des fréquences) si le texte est bien formaté
+             */
+            $("#cryptedText").on('keyup', function() {
+                // On recherche s'il y a des caractères illégaux
+                var hasError = $(this).val().match(/[^A-Z]/i);
+
+                if ( hasError != null && $( "#div_cryptage" ).is(":hidden") ) {
+                    var reponse = confirm(popup_text);
+                    if (reponse == false) {
+                        $( "#div_cryptage" ).show();
+                        $( "#cle_trouvee" ).html('');
+                        return;
+                    }
+                }
+
+                // Début de la cryptanalyse : nouvelle clé d'une seule lettre si le texte n'est pas vide
+                if ( $(this).val() != "" ) {
+                    $('#cle_trouvee').html('<span id="focusedChar" style="font-weight: bold;">A</span>');
+                    // Re-nettoyage du texte par précaution
+                    var cleanedCryptedText = cleanText($(this).val());
+                    $('#cryptedText').val(cleanedCryptedText);
+                }
+                else {
+                    $('#cle_trouvee').html('');
+                }
+
+                calculFrequences();
+                apercuDecryptage();
+            });
+
+
+            /*
+             *  Les 4 gestionnaires d'evenement concernant la clé de cryptage à déterminer :
+             *       - Augmentation de la taille de la clé
+             *       - Diminution de la taille de la clé
+             *       - Décalage du focus du caractère à gauche
+             *       - Décalage du focus du caractère à droite
+             */
+
+            $(".cle_gauche").on('click', function() {
+                decalageGauche();
+                calculFrequences();
+                apercuDecryptage();
+            });
+
+            $(".cle_droite").on('click', function() {
+                decalageDroite();
+                calculFrequences();
+                apercuDecryptage();
+            });
+
+            $(".cle_plus").on('click', function() {
+                var tailleCle = $('#cle_trouvee').children().length;
+                if (tailleCle >= 1 && tailleCle < $("#cryptedText").val().length ) {
+                    $('#cle_trouvee').append('<span>A</span>');
+                    calculFrequences();
+                    apercuDecryptage();
+                }
+            });
+
+            $(".cle_moins").on('click', function() {
+                var cle = $('#cle_trouvee').children();
+                if (cle.length > 1) {
+                    if (cle.last().attr('id') == "focusedChar") {
+                        decalageGauche();
+                    }
+                    $('#cle_trouvee').children().last().remove();
+                    calculFrequences();
+                    apercuDecryptage();
+                }
+            });
+
+
+
+            /*
+             *  Les 3 gestionnaires d'évènement pour afficher chacune des trois parties de l'appli
+             *       - Page d'accueil
+             *       - Module de cryptage / décryptage avec clé déterminée
+             *       - Module de cryptanalyse avec texte crypté et clé indéterminée 
+             */
+
+            $( "#goto_part1" ).on("click", function() {
+                $("#home").hide(500);
+
+                // On nettoie les champs du module avant de commencer
+                $("#input").val('');
+                $("#cle1").val('');
+                $("#output").val('');
+
+                $("#part1").show(500);
+            });
+
+            $( "#goto_part2" ).on("click", function() {
+                $("#home").hide(500);
+
+                // On nettoie les champs du module avant de commencer
+                $("#cryptedText").val('').trigger("keyup");
+                $("#cle2").val('');
+
+                $("#part2").show(500);
+                setTimeout(function() { chart.draw(data, options) }, 500);
+            });
+
+            $( ".goto_home" ).on("click", function() {
+                $(this).parent().parent().hide(500);
+                $("#home").show(500);
+            });
+
+
+
+            /*
+             *  
+             */
+            $( "#action1" ).on("click", function(){
+                if ( $( "#cle1" ).val() != '' ) {
+                    // sensCryptage --> true : cryptage, false : decryptage
+                    sensCryptage = $( "#crypter" ).prop('checked');
+
+                    var output = crypter($( "#input" ).val(), $( "#cle1" ).val(), sensCryptage);
+
+                    $( "#cle1" ).val(output.cle);
+                    $( "#output" ).val(output.texte);
+                }
+            });
+
+            $( "#action2" ).on("click", function() {
+                if ( $( "#cle2" ).val() != '' ) {
+                    var output = crypter($( "#cryptedText" ).val(), $( "#cle2" ).val(), true);
+
+                    $( "#cle2" ).val(output.cle);
+                    $( "#cryptedText" ).val(output.texte).trigger("keyup");
+                }
+            });
+
+            $( "#crypter" ).on("click", function() {
+                $( "#action1" ).html("Crypter");
+            });
+
+            $( "#decrypter" ).on("click", function() {
+                $( "#action1" ).html("Décrypter");
+            });
+
+
+            /*
+             *  Evenement : Clic sur le bouton de redémarrage de l'analyse
+             *  Résultat : Nouvelle clé -> "A" et recalcul des fréquences
+             */
+            $( "#restart" ).on("click", function() {
+                if ( $( "#cryptedText" ).val() != '') {
+                    $( "#cle_trouvee" ).html('<span id="focusedChar" style="font-weight: bold;">A</span>');
+                    calculFrequences();
+                }
+            });
+
+
+            /*
+             *  Evenement : Clic sur le bouton d'affichage du résultat
+             *  Résultat : Ouverture d'une fenetre modale contenant le texte décrypté avec la clé déterminée par l'utilisateur
+             */
+            $('#modalResultat').on('show.bs.modal', function(event) {
+                if ( $( "#cle_trouvee" ).children().length > 0 ) {
+                    var cle = "";
+                    $( "#cle_trouvee" ).children().each(function(){
+                        cle += $(this).html();
+                    });
+                    texteFinal = crypter($( "#cryptedText").val(), cle, false);
+                    $( "#decryptedText" ).html(texteFinal.texte);
+                }
+                else {
+                    event.preventDefault();
+                    // TO DO : Bloquer la fenetre modale
+                }
+            });
+
+
+            /*
+             *  Evenvement : Redimensionnement de la fenetre
+             *  Resultat : Retracer les histogrammes avec les memes données mais avec les nouvelles dimensions
+             */
+            $( window ).resize(function() {
+                // TO DO : Modifier la hauteur de l'histogramme par media query ?
+                chart.draw(data, options);
+            });
+
+
+            /*
+             *  Evenement : Lorsque l'application est totalement chargée par le navigateur
+             *  Résultat :
+             *       - On initialise l'indice de coincidence théorique (à défaut : français)
+             *       - On lance le petit effet sur le titre (charcycle)
+             */
+            $( document ).ready(function() {
+                $( "#ic_theorique" ).html( indice_coincidence['fr'] );
+
+                $( "#titre" ).css("visibility", "visible");
+                $(this).charcycle({
+                    'target': '#titre',
+                    'speed': 20
+                }); 
+            });
+
+
+            /*
+             *  Déploiement de la fenetre de cryptage de texte dans le module de cryptanalyse
+             *  si l'utilisateur n'a pas crypté son texte au préalable
+             */
+            $( "#oubli" ).on("click", function() {
+                $( "#div_cryptage" ).toggle();
+            });
+
+
+            /*
+             *  Evenement : Nouveau choix de langage du texte à décrypter
+             *  Résulat :
+             *       - On change l'indice de coincidence théorique
+             *       - On redessine l'histogramme des fréquences théoriques
+             */
+            $( "#menu_langue" ).on("change", function() {
+                $( "#ic_theorique" ).html( indice_coincidence[$(this).val()] );
+
+                var frequences_theoriques = frequences[$(this).val()];
+                for (var i = 0; i < TAILLE_ALPHABET; i++) {
+                    data.setValue(i, 1, frequences_theoriques[i]);
+                }
+                chart.draw(data, options);
+            });
+
+            (function($){
+
+                $.fn.charcycle = function( options ){
+                        var settings = {
+                            target:"",
+                            sender:$(this),
+                            id:$(this).attr('id'),
+                            timer_is_on:1,
+                            quoteDis : "",
+                            quoteLoc : 0,
+                            speed:5,
+                            quotePic :   "....fgh......_____----hr--~`;'--~/--- ---asd----10?`, ",
+                            quotePic2 :  "..-_-10?`,abcdefghijklmnopqrstuvwxyz123456789080-~`;' ",
+                            quotePic3 :  "......................................................",
+                            quoteStr : "",
+                            targetElement :""
+                        }
+                //var quoteStr;
+                //var targetElement;
+                var quoteLen;
+                var quoteMax;
+                var rndRange;
+                var t;
+
+                    return this.each(function(){
+                        
+                        if ( options ) { 
+                            $.extend( settings, options );
+                        }
+                        
+                        $(this).addClass('cycling');
+                        
+                        settings.targetElement=$(this).find(settings.target);
+                        settings.quoteStr=settings.targetElement.text();
+                        
+                        
+                        startQuote();
+                            
+                        function padQuote(){
+                            for (var i = settings.quoteStr.length; i < quoteMax; i++) {
+                                settings.quoteStr= "" + settings.quoteStr + " ";
+                            }
+                        }
+
+                    function disQuote() {
+                        settings.quoteDis = settings.quoteStr.substring(0, settings.quoteLoc);
+                    
+                        for (var i = settings.quoteLoc; i < quoteMax; i++){
+                    
+                            var charone;
+                            charone = settings.quoteStr.substring(i, i + 1);
+                        
+                            var rdnum;
+                            rdnum = Math.floor(Math.random() * rndRange)
+
+                            if(i< quoteMax && i>quoteMax-3){
+                                settings.quoteDis = "" + settings.quoteDis + settings.quotePic3.substring(rdnum, rdnum + 1);
+                            }
+                            else if (i > settings.quoteLoc+7 && i < settings.quoteLoc+14){
+
+                                settings.quoteDis = "" + settings.quoteDis + settings.quotePic.substring(rdnum, rdnum + 1);
+                            } 
+                            else {
+
+                                settings.quoteDis = "" + settings.quoteDis + settings.quotePic2.substring(rdnum, rdnum + 1);
+                            }
+                        }
+                        settings.quoteLoc = settings.quoteLoc + 1;
+                        if(settings.quoteLoc == quoteLen+2){
+                             //$("#"+settings.id).removeClass('cycling');
+                             settings.sender.removeClass('cycling');
+                             clearTimeout(t);
+                             settings.timer_is_on=0;
+                        }
+                    }
+                        
+                    function loopQuote(target) {
+
+                        settings.targetElement.text(settings.quoteDis);
+                        disQuote();
+                        
+                        if (settings.timer_is_on==1){
+                            t = setTimeout(function(){loopQuote(target)}, settings.speed);
+                            settings.speed=settings.speed+0.75;
+                        }
+
+                        if(quoteMax < quoteLen){
+                            quoteMax = quoteMax+3;  
+                        }
+                    }
+                    
+                    function startQuote() {
+
+                        quoteMax = settings.quoteStr.length;
+                        rndRange=settings.quotePic.length;
+                        quoteLen = settings.quoteStr.length;
+                        
+                        padQuote();
+                        disQuote();
+                        loopQuote();
+                  
+                    }
+
+                    });
+                }
+                    
+                })( jQuery );
+        </script>
+    </body>
+</html>
