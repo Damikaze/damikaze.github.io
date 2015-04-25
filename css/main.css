@@ -35,12 +35,10 @@ footer > .container {
 
 #cle_trouvee_div {
     color: black;
-    height: 2.4em;
+    height: 1.75em;
     background-color: white;
-    padding-top: 6px;
-}
-
-#cle_trouvee {
+    padding-top: 4px;
+    margin-bottom: 10px;
     text-align: center;
 }
 

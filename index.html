@@ -4,6 +4,7 @@
         <title>Application Vigenere</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="shortcut icon" href="img/favicon.ico">
     </head>
     <body>
         <div class="container">
@@ -33,9 +34,12 @@
 
             <div id="part1" style="display:none;">
                 <div class="row">
-                    <div class="col-xs-3">
-                        <button class="goto_home btn btn-primary">&lt;&lt; Retour à la page d'accueil</button>
-                    </div>
+                    <button class="goto_home btn btn-primary col-xs-3">
+                        <div class="hidden-xs hidden-sm">
+                            <span class="glyphicon glyphicon-chevron-left"></span> Retour à la page d'accueil
+                        </div>
+                        <span class="visible-xs visible-sm glyphicon glyphicon-home"></span>
+                    </button>
                 </div>
                 <br/>
                 <div class="row">
@@ -77,22 +81,25 @@
 
             <div id="part2" style="display:none;">
                 <div class="row">
-                    <div class="col-xs-3">
-                        <button class="goto_home btn btn-primary">&lt;&lt; Retour à la page d'accueil</button>
-                    </div>
-                    <div class="col-xs-offset-3 col-xs-3">
+                    <button class="goto_home btn btn-primary col-sm-3 col-xs-2">
+                        <div class="hidden-xs hidden-sm">
+                            <span class="glyphicon glyphicon-chevron-left"></span> Retour à la page d'accueil
+                        </div>
+                        <span class="visible-xs visible-sm glyphicon glyphicon-home"></span>
+                    </button>
+                    <div class="col-sm-offset-1 col-sm-5 col-xs-8">
                         <select id="menu_langue" class="form-control">
-                            <option selected="selected" disabled="true" style="display:none;">Langage du texte ? (Défaut : fr)</option>
+                            <option selected="selected" disabled="true" style="display:none;">
+                                Langage ? (Défaut : fr)
+                            </option>
                             <option value="fr">Français</option>
                             <option value="en">Anglais</option>
                         </select>
                     </div>
-                    <div class="col-xs-offset-1 col-xs-2">
-                        <button id="aide" class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalAide">
-                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                            Aide
-                        </button>
-                    </div>
+                    <button id="aide" class="btn btn-warning pull-right col-sm-offset-1 col-sm-2 col-xs-2" data-toggle="modal" data-target="#modalAide">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        <span class="hidden-xs hidden-sm"> Aide</span>
+                    </button>
                 </div>
                 <br/>
 
@@ -105,8 +112,7 @@
                             Oublié de crypter le texte ? Cliquez !
                         </div>
                         <div class="panel-body" id="div_cryptage" style="display:none;">
-                            <p>Rentrez, si ce n'est pas déjà fait, le texte non chiffré dans la zone de texte en-dessous du panneau,
-                                la clé de chiffrage dans le champ ci-dessous. L'analyse sera lancée juste après le cryptage.</p>
+                            <p>Rentrez, si ce n'est pas déjà fait, le texte non chiffré dans la zone de texte en-dessous du panneau, la clé de chiffrage dans le champ ci-dessous. L'analyse sera lancée juste après le cryptage.</p>
                             Clé :
                             <input type="text" id="cle2" name="cle"/>
                             <button id="action2">Crypter</button>
@@ -145,37 +151,48 @@
                     <tbody class="text-center">
                         <tr>
                             <td rowspan=2>
-                                <div class="btn-group">
-                                    <button class="btn btn-danger" id="cle_moins">
+                                <div class="btn-group btn-group-lg hidden-xs">
+                                    <button class="btn btn-danger cle_moins">
                                         <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                                     </button>
-                                    <button class="btn btn-primary" id="cle_plus">
+                                    <button class="btn btn-primary cle_plus">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div class="btn-group-vertical btn-group-lg visible-xs">
+                                    <button class="btn btn-primary cle_plus">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                    <button class="btn btn-danger cle_moins">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                                     </button>
                                 </div>
                             </td>
                             <td rowspan=2>
                                 <div class="row">
-                                    <div class="col-xs-2">
-                                        <button class="btn btn-default pull-right" id="cle_gauche">
+                                    <div class="col-sm-2 hidden-xs">
+                                        <button class="btn btn-default pull-right cle_gauche">
                                             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                                         </button>
                                     </div>
-                                    <div class="col-xs-8" id="cle_trouvee_div">
+                                    <div class="col-xs-12 col-sm-8" id="cle_trouvee_div">
                                         <p id="cle_trouvee"></p>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <button class="btn btn-default pull-left" id="cle_droite">
+                                    <div class="col-sm-2 hidden-xs">
+                                        <button class="btn btn-default pull-left cle_droite">
                                             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                                         </button>
                                     </div>
+                                    <br/>
+                                    <a class="btn btn-default col-xs-6 visible-xs cle_gauche"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+                                    <a class="btn btn-default col-xs-6 visible-xs cle_droite"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                                 </div>
                             </td>
-                            <td>Texte :</td>
+                            <td>Texte</td>
                             <td> <span id="ic_texte"></span> </td>
                         </tr>
                         <tr>
-                            <td>Théorique :</td>
+                            <td>Langue</td>
                             <td> <span id="ic_theorique"></span> </td>
                         </tr>
                     </tbody>

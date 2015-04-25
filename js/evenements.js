@@ -1,6 +1,4 @@
 /* TO DO : 
-    Afficher le début du texte décrypté
-
     .visible-xs .hidden-xs
     (swipe ? plus tard ...)
     Partie pédagogie : explications, gifs.
@@ -94,19 +92,19 @@ $("#cryptedText").on('keyup', function() {
  *       - Décalage du focus du caractère à droite
  */
 
-$("#cle_gauche").on('click', function() {
+$(".cle_gauche").on('click', function() {
     decalageGauche();
     calculFrequences();
     apercuDecryptage();
 });
 
-$("#cle_droite").on('click', function() {
+$(".cle_droite").on('click', function() {
     decalageDroite();
     calculFrequences();
     apercuDecryptage();
 });
 
-$("#cle_plus").on('click', function() {
+$(".cle_plus").on('click', function() {
     var tailleCle = $('#cle_trouvee').children().length;
     if (tailleCle >= 1 && tailleCle < $("#cryptedText").val().length ) {
         $('#cle_trouvee').append('<span>A</span>');
@@ -115,7 +113,7 @@ $("#cle_plus").on('click', function() {
     }
 });
 
-$("#cle_moins").on('click', function() {
+$(".cle_moins").on('click', function() {
     var cle = $('#cle_trouvee').children();
     if (cle.length > 1) {
         if (cle.last().attr('id') == "focusedChar") {
@@ -137,25 +135,30 @@ $("#cle_moins").on('click', function() {
  */
 
 $( "#goto_part1" ).on("click", function() {
-    $("#home").hide();
-    $("#part1").show();
+    $("#home").hide(500);
+
     // On nettoie les champs du module avant de commencer
     $("#input").val('');
     $("#cle1").val('');
     $("#output").val('');
+
+    $("#part1").show(500);
 });
 
 $( "#goto_part2" ).on("click", function() {
-    $("#home").hide();
-    $("#part2").show();
+    $("#home").hide(500);
+
     // On nettoie les champs du module avant de commencer
     $("#cryptedText").val('').trigger("keyup");
     $("#cle2").val('');
+
+    $("#part2").show(500);
+    setTimeout(function() { chart.draw(data, options) }, 500);
 });
 
 $( ".goto_home" ).on("click", function() {
-    $(this).parent().parent().parent().hide();
-    $("#home").show();
+    $(this).parent().parent().hide(500);
+    $("#home").show(500);
 });
 
 
