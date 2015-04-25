@@ -3,12 +3,12 @@
         <meta charset="UTF-8"/>
         <title>Application Vigenere</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <!-- -- Accueil -- -->
-
         <div class="container">
+            <!-- -- Accueil -- -->
+
             <div id="home">
                 <div class="row">
                     <h1 id="titre">Chiffre de Vigenere : l'application</h1>
@@ -118,7 +118,7 @@
                 <div class="row">
                     <textarea rows=6 id="cryptedText" class="form-control"></textarea>
                     <br/>
-                    <button id="refresh" class="btn btn-default">
+                    <button id="restart" class="btn btn-default">
                         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                         Recommencer l'analyse
                     </button>
@@ -146,20 +146,28 @@
                         <tr>
                             <td rowspan=2>
                                 <div class="btn-group">
-                                    <button class="btn btn-danger" id="cle_moins">-</button>
-                                    <button class="btn btn-primary" id="cle_plus">+</button>
+                                    <button class="btn btn-danger" id="cle_moins">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                    </button>
+                                    <button class="btn btn-primary" id="cle_plus">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
                                 </div>
                             </td>
                             <td rowspan=2>
                                 <div class="row">
                                     <div class="col-xs-2">
-                                        <button class="btn btn-default pull-right" id="cle_gauche">&lt;</button>
+                                        <button class="btn btn-default pull-right" id="cle_gauche">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        </button>
                                     </div>
                                     <div class="col-xs-8" id="cle_trouvee_div">
                                         <p id="cle_trouvee"></p>
                                     </div>
                                     <div class="col-xs-2">
-                                        <button class="btn btn-default pull-left" id="cle_droite">&gt;</button>
+                                        <button class="btn btn-default pull-left" id="cle_droite">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        </button>
                                     </div>
                                 </div>
                             </td>
@@ -184,10 +192,25 @@
                     <div id="chart_div" class="center-block"></div>
                 </div>
             </div>
-
-            <object id="E" type="image/svg+xml" data="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.eu.svg">
-            </object>
         </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <p>Image fournie par Razlan sur 
+                            <a href="https://www.flickr.com/">flickr.com</a>
+                             sous licence 
+                            <a href="http://creativecommons.org/">CreativeCommons</a>
+                        </p>
+                    </div>
+                    <div class="col-xs-4">
+                        <object id="E" class="pull-right" type="image/svg+xml" data="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.eu.svg">
+                        </object>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
         <!-- -- Modal de présentation du chiffre de Vigenere -- -->
 
@@ -248,10 +271,15 @@
             </div>
         </div>
         
+        <!-- Scripts exterieurs : jQuery, Bootstrap et Google Charts -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script type="text/javascript" src="charcycle.js"></script>
-        <script type="text/javascript" src="main.js"></script>
+
+        <!-- Scripts internes -->
+        <script type="text/javascript" src="js/charcycle.js"></script>
+        <script type="text/javascript" src="js/variables.js"></script>
+        <script type="text/javascript" src="js/fonctions.js"></script>
+        <script type="text/javascript" src="js/evenements.js"></script>
     </body>
 </html>
