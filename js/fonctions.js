@@ -158,6 +158,40 @@ function calculFrequences() {
 }
 
 /*
+ *
+ */
+function decalageHistogrammeGauche() {
+    // Scroll vers le haut : on décale l'histogramme à gauche
+    var tmp = data.getValue(0, 2);
+    for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
+        data.setValue(i, 2, data.getValue(i + 1, 2));
+    }
+    data.setValue((TAILLE_ALPHABET - 1), 2, tmp);
+
+    // On décale le caractère de la clé : A -> B
+    var caractereActif = $("#focusedChar").html();
+    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
+    $( "#focusedChar" ).html( caractereSuivant );
+}
+
+/*
+ *
+ */
+function decalageHistogrammeDroite() {
+    // Scroll vers le bas : on décale l'histogramme à droite
+    var tmp = data.getValue((TAILLE_ALPHABET - 1), 2);
+    for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
+        data.setValue((TAILLE_ALPHABET - 1) - i, 2, data.getValue((TAILLE_ALPHABET - 1) - (i + 1), 2));
+    }
+    data.setValue(0, 2, tmp);
+
+    // On décale le caractère de la clé : B -> A
+    var caractereActif = $("#focusedChar").html();
+    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
+    $( "#focusedChar" ).html( caractereSuivant );
+}
+
+/*
  *  Procédure de décalage à gauche du focus sur un caractère de la clé de cryptage à déterminer
  */
 function decalageGauche() {

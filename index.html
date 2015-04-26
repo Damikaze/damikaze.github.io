@@ -80,6 +80,7 @@
             <!-- -- Cryptanalyse -- -->
 
             <div id="part2" style="display:none;">
+                <!-- Boutons du haut -->
                 <div class="row">
                     <button class="goto_home btn btn-primary col-sm-3 col-xs-2">
                         <div class="hidden-xs hidden-sm">
@@ -103,6 +104,7 @@
                 </div>
                 <br/>
 
+                <!-- Panneau de cryptage -->
                 <div class="row">
                     <legend>Cryptanalyse</legend>
                     <p>Copiez-collez dans la zone de texte ci-dessous le texte crypté, l'analyse sera lancée automatiquement.</p>
@@ -121,6 +123,7 @@
                 </div>
                 <br/>
 
+                <!-- Zone de texte -->
                 <div class="row">
                     <textarea rows=6 id="cryptedText" class="form-control"></textarea>
                     <br/>
@@ -137,6 +140,7 @@
 
                 <legend>Résultats</legend>
 
+                <!-- Tableau de la clé à deviner -->
                 <table class="table table-bordered">
                     <caption>
                         <h4>Clé à deviner</h4>
@@ -197,14 +201,21 @@
                         </tr>
                     </tbody>
                 </table>
-                <br/>
 
                 <div class="row">
                     <label for="apercu">Voici ce que donne le décryptage si la clé ci-dessus est correcte ...</label>
                     <input type="text" id="apercu" class="form-control" disabled />
                 </div>
                 <br/>
-
+                <div class="row">
+                    <p>Faites rouler la molette de la souris, ou scrollez sur votre pavé tactile pour décaler l'histogramme des fréquences du texte crypté, tout en posant le curseur sur le graphique. Sinon, vous pouvez utiliser les boutons bleus juste en dessous.</p>
+                    <a id="btn_decalage_gauche" class="btn btn-info col-xs-6">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </a>
+                    <a id="btn_decalage_droite" class="btn btn-info col-xs-6">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </a>
+                </div>
                 <div class="row">
                     <div id="chart_div" class="center-block"></div>
                 </div>

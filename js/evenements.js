@@ -11,41 +11,51 @@
  *       - Modification du caractère de la clé sur lequel il y a le focus
  *       - Nouvel apercu du decryptage
  */
-$('#chart_div').on('mousewheel', function(event) {
+$('#chart_div').on('wheel', function(event) {
 
     if ($("#cle_trouvee").children().length == 0) {
         return;
     }
         
-    if (event.originalEvent.wheelDelta > 0) {
-        // Scroll vers le haut : on décale l'histogramme à gauche
-        var tmp = data.getValue(0, 2);
-        for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
-            data.setValue(i, 2, data.getValue(i + 1, 2));
-        }
-        data.setValue((TAILLE_ALPHABET - 1), 2, tmp);
-
-        // On décale le caractère de la clé : A -> B
-        var caractereActif = $("#focusedChar").html();
-        var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
-        $("#focusedChar").html( caractereSuivant );
+    if (event.originalEvent.deltaY > 0) {
+        decalageHistogrammeGauche();
     }
     else {
-        // Scroll vers le bas : on décale l'histogramme à droite
-        var tmp = data.getValue((TAILLE_ALPHABET - 1), 2);
-        for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
-            data.setValue((TAILLE_ALPHABET - 1) - i, 2, data.getValue((TAILLE_ALPHABET - 1) - (i + 1), 2));
-        }
-        data.setValue(0, 2, tmp);
-
-        // On décale le caractère de la clé : B -> A
-        var caractereActif = $("#focusedChar").html();
-        var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
-        $("#focusedChar").html( caractereSuivant );
+        decalageHistogrammeDroite();
     }
 
     // On échappe le scroll de la page si elle déborde de l'écran.
     event.preventDefault();
+    chart.draw(data, options);
+    apercuDecryptage();
+});
+
+/*
+ *  Evenement : Clic sur le bouton de gauche au-dessus du graphique
+ *  Resultat :
+ *       - Décalage de l'histogramme des fréquences du texte à gauche
+ *       - Modification du caractère de la clé sur lequel il y a le focus
+ *       - Nouvel apercu du decryptage
+ */
+$('#btn_decalage_gauche').on('click', function() {
+    if ($("#cle_trouvee").children().length == 0) { return; }
+    
+    decalageHistogrammeGauche();
+    chart.draw(data, options);
+    apercuDecryptage();
+});
+
+/*
+ *  Evenement : Clic sur le bouton de droite au-dessus du graphique
+ *  Resultat :
+ *       - Décalage de l'histogramme des fréquences du texte à droite
+ *       - Modification du caractère de la clé sur lequel il y a le focus
+ *       - Nouvel apercu du decryptage
+ */
+$('#btn_decalage_droite').on('click', function() {
+    if ($("#cle_trouvee").children().length == 0) { return; }
+    
+    decalageHistogrammeDroite();
     chart.draw(data, options);
     apercuDecryptage();
 });
