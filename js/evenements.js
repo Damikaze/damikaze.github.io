@@ -1,6 +1,7 @@
 /* TO DO : 
-    .visible-xs .hidden-xs
     (swipe ? plus tard ...)
+    Améliorer la fenetre modale de résultat (afficher la clé)
+    Surligner les lettres en cours de modification dans le décryptage
     Partie pédagogie : explications, gifs.
 */
 
@@ -11,13 +12,26 @@
  *       - Modification du caractère de la clé sur lequel il y a le focus
  *       - Nouvel apercu du decryptage
  */
-$('#chart_div').on('wheel', function(event) {
+$('#chart_div').on('wheel mousewheel', function(event) {
 
     if ($("#cle_trouvee").children().length == 0) {
         return;
     }
+    
+    // On cherche selon le navigateur, de trouver un attribut de l'evenement intercepté
+    // qui nous permet de déterminer le sens du scroll
+    var aGauche;
+    if (event.originalEvent.wheelDeltaY != undefined) {
+        aGauche = (event.originalEvent.wheelDeltaY > 0) ? true : false;
+    }
+    else if (event.originalEvent.deltaY != undefined) {
+        aGauche = (event.originalEvent.deltaY < 0) ? true : false;
+    }
+    else if (console) {
+        console.warn("L'évènement mousewheel est mal supporté sur le navigateur actuellement utilisé");
+    }
         
-    if (event.originalEvent.deltaY > 0) {
+    if ( aGauche ) {
         decalageHistogrammeGauche();
     }
     else {
