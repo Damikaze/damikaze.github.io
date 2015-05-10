@@ -1,9 +1,15 @@
 <html>
     <head>
-        <meta charset="UTF-8"/>
         <title>Application Vigenere</title>
+
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+        <!--<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/jquery-ui-slider-pips.css">
         <link rel="shortcut icon" href="img/favicon.ico">
     </head>
     <body>
@@ -209,6 +215,9 @@
                 <br/>
                 <div class="row">
                     <p>Faites rouler la molette de la souris, ou scrollez sur votre pavé tactile pour décaler l'histogramme des fréquences du texte crypté, tout en posant le curseur sur le graphique. Sinon, vous pouvez utiliser les boutons bleus juste en dessous.</p>
+                    <br/>
+                    <div class="slider"></div>
+                    <br/>
                     <a id="btn_decalage_gauche" class="btn btn-info col-xs-6">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </a>
@@ -300,11 +309,14 @@
         </div>
         
         <!-- Scripts exterieurs : jQuery, Bootstrap et Google Charts -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
         <!-- Scripts internes -->
+        <script type="text/javascript" src="js/jquery-ui-slider-pips.js"></script>
         <script type="text/javascript" src="js/charcycle.js"></script>
         <script type="text/javascript" src="js/variables.js"></script>
         <script type="text/javascript" src="js/fonctions.js"></script>

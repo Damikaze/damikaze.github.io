@@ -303,3 +303,5 @@ $( "#menu_langue" ).on("change", function() {
     }
     chart.draw(data, options);
 });
+
+$(".slider").slider().slider("pips").slider("float");
