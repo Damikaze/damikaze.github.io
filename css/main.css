@@ -37,6 +37,11 @@ footer > .container {
     margin-left: 0px;
 }
 
+.label-interrupteur {
+    text-align: center;
+    padding: 0px;
+}
+
 #cle_trouvee_div {
     color: black;
     height: 1.75em;
@@ -44,6 +49,10 @@ footer > .container {
     padding-top: 4px;
     margin-bottom: 10px;
     text-align: center;
+}
+
+#cle1 {
+    margin-bottom: 5px;
 }
 
 #titre {
@@ -58,4 +67,22 @@ footer > .container {
 
 #apercu {
     cursor: auto;
+}
+
+#label_action {
+    margin-top: 5px;
+    padding: 0px;
+    text-align: center;
+}
+
+#label_cle {
+    margin-top: 5px;
+    text-align: right;
+}
+
+@media (min-width: 768px) {
+    .nopadding {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }

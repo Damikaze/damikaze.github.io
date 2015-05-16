@@ -190,18 +190,27 @@ $( ".goto_home" ).on("click", function() {
 /*
  *  
  */
+$( "#interrupteur" ).on("click", function() {
+    $( "#action1" ).html($(this).prop("checked") ? "Crypter" : "Décrypter");
+});
+
 $( "#action1" ).on("click", function(){
     if ( $( "#cle1" ).val() != '' ) {
-        // sensCryptage --> true : cryptage, false : decryptage
-        sensCryptage = $( "#crypter" ).prop('checked');
-
-        var output = crypter($( "#input" ).val(), $( "#cle1" ).val(), sensCryptage);
+        var output = crypter(
+            $( "#input" ).val(),
+            $( "#cle1" ).val(),
+            // coché : cryptage, non coché : decryptage
+            $( "#interrupteur" ).prop('checked')
+        );
 
         $( "#cle1" ).val(output.cle);
         $( "#output" ).val(output.texte);
     }
 });
 
+/*
+ *
+ */
 $( "#action2" ).on("click", function() {
     if ( $( "#cle2" ).val() != '' ) {
         var output = crypter($( "#cryptedText" ).val(), $( "#cle2" ).val(), true);
@@ -209,14 +218,6 @@ $( "#action2" ).on("click", function() {
         $( "#cle2" ).val(output.cle);
         $( "#cryptedText" ).val(output.texte).trigger("keyup");
     }
-});
-
-$( "#crypter" ).on("click", function() {
-    $( "#action1" ).html("Crypter");
-});
-
-$( "#decrypter" ).on("click", function() {
-    $( "#action1" ).html("Décrypter");
 });
 
 
