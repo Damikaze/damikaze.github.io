@@ -158,7 +158,8 @@ function calculFrequences() {
 }
 
 /*
- *
+ *  Procédure de décalage des fréquences du texte crypté d'un cran à gauche
+ *  et modification du caractère de la clé ciblé
  */
 function decalageHistogrammeGauche() {
     // Scroll vers le haut : on décale l'histogramme à gauche
@@ -168,14 +169,18 @@ function decalageHistogrammeGauche() {
     }
     data.setValue((TAILLE_ALPHABET - 1), 2, tmp);
 
-    // On décale le caractère de la clé : A -> B
+    // On modifie le caractère avec focus de la clé : A -> B
     var caractereActif = $("#focusedChar").html();
     var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
     $( "#focusedChar" ).html( caractereSuivant );
+
+    // On rend visible ce décalage des fréquences à l'écran
+    chart.draw(data, options);
 }
 
 /*
- *
+ *  Procédure de décalage des fréquences du texte crypté d'un cran à droite
+ *  et modification du caractère de la clé ciblé
  */
 function decalageHistogrammeDroite() {
     // Scroll vers le bas : on décale l'histogramme à droite
@@ -185,16 +190,20 @@ function decalageHistogrammeDroite() {
     }
     data.setValue(0, 2, tmp);
 
-    // On décale le caractère de la clé : B -> A
+    // On modifie le caractère avec focus de la clé : B -> A
     var caractereActif = $("#focusedChar").html();
     var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
     $( "#focusedChar" ).html( caractereSuivant );
+
+    // On rend visible ce décalage des fréquences à l'écran
+    chart.draw(data, options);
 }
 
 /*
- *  Procédure de décalage à gauche du focus sur un caractère de la clé de cryptage à déterminer
+ *  Procédure de déplacement du focus sur le caractère de la clé à déterminer
+ *  à gauche de celui déjà ciblé
  */
-function decalageGauche() {
+function focusCaracterePrecedent() {
     var focusedChar = $("#focusedChar");
     var predecesseur = focusedChar.prev();
 
@@ -210,9 +219,10 @@ function decalageGauche() {
 }
 
 /*
- *  Procédure de décalage à droite du focus sur un caractère de la clé de cryptage à déterminer
+ *  Procédure de déplacement du focus sur le caractère de la clé à déterminer
+ *  à droite de celui déjà ciblé
  */
-function decalageDroite() {
+function focusCaractereSuivant() {
     var focusedChar = $( "#focusedChar" );
     var successeur = focusedChar.next();
 
@@ -238,4 +248,36 @@ function apercuDecryptage() {
 
     texteFinalDebut = crypter($( "#cryptedText").val().substr(0,40), cle, false);
     $( "#apercu" ).val(texteFinalDebut.texte);
+}
+
+/*
+ *  Appelle toutes les procédures nécessaires à un "décalage à gauche" demandé par l'utilisateur
+ *      -  Décalage des fréquences numériques
+ *      -  Mise à jour de l'histogramme affiché dans la page web
+ *      -  Décryptage du début du texte
+ */
+function decalageHistoGaucheAvecApercu() {
+    if ( $( "#cle_trouvee" ).children().length == 0) {
+        return;
+    }
+    else {
+        decalageHistogrammeGauche();
+        apercuDecryptage();
+    }
+}
+
+/*
+ *  Appelle toutes les procédures nécessaires à un "décalage à droite" demandé par l'utilisateur
+ *      -  Décalage des fréquences numériques
+ *      -  Mise à jour de l'histogramme affiché dans la page web
+ *      -  Décryptage du début du texte
+ */
+function decalageHistoDroiteAvecApercu() {
+    if ( $( "#cle_trouvee" ).children().length == 0) {
+        return;
+    }
+    else {
+        decalageHistogrammeDroite();
+        apercuDecryptage();
+    }
 }

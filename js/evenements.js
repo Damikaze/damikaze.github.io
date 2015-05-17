@@ -32,16 +32,14 @@ $('#chart_div').on('wheel mousewheel', function(event) {
     }
         
     if ( aGauche ) {
-        decalageHistogrammeGauche();
+        decalageHistoGaucheAvecApercu();
     }
     else {
-        decalageHistogrammeDroite();
+        decalageHistoDroiteAvecApercu();
     }
 
-    // On échappe le scroll de la page si elle déborde de l'écran.
+    // On échappe le comportement initial du scroll.
     event.preventDefault();
-    chart.draw(data, options);
-    apercuDecryptage();
 });
 
 /*
@@ -52,11 +50,7 @@ $('#chart_div').on('wheel mousewheel', function(event) {
  *       - Nouvel apercu du decryptage
  */
 $('#btn_decalage_gauche').on('click', function() {
-    if ($("#cle_trouvee").children().length == 0) { return; }
-    
-    decalageHistogrammeGauche();
-    chart.draw(data, options);
-    apercuDecryptage();
+    decalageHistoGaucheAvecApercu();
 });
 
 /*
@@ -67,11 +61,7 @@ $('#btn_decalage_gauche').on('click', function() {
  *       - Nouvel apercu du decryptage
  */
 $('#btn_decalage_droite').on('click', function() {
-    if ($("#cle_trouvee").children().length == 0) { return; }
-    
-    decalageHistogrammeDroite();
-    chart.draw(data, options);
-    apercuDecryptage();
+    decalageHistoDroiteAvecApercu();
 });
 
 /*
@@ -117,13 +107,13 @@ $("#cryptedText").on('keyup', function() {
  */
 
 $(".cle_gauche").on('click', function() {
-    decalageGauche();
+    focusCaracterePrecedent();
     calculFrequences();
     apercuDecryptage();
 });
 
 $(".cle_droite").on('click', function() {
-    decalageDroite();
+    focusCaractereSuivant();
     calculFrequences();
     apercuDecryptage();
 });
@@ -141,7 +131,7 @@ $(".cle_moins").on('click', function() {
     var cle = $('#cle_trouvee').children();
     if (cle.length > 1) {
         if (cle.last().attr('id') == "focusedChar") {
-            decalageGauche();
+            focusCaracterePrecedent();
         }
         $('#cle_trouvee').children().last().remove();
         calculFrequences();
@@ -188,7 +178,8 @@ $( ".goto_home" ).on("click", function() {
 
 
 /*
- *  
+ *  Evenement : On appuie sur l'interrupteur
+ *  Resultat : On permute le sens de cryptage
  */
 $( "#interrupteur" ).on("click", function() {
     $( "#action1" ).html($(this).prop("checked") ? "Crypter" : "Décrypter");
@@ -209,7 +200,9 @@ $( "#action1" ).on("click", function(){
 });
 
 /*
- *
+ *  Evenement : On demande le cryptage du texte dans le module de cryptanalyse
+ *  Resultat : On remplace le texte par son équivalent crypté,
+ *  et on génère un évenement pour lancer l'analyse
  */
 $( "#action2" ).on("click", function() {
     if ( $( "#cle2" ).val() != '' ) {
@@ -305,4 +298,46 @@ $( "#menu_langue" ).on("change", function() {
     chart.draw(data, options);
 });
 
-$(".slider").slider().slider("pips").slider("float");
+
+/*
+ *  Déplacer les histogrammes en maintenant le clic gauche sur le graphique
+ *  FIXME : problème de drag sur Mozilla et problème de redessinage du graphique Google sur mobile
+ */
+var isHeld = false;
+var xInitial;
+
+$('#chart_div').on("touchstart mousedown", function(event) {
+    isHeld = true;
+    xInitial = (event.type == "touchstart") ? event.originalEvent.touches[0].clientX : event.originalEvent.clientX;
+});
+
+$( document ).on("touchend mouseup", function() {
+    isHeld = false;
+});
+
+$('#chart_div').on("touchmove mousemove", function(event) {
+    event.preventDefault();
+    if (isHeld && $( "#cle_trouvee" ).children().length > 0) {
+
+        var xActuel = (event.type == "touchmove") ? event.originalEvent.touches[0].clientX : event.originalEvent.clientX;
+        var xDiff = xActuel - xInitial;
+
+        if (xDiff > 15) {
+            xInitial = xActuel;
+            decalageHistoDroiteAvecApercu();
+        }
+        else if (xDiff < -15) {
+            xInitial = xActuel;
+            decalageHistoGaucheAvecApercu();
+        }
+    }
+});
+
+
+/*$(".slider").slider({
+    min : 0,
+    max : 25    
+}).slider("pips", {
+        rest: "label",
+        labels: ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+});*/
