@@ -9,7 +9,7 @@ body, legend {
     color: white;
 }
 
-select, option, #div_cryptage, .modal-content {
+select, option, #div_cryptage, .modal-content, #table-pedagogie {
     color: black;
 }
 
@@ -41,6 +41,16 @@ footer > .container {
 .label-interrupteur {
     text-align: center;
     padding: 0px;
+}
+
+#table-pedagogie td {
+    text-align: center;
+}
+
+#table-pedagogie .small-row td {
+    text-align: center;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
 #cle_trouvee_div {
@@ -79,6 +89,10 @@ footer > .container {
 #label_cle {
     margin-top: 5px;
     text-align: right;
+}
+
+#modalPresentation {
+    text-align: justify;
 }
 
 @media (min-width: 768px) {

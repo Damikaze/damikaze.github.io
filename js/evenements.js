@@ -307,6 +307,7 @@ var isHeld = false;
 var xInitial;
 
 $('#chart_div').on("touchstart mousedown", function(event) {
+    event.preventDefault();
     isHeld = true;
     xInitial = (event.type == "touchstart") ? event.originalEvent.touches[0].clientX : event.originalEvent.clientX;
 });

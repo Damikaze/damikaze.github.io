@@ -148,10 +148,8 @@
                 <legend>Résultats</legend>
 
                 <!-- Tableau de la clé à deviner -->
+                <h4>Clé à deviner</h4>
                 <table class="table table-bordered">
-                    <caption>
-                        <h4>Clé à deviner</h4>
-                    </caption>
                     <thead>
                         <tr>
                             <th class="col-xs-2 text-center">Taille</th>
@@ -262,9 +260,46 @@
                         <h4 class="modal-title">Présentation du chiffre de Vigenère</h4>
                     </div>
                     <div class="modal-body">
-                        <p>Une définition plus pédagogique ici !</p>
+                        <table id="table-pedagogie" class="table table-bordered table-striped table-centered">
+                            <tr>
+                                <td>M</td><td>E</td><td>S</td><td>S</td><td>A</td><td>G</td><td>E</td>
+                                <td>S</td><td>E</td><td>C</td><td>R</td><td>E</td><td>T</td>
+                            </tr>
+                            <tr class="small-row">
+                                <td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td>
+                                <td>+</td><td>+</td><td>+</td><td>+</td><td>+</td><td>+</td>
+                            </tr>
+                            <tr>
+                                <td>C</td><td>O</td><td>D</td><td>E</td><td>C</td><td>O</td><td>D</td>
+                                <td>E</td><td>C</td><td>O</td><td>D</td><td>E</td><td>C</td>
+                            </tr>
+                            <tr class="small-row">
+                                <td>=</td><td>=</td><td>=</td><td>=</td><td>=</td><td>=</td><td>=</td>
+                                <td>=</td><td>=</td><td>=</td><td>=</td><td>=</td><td>=</td>
+                            </tr>
+                            <tr>
+                                <td>O</td><td>S</td><td>V</td><td>W</td><td>C</td><td>U</td><td>H</td>
+                                <td>W</td><td>G</td><td>Q</td><td>U</td><td>I</td><td>V</td>
+                            </tr>
+                        </table>
 
-                        <p>Pour plus d'informations ... <a href="http://fr.wikipedia.org/wiki/Chiffre_de_Vigen%C3%A8re" target="_blank">la page Wikipédia !</a></p>
+                        <p>Voilà ! C'est simple le chiffre de Vigenere, non ? Allez, on va expliquer plus en détails.</p>
+
+                        <h4>Explications</h4>
+
+                        <p>Le chiffre (ou chiffrement) de Vigenère est un procédé de cryptographie polyalphabétique, c'est-à-dire qu'on utilise un mot appelé "clé" de plusieurs lettres pour réaliser le chiffrement (ici, c'est le mot "CODE").</p>
+                        <p>On procède à un décalage de l'alphabet déterminé par le caractère de la clé. Par convention, 'A' correspond à un décalage nul, 'B' un décalage de 1, 'C' de 2, etc... Exemple : pour la lettre 'M', je code avec un 'C', et la lettre devient un 'O' (M -> N -> O). Et si on déborde et qu'on va plus loin que le 'Z', et bien, on repart pour un tour : Y -> Z -> A -> B...</p>
+                        <p>Ce principe de décalage implique qu'une lettre est associée à une et une seule autre lettre par cette transformation.</p>
+                        <p>Or, l'interêt du chiffre de Vigenère est que deux lettres identiques du texte à crypter ne donnent pas toujours les mêmes lettres dans le texte crypté et vice versa.</p>
+
+                        <h4>Pourquoi ? Et comment décrypter alors ?</h4>
+
+                        <p>Si vous utilisez une clé d'une seule lettre, le décalage appliqué est identique pour toutes les lettres. Et déterminer le décalage unique à tout le texte est très simple : trouvez la lettre qui apparaît le plus dans le texte crypté, et on est presque sûr qu'elle correspond à la lettre la plus fréquente théoriquement dans la langue du texte à déchiffrer. Une petite soustraction, et on a la taille du décalage ! Pour la culture (c'est pour moi, c'est cadeau), ce chiffrage monoalphabétique s'appelle chiffre de César.</p>
+                        <p>Pour le chiffre de Vigenère (avec une clé de N lettres), l'astuce va etre la même, mais il va falloir au préalable deviner la taille de la clé. Et si on devine juste, on sait alors que, périodiquement (1 fois sur N), une lettre du texte crypté correspond toujours à la même lettre du texte à déchiffrer (parce qu'elle a été codée avec le même caractère de la clé, regardez dans le tableau au-dessus les deux S qui deviennent des W).</p>
+
+                        <h4>J'ai toujours pas compris !</h4>
+
+                        <p>Et bien, il vous reste ... <a href="http://fr.wikipedia.org/wiki/Chiffre_de_Vigen%C3%A8re" target="_blank">la page Wikipédia !</a> On ne sait jamais.</p>
                     </div>
                 </div>
             </div>
