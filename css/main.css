@@ -45,6 +45,7 @@ footer > .container {
 
 #table-pedagogie td {
     text-align: center;
+    /*width: 10px;*/
 }
 
 #table-pedagogie .small-row td {
@@ -91,8 +92,16 @@ footer > .container {
     text-align: right;
 }
 
+#paragraph-help {
+    text-align: center;
+}
+
 #modalPresentation {
     text-align: justify;
+}
+
+#goto_part1, #goto_part2 {
+    margin-bottom: 5px;
 }
 
 @media (min-width: 768px) {

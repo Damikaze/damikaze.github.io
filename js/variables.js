@@ -31,3 +31,8 @@ var indice_coincidence = {
 var data; // Objet Google des données de l'histogramme
 var chart; // Objet Google de l'histogramme
 var options; // Objet des options de l'histogramme
+
+// la table des frequences : Un tableau de tableaux de 26 entiers,
+// un de chaque par caractère de clé pour compter les fréquences d'apparation
+// des lettres chiffrées avec le même caractère de clé
+var tableFrequences;

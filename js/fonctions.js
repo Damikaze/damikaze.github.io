@@ -157,6 +157,68 @@ function calculFrequences() {
     chart.draw(data, options);
 }
 
+function calculFrequences2() {
+    var cle = $("#cle_trouvee").children();
+    var tailleCle = cle.length;
+
+    tableFrequences = new Array(tailleCle);
+    for (var t = 0; t < tailleCle; t++) {
+        tableFrequences[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
+
+    var texteCrypte = $("#cryptedText").val();
+    var tailleTexte = texteCrypte.length;
+
+    if (tailleCle > 0) {
+        for (var i = 0; i < texteCrypte.length; i++) {
+            var positionCaractere = alphabet.indexOf(texteCrypte.charAt(i));
+            tableFrequences[ mod(i, tailleCle) ][ positionCaractere ]++;
+        }
+    }
+
+    var icTexte = 0; // indice de coincidence du texte
+    var icLangue = indice_coincidence[ $("#menu_langue").val() == null ? 'fr' : $("#menu_langue").val() ];
+
+    for (var t = 0; t < tailleCle; t++) {
+        // Moyenne des fréquences par tableau associé à un caractère de clé
+        var icTextePartiel = 0;
+        var nbLettresAnalysees = Math.floor(tailleTexte / tailleCle) + (t <= mod(tailleTexte, tailleCle) ? 1 : 0);
+
+        for (var j = 0; j < TAILLE_ALPHABET; j++) {
+            tableFrequences[t][j] = (tableFrequences[t][j] / nbLettresAnalysees) * 100; // en %
+            icTextePartiel += Math.pow(tableFrequences[t][j] / 100, 2);
+        }
+
+        icTexte += icTextePartiel / tailleCle;
+    }
+
+    $("#ic_texte").html(icTexte.toPrecision(3));
+
+    if (Math.abs(icTexte - icLangue) <= 0.0075) {
+        $("#ic_texte").parent().animate(
+            {'background-color': 'blue'}, 300, function(){
+                $(this).animate({'background-color': 'transparent'}, 1000);
+        });
+    }
+}
+
+/*
+ *  Récupération des fréquences d'apparition des lettres codées par le caractère de la clé
+ *  ciblé, et affichage des fréquences en prenant compte de la valeur du caractère (= décalage)
+ */
+function recupererEtAfficherFrequences() {
+    var caractereCible = $("#focusedChar");
+    var positionCaractereCibleDansAlphabet = alphabet.indexOf( caractereCible.html() );
+    var positionCaractereCibleDansCle = $("#cle_trouvee").children().index( caractereCible );
+    var frequences = tableFrequences[positionCaractereCibleDansCle];
+
+    for (var i = 0; i < TAILLE_ALPHABET; i++) {
+        data.setValue(i, 2, frequences[ mod(i + positionCaractereCibleDansAlphabet, TAILLE_ALPHABET) ]);
+    }
+
+    chart.draw(data, options);
+}
+
 /*
  *  Procédure de décalage des fréquences du texte crypté d'un cran à gauche
  *  et modification du caractère de la clé ciblé

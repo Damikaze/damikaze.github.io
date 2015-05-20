@@ -138,7 +138,7 @@
                         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                         Recommencer l'analyse
                     </button>
-                    <button id="resultat_cryptanalyse" class="btn btn-success" data-toggle="modal" data-target="#modalResultat">
+                    <button id="resultat_cryptanalyse" class="btn btn-success" data-toggle="modal" data-target="#modalResultat" disabled>
                         <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
                         Afficher le texte décrypté
                     </button>
@@ -146,6 +146,8 @@
                 <br/>
 
                 <legend>Résultats</legend>
+
+                <p id="paragraph-help">Un peu d'aide pour bien utiliser les outils ci-dessous ? Cliquez sur le bouton d'info en haut à droite !</p>
 
                 <!-- Tableau de la clé à deviner -->
                 <h4>Clé à deviner</h4>
@@ -208,7 +210,6 @@
                 </table>
 
                 <div class="row">
-                    <p>Faites rouler la molette de la souris, ou scrollez sur votre pavé tactile pour décaler l'histogramme des fréquences du texte crypté, tout en posant le curseur sur le graphique. Sinon, vous pouvez utiliser les boutons bleus juste en dessous.</p>
                     <!--<br/>
                     <div class="slider"></div>
                     <br/>
@@ -317,7 +318,10 @@
                         <h4 class="modal-title">Résultat de la cryptanalyse</h4>
                     </div>
                     <div class="modal-body">
-                        <p id="decryptedText"></p>
+                        <p>Avec la clé "<b id="cleDevinee"></b>", voici ce que donne le texte décrypté :</p>
+                        <textarea id="texteDecrypte" class="form-control" rows=5></textarea>
+                        <br/>
+                        <p>Ajoutez des espaces pour aérer et vérifier que le texte est correct.</p>
                     </div>
                     <div class="modal-footer">
                         Merci d'avoir utilisé notre application !
