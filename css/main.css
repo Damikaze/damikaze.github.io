@@ -78,7 +78,10 @@ footer > .container {
 }
 
 #apercu {
-    cursor: auto;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    color: black;
+    font-size: 15px;
 }
 
 #label_action {

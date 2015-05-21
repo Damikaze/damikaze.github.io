@@ -114,50 +114,9 @@ function crypter(inputText, inputKey, sensCryptage) {
 }
 
 /*
- *  Méthode de calcul des fréquences
+ *  Méthode de calcul des fréquences : à chaque modification de la taille de la clé
  */
 function calculFrequences() {
-    var cle = $("#cle_trouvee").children();
-    var focusedChar = $("#focusedChar"); // caractère de la clé sur lequel on est concentré
-    var texteCrypte = $("#cryptedText").val();
-
-    var cptLettresAnalysees = 1;
-    var tableFrequences = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var icTexte = 0; // indice de coincidence
-
-    // modulo : taille de la clé, correspond au saut entre les lettres à analyser
-    var modulo = cle.length;
-
-    if (modulo > 0) {
-        // offset : position du caractère de la clé à trouver, position également de la première lettre du texte à analyser
-        var offset = cle.index( focusedChar );
-        
-        cptLettresAnalysees = 0;
-        for (var i = offset; i < texteCrypte.length; i += modulo) {
-            var position = alphabet.indexOf(texteCrypte.charAt(i));
-            tableFrequences[position]++;
-            cptLettresAnalysees++;
-        }
-    }
-
-    // Variable qui permet de rétablir l'histogramme à l'emplacement qu'on l'a laissé 
-    // si on a essayé de chercher les bon caractères en le décalant
-    var decalage = alphabet.indexOf(focusedChar.html());
-
-    for (var j = 0; j < TAILLE_ALPHABET; j++) {
-        var indexReel = mod(j + decalage, TAILLE_ALPHABET);
-        // On divise par le nombre de lettres analysees pour obtenir des pourcentages.
-        tableFrequences[indexReel] = tableFrequences[indexReel] * 100 / cptLettresAnalysees;
-        icTexte += Math.pow(tableFrequences[indexReel] / 100, 2);
-        data.setValue(j, 2, tableFrequences[indexReel]);
-    }
-
-    $("#ic_texte").html(icTexte.toPrecision(3));
-
-    chart.draw(data, options);
-}
-
-function calculFrequences2() {
     var cle = $("#cle_trouvee").children();
     var tailleCle = cle.length;
 
@@ -204,60 +163,25 @@ function calculFrequences2() {
 
 /*
  *  Récupération des fréquences d'apparition des lettres codées par le caractère de la clé
- *  ciblé, et affichage des fréquences en prenant compte de la valeur du caractère (= décalage)
+ *  ciblé, et affichage des fréquences en prenant compte de la valeur de ce caractère (= décalage)
  */
 function recupererEtAfficherFrequences() {
-    var caractereCible = $("#focusedChar");
-    var positionCaractereCibleDansAlphabet = alphabet.indexOf( caractereCible.html() );
-    var positionCaractereCibleDansCle = $("#cle_trouvee").children().index( caractereCible );
-    var frequences = tableFrequences[positionCaractereCibleDansCle];
+    if ( $("#focusedChar")[0] !== undefined ) {
+        var caractereCible = $("#focusedChar");
+        var positionCaractereCibleDansAlphabet = alphabet.indexOf( caractereCible.html() );
+
+        var positionCaractereCibleDansCle = $("#cle_trouvee").children().index( caractereCible );
+        var frequences = tableFrequences[positionCaractereCibleDansCle];
+    }
+    else {
+        var positionCaractereCibleDansAlphabet = 0;
+        var frequences = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
 
     for (var i = 0; i < TAILLE_ALPHABET; i++) {
         data.setValue(i, 2, frequences[ mod(i + positionCaractereCibleDansAlphabet, TAILLE_ALPHABET) ]);
     }
 
-    chart.draw(data, options);
-}
-
-/*
- *  Procédure de décalage des fréquences du texte crypté d'un cran à gauche
- *  et modification du caractère de la clé ciblé
- */
-function decalageHistogrammeGauche() {
-    // Scroll vers le haut : on décale l'histogramme à gauche
-    var tmp = data.getValue(0, 2);
-    for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
-        data.setValue(i, 2, data.getValue(i + 1, 2));
-    }
-    data.setValue((TAILLE_ALPHABET - 1), 2, tmp);
-
-    // On modifie le caractère avec focus de la clé : A -> B
-    var caractereActif = $("#focusedChar").html();
-    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
-    $( "#focusedChar" ).html( caractereSuivant );
-
-    // On rend visible ce décalage des fréquences à l'écran
-    chart.draw(data, options);
-}
-
-/*
- *  Procédure de décalage des fréquences du texte crypté d'un cran à droite
- *  et modification du caractère de la clé ciblé
- */
-function decalageHistogrammeDroite() {
-    // Scroll vers le bas : on décale l'histogramme à droite
-    var tmp = data.getValue((TAILLE_ALPHABET - 1), 2);
-    for (var i = 0; i < (TAILLE_ALPHABET - 1); i++) {
-        data.setValue((TAILLE_ALPHABET - 1) - i, 2, data.getValue((TAILLE_ALPHABET - 1) - (i + 1), 2));
-    }
-    data.setValue(0, 2, tmp);
-
-    // On modifie le caractère avec focus de la clé : B -> A
-    var caractereActif = $("#focusedChar").html();
-    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
-    $( "#focusedChar" ).html( caractereSuivant );
-
-    // On rend visible ce décalage des fréquences à l'écran
     chart.draw(data, options);
 }
 
@@ -277,6 +201,8 @@ function focusCaracterePrecedent() {
 
         focusedChar.attr('id', '');
         focusedChar.css('font-weight', 'normal');
+
+        recupererEtAfficherFrequences();
     }
 }
 
@@ -296,20 +222,71 @@ function focusCaractereSuivant() {
 
         focusedChar.attr('id', '');
         focusedChar.css('font-weight', 'normal');
+
+        recupererEtAfficherFrequences();
     }
+}
+
+/*
+ *  Procédure de décalage des fréquences du texte crypté d'un cran à gauche
+ *  et modification du caractère de la clé ciblé
+ */
+function decalageHistogrammeGauche() {
+    // On modifie le caractère avec focus de la clé : A -> B
+    var caractereActif = $("#focusedChar").html();
+    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
+    $( "#focusedChar" ).html( caractereSuivant );
+
+    // On rend visible ce décalage des fréquences à l'écran
+    recupererEtAfficherFrequences();
+}
+
+/*
+ *  Procédure de décalage des fréquences du texte crypté d'un cran à droite
+ *  et modification du caractère de la clé ciblé
+ */
+function decalageHistogrammeDroite() {
+    // On modifie le caractère avec focus de la clé : B -> A
+    var caractereActif = $("#focusedChar").html();
+    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
+    $( "#focusedChar" ).html( caractereSuivant );
+
+    // On rend visible ce décalage des fréquences à l'écran
+    recupererEtAfficherFrequences();
 }
 
 /*
  *  Procédure de décryptage du début du texte (40 premiers caractères max)
  */
 function apercuDecryptage() {
-    var cle = "";
-    $( "#cle_trouvee" ).children().each(function() {
-        cle += $(this).html();
-    });
+    // On parse la clé
+    var cle = $( "#cle_trouvee" ).children();
+    if ( cle.length > 0) {
+        var cleParsee = "";
+        cle.each(function() {
+            cleParsee += $(this).html();
+        });
 
-    texteFinalDebut = crypter($( "#cryptedText").val().substr(0,40), cle, false);
-    $( "#apercu" ).val(texteFinalDebut.texte);
+        // On décrypte le début
+        var texteFinalDebut = crypter($( "#cryptedText").val().substr(0, TAILLE_APERCU), cleParsee, false).texte;
+        $( "#apercu" ).html("");
+
+        var texteFinalEclate = texteFinalDebut.split("");
+        var positionCaractereCibleDansCle = cle.index( $("#focusedChar") );
+
+        // On met en gras les caractères cryptés par le caractère de la clé ciblé
+        for (i = 0; i < Math.min(texteFinalEclate.length, TAILLE_APERCU); i++) {
+            if ( mod(i, cle.length) == positionCaractereCibleDansCle ) {
+                $( "#apercu" ).append('<b>' + texteFinalEclate[i] + '</b>');
+            }
+            else {
+                $( "#apercu" ).append('<span>' + texteFinalEclate[i] + '</span>');
+            }
+        }
+    }
+    else {
+        $( "#apercu" ).html("");
+    }
 }
 
 /*

@@ -1,8 +1,8 @@
-/* TO DO : 
-    Brancher la nouvelle fonction de calcul des fréquences
-    Surligner les lettres en cours de modification dans le décryptage
-    Partie pédagogie : explications, gifs.
+/* TO DO :
+    Fenetre modale d'aide à l'utilisation : explications, gifs.
     Deviner la taille de clé et l'afficher
+    Corriger le footer
+    Tester HighCharts ?
 */
 
 // ######################################################################
@@ -60,10 +60,6 @@ $('#chart_div').on("touchstart mousedown", function(event) {
     }
 });
 
-$( document ).on("touchend mouseup", function() {
-    isHeld = false;
-});
-
 $('#chart_div').on("touchmove mousemove", function(event) {
     if (isHeld && $( "#cle_trouvee" ).children().length > 0) {
         event.preventDefault();
@@ -81,6 +77,10 @@ $('#chart_div').on("touchmove mousemove", function(event) {
             decalageHistoGaucheAvecApercu();
         }
     }
+});
+
+$( document ).on("touchend mouseup", function() {
+    isHeld = false;
 });
 
 
@@ -148,6 +148,7 @@ $("#cryptedText").on('keyup change', function() {
     }
 
     calculFrequences();
+    recupererEtAfficherFrequences();
     apercuDecryptage();
 });
 
@@ -177,13 +178,11 @@ $('#modalResultat').on('show.bs.modal', function(event) {
 
 $(".cle_gauche").on('click', function() {
     focusCaracterePrecedent();
-    calculFrequences();
     apercuDecryptage();
 });
 
 $(".cle_droite").on('click', function() {
     focusCaractereSuivant();
-    calculFrequences();
     apercuDecryptage();
 });
 
@@ -192,6 +191,7 @@ $(".cle_plus").on('click', function() {
     if (tailleCle >= 1 && tailleCle < $("#cryptedText").val().length ) {
         $('#cle_trouvee').append('<span>A</span>');
         calculFrequences();
+        recupererEtAfficherFrequences();
         apercuDecryptage();
     }
 });
@@ -204,6 +204,7 @@ $(".cle_moins").on('click', function() {
         }
         $('#cle_trouvee').children().last().remove();
         calculFrequences();
+        recupererEtAfficherFrequences();
         apercuDecryptage();
     }
 });
@@ -342,6 +343,7 @@ $( "#restart" ).on("click", function() {
     if ( $( "#cryptedText" ).val() != '') {
         $( "#cle_trouvee" ).html('<span id="focusedChar" style="font-weight: bold;">A</span>');
         calculFrequences();
+        recupererEtAfficherFrequences();
     }
 });
 

@@ -1,4 +1,5 @@
 var TAILLE_ALPHABET = 26;
+var TAILLE_APERCU = 40;
 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 var popup_text = "Il y a des caractères illégaux dans le texte. \
