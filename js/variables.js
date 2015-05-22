@@ -4,8 +4,8 @@ var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 var popup_text = "Il y a des caractères illégaux dans le texte. \
 Il se peut que le texte ne soit pas encore crypté. Que voulez-vous faire ? \
-\n\nOK : Les caractères illégaux sont échappés \
-\nAnnuler : Activer le module de cryptage";
+\n\nOK : On nettoie le texte des caractères illégaux \
+\nAnnuler : On crypte le texte en direct";
 
 var frequences = {
     'fr': [

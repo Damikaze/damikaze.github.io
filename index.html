@@ -122,9 +122,15 @@
                         </div>
                         <div class="panel-body" id="div_cryptage" style="display:none;">
                             <p>Rentrez, si ce n'est pas déjà fait, le texte non chiffré dans la zone de texte en-dessous du panneau, la clé de chiffrage dans le champ ci-dessous. L'analyse sera lancée juste après le cryptage.</p>
-                            Clé :
-                            <input type="text" id="cle2" name="cle"/>
-                            <button id="action2">Crypter</button>
+                            <div class="row">
+                                <div class="input-group col-md-6 col-sm-9 col-xs-12">
+                                    <span class="input-group-addon">Clé :</span>
+                                    <input type="text" id="cle2" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button id="action2" class="btn btn-default" type="button">Crypter</button>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -289,7 +295,7 @@
                         <h4>Explications</h4>
 
                         <p>Le chiffre (ou chiffrement) de Vigenère est un procédé de cryptographie polyalphabétique, c'est-à-dire qu'on utilise un mot appelé "clé" de plusieurs lettres pour réaliser le chiffrement (ici, c'est le mot "CODE").</p>
-                        <p>On procède à un décalage de l'alphabet déterminé par le caractère de la clé. Par convention, 'A' correspond à un décalage nul, 'B' un décalage de 1, 'C' de 2, etc... Exemple : pour la lettre 'M', je code avec un 'C', et la lettre devient un 'O' (M -> N -> O). Et si on déborde et qu'on va plus loin que le 'Z', et bien, on repart pour un tour : Y -> Z -> A -> B...</p>
+                        <p>On procède à un décalage de l'alphabet déterminé par chaque caractère de la clé. Par convention, 'A' correspond à un décalage nul, 'B' un décalage de 1, 'C' de 2, etc... Exemple du tableau : pour la 1ère lettre 'M', je code avec un 'C' (décalage de 2 lettres), et la lettre devient un 'O' (M -> N -> O). Et si, en décalant, on déborde et qu'on va plus loin que le 'Z', et bien, on repart pour un tour : Y -> Z -> A -> B...</p>
                         <p>Ce principe de décalage implique qu'une lettre est associée à une et une seule autre lettre par cette transformation.</p>
                         <p>Or, l'interêt du chiffre de Vigenère est que deux lettres identiques du texte à crypter ne donnent pas toujours les mêmes lettres dans le texte crypté et vice versa.</p>
 

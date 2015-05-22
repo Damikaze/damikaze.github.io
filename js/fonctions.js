@@ -12,8 +12,8 @@ google.setOnLoadCallback(dessineHistogrammeInitial);
 function dessineHistogrammeInitial() {
     data = new google.visualization.DataTable();
     data.addColumn('string', 'Lettres');
-    data.addColumn('number', 'Fréquences théoriques');
-    data.addColumn('number', 'Fréquences du texte crypté');
+    data.addColumn('number', 'Langue');
+    data.addColumn('number', 'Texte');
 
     // Données de base : fréquences théoriques des lettres
     // de l'alphabet dans la langue française
@@ -30,9 +30,11 @@ function dessineHistogrammeInitial() {
     options = {
         'title'  :  'Histogramme des fréquences',
         'legend' :  { 'position' : 'bottom' },
+        'chartArea': {'width': '95%'},
         'height' :  350,
         'vAxis'  :  {
-            'viewWindow' : { 'max' : 20 }
+            'viewWindow' : { 'max' : 20 },
+            'textPosition' : 'none'
         }
     };
 
