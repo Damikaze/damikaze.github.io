@@ -3,6 +3,7 @@ body {
     padding-bottom: 10px;
     background-image: url(../img/home_4.jpg);
     background-size: 100% auto;
+    font-family: "Trebuchet MS", Helvetica, sans-serif
 }
 
 body, legend {
@@ -17,8 +18,8 @@ body > .container {
     background-color: rgba(0, 0, 0, 0.7);
     padding-top: 15px;
     padding-bottom: 15px;
-    min-height: -moz-calc(100% - 50px);
-    min-height: calc(100% - 50px);
+    min-height: -moz-calc(100% - 35px);
+    min-height: calc(100% - 35px);
 }
 
 footer {
@@ -27,6 +28,11 @@ footer {
 
 footer > .container {
     margin-top: 8px;
+}
+
+footer .col-xs-9, footer .col-xs-3 {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .btn {
@@ -78,6 +84,11 @@ footer > .container {
     margin-bottom: 50px;
 }
 
+#credits a {
+    text-decoration: none;
+    color: wheat;
+}
+
 #decryptedText {
     word-wrap: break-word;
 }
@@ -111,7 +122,7 @@ footer > .container {
 }
 
 #goto_part1, #goto_part2 {
-    margin-bottom: 5px;
+    margin: 0px auto 5px auto;
 }
 
 @media (min-width: 768px) {

@@ -2,7 +2,6 @@
     Fenetre modale d'aide à l'utilisation : explications, gifs.
     Deviner la taille de clé et l'afficher
     Corriger le footer
-    Tester HighCharts ?
 */
 
 // ######################################################################
@@ -112,22 +111,33 @@ $('#btn_decalage_droite').on('click', function() {
 // ##                    TEXTE CRYPTE A ANALYSER                       ##
 // ######################################################################
 
-
-
 /*
  *  Evenement : Touche de clavier sur le champ du texte à analyser
  *  Résultat : Vérifier le format du texte, proposer un cryptage si besoin,
  *       et lancer la cryptanalyse (calcul des fréquences) si le texte est bien formaté
  */
-$("#cryptedText").on('keyup change', function() {
+$("#cryptedText").on('keyup change', function(event) {
+    if (event.type == "keyup" && regex_mobile.test(navigator.userAgent) ) {
+        return;
+    }
+    else if (texteADecrypter == $(this).val()) {
+        return;
+    }
+    
+    texteADecrypter == $(this).val()
     // On recherche s'il y a des caractères illégaux
     var hasError = $(this).val().match(/[^A-Z]/i);
 
-    if ( hasError != null && $( "#div_cryptage" ).is(":hidden") ) {
-        var reponse = confirm(popup_text);
-        if (reponse == false) {
-            $( "#div_cryptage" ).show();
-            $( "#cle_trouvee" ).html('');
+    if ( hasError != null ) {
+        if ( $( "#div_cryptage" ).is(":hidden") || ctrlDown ) {
+            var reponse = confirm(popup_text);
+            if (reponse == false) {
+                $( "#div_cryptage" ).show();
+                $( "#cle_trouvee" ).html('');
+                return;
+            }
+        }
+        else {
             return;
         }
     }
@@ -150,6 +160,8 @@ $("#cryptedText").on('keyup change', function() {
     calculFrequences();
     recupererEtAfficherFrequences();
     apercuDecryptage();
+
+    ctrlDown = false;
 });
 
 
@@ -232,7 +244,7 @@ $( "#goto_part2" ).on("click", function() {
     $("#home").hide(500);
 
     // On nettoie les champs du module avant de commencer
-    $("#cryptedText").val('').trigger("keyup");
+    $("#cryptedText").val('').trigger("change");
     $("#cle2").val('');
 
     $("#part2").show(500);
@@ -330,7 +342,7 @@ $( "#action2" ).on("click", function() {
         var output = crypter($( "#cryptedText" ).val(), $( "#cle2" ).val(), true);
 
         $( "#cle2" ).val(output.cle);
-        $( "#cryptedText" ).val(output.texte).trigger("keyup");
+        $( "#cryptedText" ).val(output.texte).trigger("change");
     }
 });
 

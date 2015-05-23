@@ -7,6 +7,9 @@ Il se peut que le texte ne soit pas encore crypté. Que voulez-vous faire ? \
 \n\nOK : On nettoie le texte des caractères illégaux \
 \nAnnuler : On crypte le texte en direct";
 
+var regex_mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+var texteADecrypter; // memoriser pour savoir s'il faut lancer une nouvelle analyse
+
 var frequences = {
     'fr': [
         8.122, 0.901, 3.345, 3.669, 17.124, // A --> E
