@@ -146,8 +146,9 @@ function calculFrequences() {
         var nbLettresAnalysees = Math.floor(tailleTexte / tailleCle) + (t <= mod(tailleTexte, tailleCle) ? 1 : 0);
 
         for (var j = 0; j < TAILLE_ALPHABET; j++) {
+            icTextePartiel += (tableFrequences[t][j] * (tableFrequences[t][j] - 1)) /
+                (nbLettresAnalysees * (nbLettresAnalysees - 1));
             tableFrequences[t][j] = (tableFrequences[t][j] / nbLettresAnalysees) * 100; // en %
-            icTextePartiel += Math.pow(tableFrequences[t][j] / 100, 2);
         }
 
         icTexte += icTextePartiel / tailleCle;
@@ -155,10 +156,23 @@ function calculFrequences() {
 
     $("#ic_texte").html(icTexte.toPrecision(3));
 
+    if (tailleCle == 1) {
+        var tailleCleDevinee = (tailleTexte * (icLangue - 1/26)) / (icLangue - icTexte + tailleTexte * (icTexte - 1/26));
+        $("#tailleDevinee").html(Math.floor(tailleCleDevinee) + " et " + Math.ceil(tailleCleDevinee));
+        $("#paragraph-devine").slideDown();
+    }
+    else if (tailleCle == 0) {
+        $("#paragraph-devine").slideUp();
+    }
+
     if (Math.abs(icTexte - icLangue) <= 0.0075) {
-        $("#ic_texte").parent().animate(
-            {'background-color': 'blue'}, 300, function(){
-                $(this).animate({'background-color': 'transparent'}, 1000);
+        $("#ic_texte").parent().animate({'background-color': 'blue'}, 300, function(){
+            $(this).animate({'background-color': 'transparent'}, 600, function(){
+                $(this).animate({'background-color': 'blue'}, 300, function(){
+                    $(this).animate({'background-color': 'transparent'}, 600, function(){
+                    });
+                });
+            });
         });
     }
 }

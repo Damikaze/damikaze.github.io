@@ -1,7 +1,6 @@
 /* TO DO :
     Fenetre modale d'aide à l'utilisation : explications, gifs.
     Deviner la taille de clé et l'afficher
-    Corriger le footer
 */
 
 // ######################################################################
@@ -117,14 +116,15 @@ $('#btn_decalage_droite').on('click', function() {
  *       et lancer la cryptanalyse (calcul des fréquences) si le texte est bien formaté
  */
 $("#cryptedText").on('keyup change', function(event) {
+    console.log(texteADecrypter, $(this).val());
     if (event.type == "keyup" && regex_mobile.test(navigator.userAgent) ) {
         return;
     }
     else if (texteADecrypter == $(this).val()) {
         return;
     }
-    
-    texteADecrypter == $(this).val()
+
+    texteADecrypter = $(this).val();
     // On recherche s'il y a des caractères illégaux
     var hasError = $(this).val().match(/[^A-Z]/i);
 

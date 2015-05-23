@@ -5,12 +5,10 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!--<link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/switch.css">
-        <link rel="stylesheet" href="css/jquery-ui-slider-pips.css">
         <link rel="shortcut icon" href="img/favicon.ico">
     </head>
     <body>
@@ -114,8 +112,6 @@
                 <!-- Panneau de cryptage -->
                 <div class="row">
                     <legend>Cryptanalyse</legend>
-                    <p>Copiez-collez dans la zone de texte ci-dessous le texte crypté, l'analyse sera lancée automatiquement.</p>
-
                     <div class="panel panel-default">
                         <div class="panel-heading" id="oubli">
                             Oublié de crypter le texte ? Cliquez !
@@ -213,6 +209,8 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <p id="paragraph-devine">Je vois, je vois ... une taille de la clé de chiffrement entre <span id="tailleDevinee"></span></p>
 
                 <div class="row">
                     <!--<br/>
@@ -346,7 +344,14 @@
                         <h4 class="modal-title">Comment utiliser l'application de cryptanalyse ?</h4>
                     </div>
                     <div class="modal-body">
-                        Des explications, des illustrations de l'application ici !
+                        <h4>Le texte à analyser</h4>
+                        <p>Copiez-collez dans la zone de texte principale le texte crypté, l'analyse sera lancée automatiquement. Si le texte n'est pas crypté, depliez le panneau juste au-dessus.</p>
+
+                        <h4>Le tableau de la clé </h4>
+                        <img src="img/tab_cle.png" width="100%"></img>
+
+                        <h4>L'histogramme</h4>
+                        <img src="img/histogramme.gif" width="100%"></img>
                     </div>
                 </div>
             </div>
@@ -355,12 +360,10 @@
         <!-- Scripts exterieurs : jQuery, Bootstrap et Google Charts -->
         <script src="https://code.jquery.com/jquery-2.1.1.js"></script>
         <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-        <!--<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
         <!-- Scripts internes -->
-        <script type="text/javascript" src="js/slider-pips.js"></script>
         <script type="text/javascript" src="js/anim-titre.js"></script>
         <script type="text/javascript" src="js/variables.js"></script>
         <script type="text/javascript" src="js/fonctions.js"></script>

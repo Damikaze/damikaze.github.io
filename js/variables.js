@@ -8,7 +8,7 @@ Il se peut que le texte ne soit pas encore crypté. Que voulez-vous faire ? \
 \nAnnuler : On crypte le texte en direct";
 
 var regex_mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-var texteADecrypter; // memoriser pour savoir s'il faut lancer une nouvelle analyse
+var texteADecrypter = ""; // memoriser pour savoir s'il faut lancer une nouvelle analyse
 
 var frequences = {
     'fr': [
