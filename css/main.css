@@ -1,17 +1,13 @@
 body {
     padding-top: 10px;
     padding-bottom: 10px;
-    background-image: url(../img/home_4.jpg);
+    background-image: url(../img/fond/home_4.jpg);
     background-size: 100% auto;
     font-family: "Trebuchet MS", Helvetica, sans-serif
 }
 
 body, legend {
     color: white;
-}
-
-select, option, #div_cryptage, .modal-content, #table-pedagogie {
-    color: black;
 }
 
 body > .container {
@@ -35,13 +31,12 @@ footer .col-xs-9, footer .col-xs-3 {
     padding-right: 0px;
 }
 
-.btn {
-    border-radius: 0px;
+select, option, #div_cryptage, .modal-content, #table-pedagogie {
+    color: black;
 }
 
-.row {
-    margin-right: 0px;
-    margin-left: 0px;
+.btn {
+    border-radius: 0px;
 }
 
 .label-interrupteur {
@@ -49,20 +44,38 @@ footer .col-xs-9, footer .col-xs-3 {
     padding: 0px;
 }
 
+.modal-body {
+    text-align: justify;
+}
+
+.modal-body h4 {
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+.modal-body img {
+    margin-bottom: 10px;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+#apercu {
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    color: black;
+    font-size: 15px;
+}
+
 #chart_div {
     margin-left: 20px;
     margin-right: 20px;
 }
 
-#table-pedagogie td {
-    text-align: center;
-    /*width: 10px;*/
-}
-
-#table-pedagogie .small-row td {
-    text-align: center;
-    padding-top: 1px;
-    padding-bottom: 1px;
+#cle1 {
+    margin-bottom: 5px;
 }
 
 #cle_trouvee_div {
@@ -74,16 +87,6 @@ footer .col-xs-9, footer .col-xs-3 {
     text-align: center;
 }
 
-#cle1 {
-    margin-bottom: 5px;
-}
-
-#titre {
-    text-align: center;
-    visibility: hidden;
-    margin-bottom: 50px;
-}
-
 #credits a {
     text-decoration: none;
     color: wheat;
@@ -91,13 +94,6 @@ footer .col-xs-9, footer .col-xs-3 {
 
 #decryptedText {
     word-wrap: break-word;
-}
-
-#apercu {
-    padding: 5px 10px 5px 10px;
-    background-color: white;
-    color: black;
-    font-size: 15px;
 }
 
 #label_action {
@@ -109,6 +105,10 @@ footer .col-xs-9, footer .col-xs-3 {
 #label_cle {
     margin-top: 5px;
     text-align: right;
+}
+
+#liste-tab-cle {
+    margin-top: 10px;
 }
 
 #paragraph-devine {
@@ -123,8 +123,21 @@ footer .col-xs-9, footer .col-xs-3 {
     margin-top: -10px;
 }
 
-#modalPresentation {
-    text-align: justify;
+#table-pedagogie td {
+    text-align: center;
+    /*width: 10px;*/
+}
+
+#table-pedagogie .small-row td {
+    text-align: center;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+#titre {
+    text-align: center;
+    visibility: hidden;
+    margin-bottom: 50px;
 }
 
 #goto_part1, #goto_part2, #restart, #resultat_cryptanalyse {

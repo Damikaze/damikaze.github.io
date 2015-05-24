@@ -344,14 +344,30 @@
                         <h4 class="modal-title">Comment utiliser l'application de cryptanalyse ?</h4>
                     </div>
                     <div class="modal-body">
-                        <h4>Le texte à analyser</h4>
+                        <h4 style="margin-top:0px;">Le texte à analyser</h4>
                         <p>Copiez-collez dans la zone de texte principale le texte crypté, l'analyse sera lancée automatiquement. Si le texte n'est pas crypté, depliez le panneau juste au-dessus.</p>
+                        <img src="img/aide/texte_crypte.png" width="100%"></img>
 
                         <h4>Le tableau de la clé </h4>
-                        <img src="img/tab_cle.png" width="100%"></img>
+                        <p>Les fonctionnalités résumées en 5 points pour percer la clé de chiffrement:</p>
+                        <img src="img/aide/tab_cle.png" width="100%"></img>
+                        <ul class="list-unstyled">
+                            <li>1) Ajouter ou retirer une lettre en fin de clé</li>
+                            <li>2) La clé, avec en gras, la lettre ciblée de la clé, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>
+                            <li>3) Déplacer le focus sur l'une des lettres de la clé, à gauche ou à droite</li>
+                            <li>4) Les indices de coincidence, l'un théorique de la langue du texte crypté, l'autre propre au texte crypté. Ils représentent la probabilité que 2 lettres choisies au hasard dans le texte soient identiques</li>
+                            <li>5) Un pronostic sur la taille probable de la clé de chiffrement</li>
+                        </ul>
 
                         <h4>L'histogramme</h4>
-                        <img src="img/histogramme.gif" width="100%"></img>
+                        <p>Il représente, en bleu, les fréquences d'apparition des lettres dans la langue du texte (modifiable via le menu déroulant en haut de page), et en rouge, les fréquences "partielles" du texte crypté, "partielles" car uniquement les lettres du texte crypté qui sont en principe chiffrés par le caractère ciblé de la clé, choisi dans le tableau.</p>
+                        <img src="img/aide/histogramme.gif" width="100%"></img>
+                        <p>Vous pouvez manipuler l'histogramme pour superposer les deux histogrammes et deviner la valeur du caractère de la clé ciblé. En bougeant l'histogramme rouge, la caractère ciblé se modifie aussi. Voici les possibilités d'actions à exécuter sur l'histogramme :</p>
+                        <img src="img/aide/actions.jpg" width="100%"></img>
+
+                        <h4>Les résultats</h4>
+                        <p>Dès que vous pensez avoir trouvé la bonne clé, vous pouvez retrouver le résultat complet en appuyant sur le bouton vert en-dessous de la zone de texte. Mais vous déjà voir un apercu du déchiffrage en direct en-dessous de l'histogramme, avec en gras les caractères du début du texte chiffrés par le caractère de la clé que vous avez ciblé.</p>
+                        <img src="img/aide/apercu.png" width="100%"></img>
                     </div>
                 </div>
             </div>

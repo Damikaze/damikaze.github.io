@@ -116,7 +116,6 @@ $('#btn_decalage_droite').on('click', function() {
  *       et lancer la cryptanalyse (calcul des fréquences) si le texte est bien formaté
  */
 $("#cryptedText").on('keyup change', function(event) {
-    console.log(texteADecrypter, $(this).val());
     if (event.type == "keyup" && regex_mobile.test(navigator.userAgent) ) {
         return;
     }
