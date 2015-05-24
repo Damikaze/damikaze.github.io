@@ -15,6 +15,7 @@ body > .container {
     padding-top: 15px;
     padding-bottom: 15px;
     min-height: -moz-calc(100% - 40px);
+    min-height: -webkit-calc(100% - 40px);
     min-height: calc(100% - 40px);
 }
 
