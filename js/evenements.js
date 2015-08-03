@@ -126,41 +126,41 @@ $("#cryptedText").on('keyup change', function(event) {
     texteADecrypter = $(this).val();
     // On recherche s'il y a des caractères illégaux
     var hasError = $(this).val().match(/[^A-Z]/i);
+    var reponsePopup = false;
 
     if ( hasError != null ) {
-        if ( $( "#div_cryptage" ).is(":hidden") || ctrlDown ) {
-            var reponse = confirm(popup_text);
-            if (reponse == false) {
-                $( "#div_cryptage" ).show();
-                $( "#cle_trouvee" ).html('');
-                return;
-            }
-        }
-        else {
-            return;
-        }
+        reponsePopup = confirm(popup_text);
     }
 
-    // Début de la cryptanalyse : nouvelle clé d'une seule lettre si le texte n'est pas vide
-    if ( $(this).val() != "" ) {
-        $('#cle_trouvee').html('<span id="focusedChar" style="font-weight: bold;">A</span>');
+    if (reponsePopup == true) {
+        // L'utilisateur souhaite crypter son texte. On interrompt l'analyse
+        // et on le redirige vers la fenetre modale.
+        $(this).val('');
+        $('#cle_trouvee').html('');
 
-        // Re-nettoyage du texte par précaution
-        var cleanedCryptedText = cleanText($(this).val());
-        $('#cryptedText').val(cleanedCryptedText);
-
-        $('#resultat_cryptanalyse').prop('disabled', false);
+        $( "#texteACrypter" ).val(texteADecrypter);
+        $( "#modalCryptage" ).modal('show');
     }
     else {
-        $('#cle_trouvee').html('');
-        $('#resultat_cryptanalyse').prop('disabled', true);
+        // Début de la cryptanalyse : nouvelle clé d'une seule lettre si le texte n'est pas vide
+        if ( $(this).val() != "" ) {
+            $('#cle_trouvee').html('<span id="focusedChar" style="font-weight: bold;">A</span>');
+
+            // Re-nettoyage du texte par précaution
+            var cleanedCryptedText = cleanText($(this).val());
+            $('#cryptedText').val(cleanedCryptedText);
+
+            $('#resultat_cryptanalyse').prop('disabled', false);
+        }
+        else {
+            $('#cle_trouvee').html('');
+            $('#resultat_cryptanalyse').prop('disabled', true);
+        }
     }
 
     calculFrequences();
     recupererEtAfficherFrequences();
     apercuDecryptage();
-
-    ctrlDown = false;
 });
 
 
@@ -338,10 +338,13 @@ $( "#oubli" ).on("click", function() {
  */
 $( "#action2" ).on("click", function() {
     if ( $( "#cle2" ).val() != '' ) {
-        var output = crypter($( "#cryptedText" ).val(), $( "#cle2" ).val(), true);
+        var output = crypter($( "#texteACrypter" ).val(), $( "#cle2" ).val(), true);
+        $( "#cryptedText" ).val(output.texte);
 
-        $( "#cle2" ).val(output.cle);
-        $( "#cryptedText" ).val(output.texte).trigger("change");
+        $( "#modalCryptage" ).modal('hide');
+        $( "#cle2" ).val('');
+        $( "#texteACrypter" ).val('');
+        $( "#cryptedText" ).trigger("change");
     }
 });
 

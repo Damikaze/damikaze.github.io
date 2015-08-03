@@ -45,6 +45,10 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     padding: 0px;
 }
 
+.margin-top {
+    margin-top: 5px;
+}
+
 .modal-body {
     text-align: justify;
 }
@@ -98,18 +102,24 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
 }
 
 #label_action {
-    margin-top: 5px;
     padding: 0px;
     text-align: center;
 }
 
 #label_cle {
-    margin-top: 5px;
     text-align: right;
+}
+
+#lien_presentation {
+    margin: 0 15px;
 }
 
 #liste-tab-cle {
     margin-top: 10px;
+}
+
+#oubliCryptage {
+    margin-bottom: 10px;
 }
 
 #paragraph-devine {

@@ -29,7 +29,7 @@
                 </div>
                 <br/>
                 <div class="row">
-                    <a class="btn btn-warning center-block" data-toggle="modal" data-target="#modalPresentation">
+                    <a id="lien_presentation" class="btn btn-warning center-block" data-toggle="modal" data-target="#modalPresentation">
                         Le chiffre de Vigenere, c'est quoi ?
                     </a>
                 </div>
@@ -55,7 +55,7 @@
                 <br/>
                 <div class="row">
                     <div class="form-group col-xs-3">
-                        <label id="label_action" class="col-xs-12">Action</label>
+                        <label id="label_action" class="col-xs-12 margin-top">Action</label>
                         <br/>
                         <span class="col-xs-12 label-interrupteur">Crypter</span>
                         <br/>
@@ -66,7 +66,7 @@
                         <span class="col-xs-12 label-interrupteur">Décrypter</span>
                     </div>
                     <div class="form-group col-xs-9">
-                        <label for="cle" id="label_cle" class="col-sm-2 margintop">Clé:</label>
+                        <label for="cle" id="label_cle" class="col-sm-2 margin-top">Clé:</label>
                         <div class="col-sm-7 nopadding">
                             <input type="text" id="cle1" name="cle" class="form-control"/>
                         </div>
@@ -93,6 +93,7 @@
                         </div>
                         <span class="visible-xs visible-sm glyphicon glyphicon-home"></span>
                     </button>
+
                     <div class="col-sm-offset-1 col-sm-5 col-xs-8">
                         <select id="menu_langue" class="form-control">
                             <option selected="selected" disabled="true" style="display:none;">
@@ -102,6 +103,7 @@
                             <option value="en">Anglais</option>
                         </select>
                     </div>
+
                     <button id="aide" class="btn btn-warning pull-right col-sm-offset-1 col-sm-2 col-xs-2" data-toggle="modal" data-target="#modalAide">
                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                         <span class="hidden-xs hidden-sm"> Aide</span>
@@ -109,32 +111,16 @@
                 </div>
                 <br/>
 
-                <!-- Panneau de cryptage -->
-                <div class="row">
-                    <legend>Cryptanalyse</legend>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" id="oubli">
-                            Oublié de crypter le texte ? Cliquez !
-                        </div>
-                        <div class="panel-body" id="div_cryptage" style="display:none;">
-                            <p>Rentrez, si ce n'est pas déjà fait, le texte non chiffré dans la zone de texte en-dessous du panneau, la clé de chiffrage dans le champ ci-dessous. L'analyse sera lancée juste après le cryptage.</p>
-                            <div class="row">
-                                <div class="input-group col-md-6 col-sm-9 col-xs-12">
-                                    <span class="input-group-addon">Clé :</span>
-                                    <input type="text" id="cle2" class="form-control">
-                                    <span class="input-group-btn">
-                                        <button id="action2" class="btn btn-default" type="button">Crypter</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <legend>Cryptanalyse</legend>
 
                 <!-- Zone de texte -->
                 <div class="row">
+                    <label class="margin-top">Texte crypté :</label>
+                    <button id="oubliCryptage" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalCryptage">Mon texte n'est pas crypté !</button>
+
                     <textarea rows=6 id="cryptedText" class="form-control"></textarea>
                     <br/>
+
                     <button id="restart" class="btn btn-default">
                         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                         Recommencer l'analyse
@@ -210,7 +196,10 @@
                     </tbody>
                 </table>
 
-                <p id="paragraph-devine">Je vois, je vois ... une taille de la clé de chiffrement entre <span id="tailleDevinee"></span></p>
+                <p id="paragraph-devine">
+                    Je vois, je vois ... une taille de la clé de chiffrement entre 
+                    <span id="tailleDevinee"></span>
+                </p>
 
                 <div class="row">
                     <!--<br/>
@@ -368,6 +357,35 @@
                         <h4>Les résultats</h4>
                         <p>Dès que vous pensez avoir trouvé la bonne clé, vous pouvez retrouver le résultat complet en appuyant sur le bouton vert en-dessous de la zone de texte. Mais vous déjà voir un apercu du déchiffrage en direct en-dessous de l'histogramme, avec en gras les caractères du début du texte chiffrés par le caractère de la clé que vous avez ciblé.</p>
                         <img src="img/aide/apercu.png" width="100%"></img>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de cryptage de secours dans le module de cryptanalyse -->
+
+        <div class="modal fade" id="modalCryptage" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Analyser un texte crypté, c'est mieux !</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Rentrez le texte original dans la zone de texte ci-dessous, et la clé de chiffrage dans le champ correspondant. Nous nous occupons du reste : formattage, cryptage, et analyse !</p>
+
+                        <div class="input-group">
+                            <span class="input-group-addon">Clé :</span>
+                            <input type="text" id="cle2" class="form-control">
+                        </div>
+                        <br/>
+
+                        <textarea rows=6 id="texteACrypter" class="form-control"></textarea>
+                        <br/>
+
+                        <button id="action2" class="btn btn-default" type="button">Crypter</button>
                     </div>
                 </div>
             </div>
