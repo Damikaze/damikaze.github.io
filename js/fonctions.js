@@ -10,24 +10,22 @@ google.setOnLoadCallback(dessineHistogrammeInitial);
  *  Langue par défaut : français
  */
 function dessineHistogrammeInitial() {
-    data = new google.visualization.DataTable();
-    data.addColumn('string', 'Lettres');
-    data.addColumn('number', 'Langue');
-    data.addColumn('number', 'Texte');
+    freq_data = new google.visualization.DataTable();
+    freq_data.addColumn('string', 'Lettres');
+    freq_data.addColumn('number', 'Langue');
+    freq_data.addColumn('number', 'Texte');
 
     // Données de base : fréquences théoriques des lettres
-    // de l'alphabet dans la langue française
-    var rows = [];
-    var frequences_theoriques = frequences['fr'];
+    // de l'ALPHABET dans la langue française
+    var freq_rows = [];
+    var frequences_theoriques = frequences[text_language];
     for (var i = 0; i < TAILLE_ALPHABET; i++) {
-        rows.push(
-            [alphabet.charAt(i), frequences_theoriques[i], 0]
-        );
+        freq_rows.push( [ALPHABET.charAt(i), frequences_theoriques[i], 0] );
     }
-    data.addRows(rows);
+    freq_data.addRows(freq_rows);
 
     // Options globales de l'histogramme
-    options = {
+    freq_options = {
         'title'  :  'Histogramme des fréquences',
         'legend' :  { 'position' : 'bottom' },
         'chartArea': {'width': '95%'},
@@ -38,10 +36,40 @@ function dessineHistogrammeInitial() {
         }
     };
 
-    // Instancie, dessine l'histogramme et l'affiche dans la div "chart_div"
-    var div_chart = document.getElementById('chart_div');
-    chart = new google.visualization.ColumnChart(div_chart);
-    chart.draw(data, options);
+    // Instancie, dessine l'histogramme et l'affiche dans la div "freq_chart_div"
+    var div_freq_chart = document.getElementById('freq_chart_div');
+    freq_chart = new google.visualization.ColumnChart(div_freq_chart);
+    freq_chart.draw(freq_data, freq_options);
+
+
+    // ######
+    // ###### Diagramme des indices de coincidence ######
+    // ######
+
+
+    indice_data = new google.visualization.DataTable();
+    indice_data.addColumn('number', 'Tailles de clé');
+    indice_data.addColumn('number', 'Langue');
+    indice_data.addColumn('number', 'Texte');
+
+    var indice_rows = [];
+    for (var i = 1; i <= 20; i++) {
+        indice_rows.push( [i, indice_coincidence[text_language], 0.008 * i] );
+    }
+    indice_data.addRows(indice_rows);
+
+    indice_options = {
+        'legend' :  { 'position' : 'bottom' },
+        'chartArea': { 'width': '95%' },
+        'vAxis' :  {
+            'gridlines': { 'count' : 0 } ,
+            'viewWindow' : { 'max' : 0.140 }
+        }
+    };
+
+    var div_indice_chart = document.getElementById('indice_chart_div');
+    indice_chart = new google.visualization.LineChart(div_indice_chart);
+    indice_chart.draw(indice_data, indice_options);
 }
 
 /*
@@ -94,18 +122,18 @@ function crypter(inputText, inputKey, sensCryptage) {
     var texteSortie = "";
 
     for (var i = 0; i < longueurTexte; i++) {
-        // On récupère le "i-ème" caractère du texte et on recupere sa position dans l'alphabet
-        var positionCaractereTexte = alphabet.indexOf(cleanedText.charAt(i));
-        // On récupère le "i-ème" caractère de la clé (modulo la taille de la clé) et on recupere sa position dans l'alphabet
-        var positionCaractereCle = alphabet.indexOf(cleanedKey.charAt(mod(i, longueurCle)));
+        // On récupère le "i-ème" caractère du texte et on recupere sa position dans l'ALPHABET
+        var positionCaractereTexte = ALPHABET.indexOf(cleanedText.charAt(i));
+        // On récupère le "i-ème" caractère de la clé (modulo la taille de la clé) et on recupere sa position dans l'ALPHABET
+        var positionCaractereCle = ALPHABET.indexOf(cleanedKey.charAt(mod(i, longueurCle)));
 
         if (sensCryptage == true) {
             // Lettre chiffrée : on somme les 2 positions, et on détermine la lettre à cet index
-            texteSortie += alphabet.charAt(mod((positionCaractereTexte + positionCaractereCle), TAILLE_ALPHABET));
+            texteSortie += ALPHABET.charAt(mod((positionCaractereTexte + positionCaractereCle), TAILLE_ALPHABET));
             //console.log(texteChiffre);
         }
         else {
-            texteSortie += alphabet.charAt(mod((positionCaractereTexte - positionCaractereCle), TAILLE_ALPHABET));
+            texteSortie += ALPHABET.charAt(mod((positionCaractereTexte - positionCaractereCle), TAILLE_ALPHABET));
         }
     }
 
@@ -116,56 +144,34 @@ function crypter(inputText, inputKey, sensCryptage) {
 }
 
 /*
- *  Méthode de calcul des fréquences : à chaque modification de la taille de la clé
+ *  Méthode de calcul des fréquences : à chaque modification de la taille de la clé.
+ *  Retourne un tableau de N tableaux, N étant la taille de la clé courante de l'analyse
  */
 function calculFrequences() {
     var cle = $("#cle_trouvee").children();
     var tailleCle = cle.length;
 
-    tableFrequences = new Array(tailleCle);
-    for (var t = 0; t < tailleCle; t++) {
-        tableFrequences[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    }
-
     var texteCrypte = $("#cryptedText").val();
     var tailleTexte = texteCrypte.length;
 
-    if (tailleCle > 0) {
-        for (var i = 0; i < texteCrypte.length; i++) {
-            var positionCaractere = alphabet.indexOf(texteCrypte.charAt(i));
-            tableFrequences[ mod(i, tailleCle) ][ positionCaractere ]++;
-        }
-    }
-
-    var icTexte = 0; // indice de coincidence du texte
-    var icLangue = indice_coincidence[ $("#menu_langue").val() == null ? 'fr' : $("#menu_langue").val() ];
-
-    for (var t = 0; t < tailleCle; t++) {
-        // Moyenne des fréquences par tableau associé à un caractère de clé
-        var icTextePartiel = 0;
-        var nbLettresAnalysees = Math.floor(tailleTexte / tailleCle) + (t <= mod(tailleTexte, tailleCle) ? 1 : 0);
-
-        for (var j = 0; j < TAILLE_ALPHABET; j++) {
-            icTextePartiel += (tableFrequences[t][j] * (tableFrequences[t][j] - 1)) /
-                (nbLettresAnalysees * (nbLettresAnalysees - 1));
-            tableFrequences[t][j] = (tableFrequences[t][j] / nbLettresAnalysees) * 100; // en %
-        }
-
-        icTexte += icTextePartiel / tailleCle;
-    }
+    tableFrequences = prepareFrequences(tailleCle, texteCrypte);
+    var icTexte = deduireIndiceTexte(tableFrequences, tailleTexte, tailleCle);
+    var icLangue = indice_coincidence[ text_language ];
 
     $("#ic_texte").html(icTexte.toPrecision(3));
 
     if (tailleCle == 1) {
         var tailleCleDevinee = (tailleTexte * (icLangue - 1/26)) / (icLangue - icTexte + tailleTexte * (icTexte - 1/26));
         $("#tailleDevinee").html(Math.floor(tailleCleDevinee) + " et " + Math.ceil(tailleCleDevinee));
-        $("#paragraph-devine").slideDown();
+        $("#row-apercu").slideDown();
     }
     else if (tailleCle == 0) {
-        $("#paragraph-devine").slideUp();
+        $("#row-apercu").slideUp();
     }
 
-    if (Math.abs(icTexte - icLangue) <= 0.0075) {
+    // Animation visuelle si l'indice de coincidence est proche de l'indice théorique
+    // si l'écart est de moins de 10% de l'indice théorique
+    if (Math.abs(icTexte - icLangue) <= 0.1 * icLangue) {
         $("#ic_texte").parent().animate({'background-color': 'blue'}, 300, function(){
             $(this).animate({'background-color': 'transparent'}, 600, function(){
                 $(this).animate({'background-color': 'blue'}, 300, function(){
@@ -177,6 +183,63 @@ function calculFrequences() {
     }
 }
 
+function prepareFrequences(longueurCle, texte) {
+    tabFreq = new Array(longueurCle);
+
+    for (var t = 0; t < longueurCle; t++) {
+        tabFreq[t] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
+
+    if (longueurCle > 0) {
+        for (var i = 0; i < texte.length; i++) {
+            var positionCaractere = ALPHABET.indexOf(texte.charAt(i));
+            tabFreq[ mod(i, longueurCle) ][ positionCaractere ]++;
+        }
+    }
+    return tabFreq;
+}
+
+function deduireIndiceTexte(tabFreq, tailleTexte, tailleCle) {
+    var icTexte = 0;
+
+    for (var t = 0; t < tailleCle; t++) {
+        // Moyenne des fréquences par tableau associé à un caractère de clé
+        var icTextePartiel = 0;
+        var nbLettresAnalysees = Math.floor(tailleTexte / tailleCle) + (t <= mod(tailleTexte, tailleCle) ? 1 : 0);
+
+        for (var j = 0; j < TAILLE_ALPHABET; j++) {
+            icTextePartiel += (tabFreq[t][j] * (tabFreq[t][j] - 1)) /
+                (nbLettresAnalysees * (nbLettresAnalysees - 1));
+            tabFreq[t][j] = (tabFreq[t][j] / nbLettresAnalysees) * 100; // en %
+        }
+
+        icTexte += icTextePartiel / tailleCle;
+    }
+
+    return icTexte;
+}
+
+/*
+ * Prepare les données pour le graphe optionnel des valeurs des indices de coincidence
+ * pour toutes les tailles de clé entre 1 et 20
+ */
+function calculeIndicesCoincidenceParTaille() {
+    var texte = $("#cryptedText").val();
+    var icLangue = indice_coincidence[ text_language ];
+
+    if ( texte != '' ) {
+        for (var tailleCle = 1; tailleCle <= 20; tailleCle++) {
+            var tabFreqSimu = prepareFrequences(tailleCle, texte);
+            var icTexteSimu = deduireIndiceTexte(tabFreqSimu, texte.length, tailleCle);
+
+            indice_data.setValue(tailleCle - 1, 1, icLangue);
+            indice_data.setValue(tailleCle - 1, 2, icTexteSimu);
+        }
+    }
+
+    indice_chart.draw(indice_data, indice_options);
+}
+
 /*
  *  Récupération des fréquences d'apparition des lettres codées par le caractère de la clé
  *  ciblé, et affichage des fréquences en prenant compte de la valeur de ce caractère (= décalage)
@@ -184,7 +247,7 @@ function calculFrequences() {
 function recupererEtAfficherFrequences() {
     if ( $("#focusedChar")[0] !== undefined ) {
         var caractereCible = $("#focusedChar");
-        var positionCaractereCibleDansAlphabet = alphabet.indexOf( caractereCible.html() );
+        var positionCaractereCibleDansAlphabet = ALPHABET.indexOf( caractereCible.html() );
 
         var positionCaractereCibleDansCle = $("#cle_trouvee").children().index( caractereCible );
         var frequences = tableFrequences[positionCaractereCibleDansCle];
@@ -195,10 +258,10 @@ function recupererEtAfficherFrequences() {
     }
 
     for (var i = 0; i < TAILLE_ALPHABET; i++) {
-        data.setValue(i, 2, frequences[ mod(i + positionCaractereCibleDansAlphabet, TAILLE_ALPHABET) ]);
+        freq_data.setValue(i, 2, frequences[ mod(i + positionCaractereCibleDansAlphabet, TAILLE_ALPHABET) ]);
     }
 
-    chart.draw(data, options);
+    freq_chart.draw(freq_data, freq_options);
 }
 
 /*
@@ -250,7 +313,7 @@ function focusCaractereSuivant() {
 function decalageHistogrammeGauche() {
     // On modifie le caractère avec focus de la clé : A -> B
     var caractereActif = $("#focusedChar").html();
-    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
+    var caractereSuivant = ALPHABET.charAt( mod(ALPHABET.indexOf(caractereActif) + 1, TAILLE_ALPHABET) );
     $( "#focusedChar" ).html( caractereSuivant );
 
     // On rend visible ce décalage des fréquences à l'écran
@@ -264,7 +327,7 @@ function decalageHistogrammeGauche() {
 function decalageHistogrammeDroite() {
     // On modifie le caractère avec focus de la clé : B -> A
     var caractereActif = $("#focusedChar").html();
-    var caractereSuivant = alphabet.charAt( mod(alphabet.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
+    var caractereSuivant = ALPHABET.charAt( mod(ALPHABET.indexOf(caractereActif) - 1, TAILLE_ALPHABET) );
     $( "#focusedChar" ).html( caractereSuivant );
 
     // On rend visible ce décalage des fréquences à l'écran

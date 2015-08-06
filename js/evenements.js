@@ -12,7 +12,7 @@
 /*
  *  Molette
  */
-$('#chart_div').on('wheel mousewheel', function(event) {
+$('#freq_chart_div').on('wheel mousewheel', function(event) {
 
     if ($("#cle_trouvee").children().length == 0) {
         return;
@@ -49,7 +49,7 @@ var xInitial;
 /*
  *  Clic gauche maintenue
  */
-$('#chart_div').on("touchstart mousedown", function(event) {
+$('#freq_chart_div').on("touchstart mousedown", function(event) {
     if ($( "#cle_trouvee" ).children().length > 0) {
         event.preventDefault();
         isHeld = true;
@@ -58,7 +58,7 @@ $('#chart_div').on("touchstart mousedown", function(event) {
     }
 });
 
-$('#chart_div').on("touchmove mousemove", function(event) {
+$('#freq_chart_div').on("touchmove mousemove", function(event) {
     if (isHeld && $( "#cle_trouvee" ).children().length > 0) {
         event.preventDefault();
 
@@ -129,7 +129,7 @@ $("#cryptedText").on('keyup change', function(event) {
     var reponsePopup = false;
 
     if ( hasError != null ) {
-        reponsePopup = confirm(popup_text);
+        reponsePopup = confirm(POPUP_TEXT);
     }
 
     if (reponsePopup == true) {
@@ -247,7 +247,7 @@ $( "#goto_part2" ).on("click", function() {
     $("#cle2").val('');
 
     $("#part2").show(500);
-    setTimeout(function() { chart.draw(data, options) }, 500);
+    setTimeout(function() { freq_chart.draw(freq_data, freq_options) }, 500);
 });
 
 $( ".goto_home" ).on("click", function() {
@@ -262,7 +262,7 @@ $( ".goto_home" ).on("click", function() {
  *       - On lance le petit effet sur le titre (charcycle)
  */
 $( document ).ready(function() {
-    $( "#ic_theorique" ).html( indice_coincidence['fr'] );
+    $( "#ic_theorique" ).html( indice_coincidence[text_language] );
 
     $( "#titre" ).css("visibility", "visible");
     $(this).charcycle({
@@ -312,22 +312,14 @@ $( "#action1" ).on("click", function(){
  *       - On redessine l'histogramme des fréquences théoriques
  */
 $( "#menu_langue" ).on("change", function() {
-    $( "#ic_theorique" ).html( indice_coincidence[$(this).val()] );
+    text_language = $(this).val();
+    $( "#ic_theorique" ).html( indice_coincidence[text_language] );
 
-    var frequences_theoriques = frequences[$(this).val()];
+    var frequences_theoriques = frequences[text_language];
     for (var i = 0; i < TAILLE_ALPHABET; i++) {
-        data.setValue(i, 1, frequences_theoriques[i]);
+        freq_data.setValue(i, 1, frequences_theoriques[i]);
     }
-    chart.draw(data, options);
-});
-
-
-/*
- *  Déploiement de la fenetre de cryptage de texte dans le module de cryptanalyse
- *  si l'utilisateur n'a pas crypté son texte au préalable
- */
-$( "#oubli" ).on("click", function() {
-    $( "#div_cryptage" ).toggle();
+    freq_chart.draw(freq_data, freq_options);
 });
 
 
@@ -363,12 +355,30 @@ $( "#restart" ).on("click", function() {
 
 
 /*
+ *  Evenement : Clic sur le bouton plus de statistiques
+ *  Resultat : Calcul des indices pour des clés de tailles 1 à 20 et affichage dans le graphique
+ */
+$ ( "#statsPlus" ).on("click", function() {
+    calculeIndicesCoincidenceParTaille();
+});
+
+
+/*
+ *  Evenement correctif pour un affichage du graphique sur toute la largeur de la fenetre modale.
+ */
+$('#modalStatsPlus').on('shown.bs.modal', function() {
+    indice_chart.draw(indice_data, indice_options);
+});
+
+
+/*
  *  Evenvement : Redimensionnement de la fenetre
  *  Resultat : Retracer les histogrammes avec les memes données mais avec les nouvelles dimensions
  */
 $( window ).resize(function() {
     // TO DO : Modifier la hauteur de l'histogramme par palier (media query) et supprimer les légendes ?
-    chart.draw(data, options);
+    freq_chart.draw(freq_data, freq_options);
+    indice_chart.draw(indice_data, indice_options);
 });
 
 

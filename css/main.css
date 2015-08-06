@@ -72,11 +72,7 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     background-color: white;
     color: black;
     font-size: 15px;
-}
-
-#chart_div {
-    margin-left: 20px;
-    margin-right: 20px;
+    min-height: 31px;
 }
 
 #cle1 {
@@ -122,15 +118,14 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     margin-bottom: 10px;
 }
 
-#paragraph-devine {
-    display: none;
-    text-align: center;
-    margin-top: -10px;
-}
-
 #paragraph-help {
     text-align: center;
     margin-bottom: 0px;
+    margin-top: -10px;
+}
+
+#row-apercu {
+    display: none;
     margin-top: -10px;
 }
 

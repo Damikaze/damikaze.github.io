@@ -1,18 +1,20 @@
 var TAILLE_ALPHABET = 26;
 var TAILLE_APERCU = 40;
-var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-var popup_text = "Je remarque des caractères illégaux dans le texte. \
-Votre texte ne doit pas être encore crypté. Voulez-vous y remédier ? \
-\n\nOK : C'est un oubli. Je veux crypter le texte. \
-\nAnnuler : C'est une coquille. Nettoyez le texte, et analysez.";
+var ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 var regex_mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
 var texteADecrypter = ""; // memoriser pour savoir s'il faut lancer une nouvelle analyse
 
-var data; // Objet Google des données de l'histogramme
-var chart; // Objet Google de l'histogramme
-var options; // Objet des options de l'histogramme
+var app_language = 'fr';
+var text_language = 'fr';
+
+var freq_data; // Objet Google des données de l'histogramme
+var freq_chart; // Objet Google de l'histogramme
+var freq_options; // Objet des options de l'histogramme
+
+var indice_data; // Objet Google des données de l'histogramme
+var indice_chart; // Objet Google de l'histogramme
+var indice_options; // Objet des options de l'histogramme
 
 // la table des frequences : Un tableau de tableaux de 26 entiers,
 // un de chaque par caractère de clé pour compter les fréquences d'apparation
@@ -42,6 +44,11 @@ var indice_coincidence = {
     'fr': 0.0778,
     'en': 0.0667
 };
+
+var POPUP_TEXT = "Je remarque des caractères illégaux dans le texte. \
+Votre texte ne doit pas être encore crypté. Voulez-vous y remédier ? \
+\n\nOK : C'est un oubli. Je veux crypter le texte. \
+\nAnnuler : C'est une coquille. Nettoyez le texte, et analysez.";
 
 /*var textes_statiques = {
     'fr': {
