@@ -2,7 +2,7 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     background-image: url(../img/fond/home_4.jpg);
-    background-size: 100% auto;
+    background-size: cover;
     font-family: "Trebuchet MS", Helvetica, sans-serif
 }
 
@@ -40,13 +40,13 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     border-radius: 0px;
 }
 
+.carousel-titres h4, .carousel-explications div {
+    display: none;
+}
+
 .label-interrupteur {
     text-align: center;
     padding: 0px;
-}
-
-.margin-top {
-    margin-top: 5px;
 }
 
 .modal-body {
@@ -56,6 +56,10 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
 .modal-body h4 {
     margin-top: 25px;
     margin-bottom: 20px;
+}
+
+.modal-body h4:first-child {
+    margin-top: 0px;
 }
 
 .modal-body img {

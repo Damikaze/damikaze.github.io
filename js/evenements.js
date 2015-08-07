@@ -247,7 +247,15 @@ $( "#goto_part2" ).on("click", function() {
     $("#cle2").val('');
 
     $("#part2").show(500);
-    setTimeout(function() { freq_chart.draw(freq_data, freq_options) }, 500);
+    // Après affichage, on met en place l'histogramme et on affiche la fenetre
+    // modale d'aide s'il s'agit d'une première visite
+    setTimeout(function() { 
+        freq_chart.draw(freq_data, freq_options);
+        if (premiereVisiteCryptanalyse) {
+            $( "#modalAide" ).modal('show');
+            premiereVisiteCryptanalyse = false;
+        }
+    }, 500);
 });
 
 $( ".goto_home" ).on("click", function() {
@@ -370,6 +378,27 @@ $('#modalStatsPlus').on('shown.bs.modal', function() {
     indice_chart.draw(indice_data, indice_options);
 });
 
+
+$( "#modalAide" ).on("show.bs.modal", function() {
+    $( "#carrouselAide" ).carousel(0);
+
+    $( ".carousel-titres h4:visible" ).hide();
+    $( ".carousel-explications div:visible" ).hide();
+
+    $( ".carousel-titres h4:first-child" ).show();
+    $( ".carousel-explications div:first-child" ).show();
+});
+
+
+$( "#carrouselAide" ).on("slid.bs.carousel", function() {
+    var index_frame = $( ".carousel-indicators .active" ).index() + 1;
+
+    $( ".carousel-titres h4:visible" ).hide();
+    $( ".carousel-explications div:visible" ).hide();
+
+    $( ".carousel-titres h4:nth-child(" + index_frame + ")" ).show();
+    $( ".carousel-explications div:nth-child(" + index_frame + ")" ).show();
+});
 
 /*
  *  Evenvement : Redimensionnement de la fenetre

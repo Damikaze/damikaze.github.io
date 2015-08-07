@@ -7,6 +7,7 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+        <link rel="stylesheet" href="css/carousel.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/switch.css">
         <link rel="shortcut icon" href="img/favicon.ico">
@@ -148,8 +149,9 @@
                     </thead>
                     <tbody class="text-center">
                         <tr>
+                            <!-- Colonne +/- pour changer la taille de la clé -->
                             <td rowspan=2>
-                                <div class="btn-group btn-group-lg hidden-xs">
+                                <div class="btn-group btn-group-lg hidden-xs hidden-sm">
                                     <button class="btn btn-danger cle_moins">
                                         <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                                     </button>
@@ -157,7 +159,7 @@
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                     </button>
                                 </div>
-                                <div class="btn-group-vertical btn-group-lg visible-xs">
+                                <div class="btn-group-vertical btn-group-lg visible-xs visible-sm">
                                     <button class="btn btn-primary cle_plus">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                     </button>
@@ -166,6 +168,8 @@
                                     </button>
                                 </div>
                             </td>
+
+                            <!-- Clé courante avec navigation sur les caractères -->
                             <td rowspan=2>
                                 <div class="row">
                                     <div class="col-sm-2 hidden-xs">
@@ -186,6 +190,8 @@
                                     <a class="btn btn-default col-xs-6 visible-xs cle_droite"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                                 </div>
                             </td>
+
+                        <!-- Indices de coincidence -->
                             <td>Texte</td>
                             <td> <span id="ic_texte"></span> </td>
                         </tr>
@@ -203,7 +209,11 @@
 
                 <div class="row">
                     <h4 class="col-xs-6">Outils statistiques</h4>
-                    <button id="statsPlus" class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalStatsPlus">Encore plus de statistiques !</button>
+                    <button id="statsPlus" class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalStatsPlus">
+                        <span class="hidden-xs">Encore plus de statistiques !</span>
+                        <span class="glyphicon glyphicon-stats"></span>
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
                 </div>
 
                 <!--<div class="row">
@@ -336,30 +346,99 @@
                         <h4 class="modal-title">Comment utiliser l'application de cryptanalyse ?</h4>
                     </div>
                     <div class="modal-body">
-                        <h4 style="margin-top:0px;">Le texte à analyser</h4>
-                        <p>Copiez-collez dans la zone de texte principale le texte crypté, l'analyse sera lancée automatiquement. Si le texte n'est pas crypté, depliez le panneau juste au-dessus.</p>
-                        <img src="img/aide/texte_crypte.png" width="100%"></img>
+                        <div class="row">
+                            <a class="btn btn-danger col-xs-12" data-dismiss="modal" aria-label="Close">
+                                Je sais comment faire, merci !
+                            </a>
+                        </div>
+                        <br/>
 
-                        <h4>Le tableau de la clé </h4>
-                        <p>Les fonctionnalités résumées en 5 points pour percer la clé de chiffrement:</p>
-                        <img src="img/aide/tab_cle.png" width="100%"></img>
-                        <ul class="list-unstyled">
-                            <li>1) Ajouter ou retirer une lettre en fin de clé</li>
-                            <li>2) La clé, avec en gras, la lettre ciblée de la clé, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>
-                            <li>3) Déplacer le focus sur l'une des lettres de la clé, à gauche ou à droite</li>
-                            <li>4) Les indices de coincidence, l'un théorique de la langue du texte crypté, l'autre propre au texte crypté. Ils représentent la probabilité que 2 lettres choisies au hasard dans le texte soient identiques</li>
-                            <li>5) Un pronostic sur la taille probable de la clé de chiffrement</li>
-                        </ul>
+                        <!-- Titres de slides -->
+                        <div class="carousel-titres">
+                            <h4>Le texte à analyser</h4>
+                            <h4>Le tableau de la clé </h4>
+                            <h4>L'histogramme</h4>
+                            <h4>Comment manipuler l'histogramme ?</h4>
+                            <h4>Les résultats</h4>
+                        </div>
 
-                        <h4>L'histogramme</h4>
-                        <p>Il représente, en bleu, les fréquences d'apparition des lettres dans la langue du texte (modifiable via le menu déroulant en haut de page), et en rouge, les fréquences "partielles" du texte crypté, "partielles" car uniquement les lettres du texte crypté qui sont en principe chiffrés par le caractère ciblé de la clé, choisi dans le tableau.</p>
-                        <img src="img/aide/histogramme.gif" width="100%"></img>
-                        <p>Vous pouvez manipuler l'histogramme pour superposer les deux histogrammes et deviner la valeur du caractère de la clé ciblé. En bougeant l'histogramme rouge, la caractère ciblé se modifie aussi. Voici les possibilités d'actions à exécuter sur l'histogramme :</p>
-                        <img src="img/aide/actions.jpg" width="100%"></img>
+                        <!-- Carousel -->
+                        <div id="carrouselAide" class="carousel slide" data-ride="carousel">
+                            <!-- Indicateurs -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carrouselAide" data-slide-to="0" class="active"></li>
+                                <li data-target="#carrouselAide" data-slide-to="1"></li>
+                                <li data-target="#carrouselAide" data-slide-to="2"></li>
+                                <li data-target="#carrouselAide" data-slide-to="3"></li>
+                                <li data-target="#carrouselAide" data-slide-to="4"></li>
+                            </ol>
 
-                        <h4>Les résultats</h4>
-                        <p>Dès que vous pensez avoir trouvé la bonne clé, vous pouvez retrouver le résultat complet en appuyant sur le bouton vert en-dessous de la zone de texte. Mais vous déjà voir un apercu du déchiffrage en direct en-dessous de l'histogramme, avec en gras les caractères du début du texte chiffrés par le caractère de la clé que vous avez ciblé.</p>
-                        <img src="img/aide/apercu.png" width="100%"></img>
+                            <!-- Wrapper de slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="img/aide/texte_crypte.png" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/tab_cle.png" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/histogramme.gif" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/actions.jpg" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/apercu.png" width="100%"></img>
+                                </div>
+                                <!-- <div>
+                                    <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg" width="100%"></img>
+                                    <div class="header-text hidden-xs">
+                                        <div class="col-md-12 text-center">
+                                            <h2> <span>Welcome to LOREM IPSUM</span> </h2> <br>
+                                            <h3> <span>Lorem ipsum dolor sit amet.</span> </h3> <br>
+                                            <div class="">
+                                                <a class="btn btn-theme btn-sm btn-min-block">Login</a>
+                                                <a class="btn btn-theme btn-sm btn-min-block">Register</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <!-- Controles -->
+                            <a class="left carousel-control" href="#carrouselAide" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carrouselAide" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
+
+                        <!-- Les commentaires illustrés par les slides du carrousel au-dessus -->
+                        <div class="carousel-explications">
+                            <div>
+                                <p>Copiez-collez dans la zone de texte principale le texte crypté, l'analyse sera lancée automatiquement. Si le texte n'est pas crypté, depliez le panneau juste au-dessus.</p>
+                            </div>
+                            <div>
+                                <p>Les fonctionnalités résumées en 5 points pour percer la clé de chiffrement:</p>
+                                <ul class="list-unstyled">
+                                    <li>1) Ajouter ou retirer une lettre en fin de clé</li>
+                                    <li>2) La clé, avec en gras, la lettre ciblée de la clé, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>
+                                    <li>3) Déplacer le focus sur l'une des lettres de la clé, à gauche ou à droite</li>
+                                    <li>4) Les indices de coincidence, l'un théorique de la langue du texte crypté, l'autre propre au texte crypté. Ils représentent la probabilité que 2 lettres choisies au hasard dans le texte soient identiques</li>
+                                    <li>5) Un pronostic sur la taille probable de la clé de chiffrement</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p>Il représente, en bleu, les fréquences d'apparition des lettres dans la langue du texte (modifiable via le menu déroulant en haut de page), et en rouge, les fréquences "partielles" du texte crypté, "partielles" car uniquement les lettres du texte crypté qui sont en principe chiffrés par le caractère ciblé de la clé, choisi dans le tableau.</p>
+                            </div>
+                            <div>
+                                <p>Vous pouvez manipuler l'histogramme pour superposer les deux histogrammes et deviner la valeur du caractère de la clé ciblé. En bougeant l'histogramme rouge, la caractère ciblé se modifie aussi. Voici les possibilités d'actions à exécuter sur l'histogramme :</p>
+                            </div>
+                            <div>
+                                <p>Dès que vous pensez avoir trouvé la bonne clé, vous pouvez retrouver le résultat complet en appuyant sur le bouton vert en-dessous de la zone de texte. Mais vous déjà voir un apercu du déchiffrage en direct en-dessous de l'histogramme, avec en gras les caractères du début du texte chiffrés par le caractère de la clé que vous avez ciblé.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -416,12 +495,12 @@
 
                         <h4>Le devin</h4>
                         <div class="row">
-                            <img class="col-xs-4" src="img/magicien_cartes.jpg"/>
+                            <img class="col-xs-4" src="img/stats/magicien_cartes.jpg"/>
                             <div class="col-xs-8">
                                 <p>
                                     Une dernière statistique, un peu moins fiable et que nous appelerons "formule du devin", est calculée à partir de l'équation ci-dessous.
                                 </p>
-                                <img src="img/formule_devin.gif" style="width: 100%"/>
+                                <img src="img/stats/formule_devin.svg" style="width: 100%"/>
                                 <p>
                                     Alors, devin, dites-nous tout !
                                 </p>

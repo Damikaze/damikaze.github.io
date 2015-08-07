@@ -5,6 +5,8 @@ var ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var regex_mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
 var texteADecrypter = ""; // memoriser pour savoir s'il faut lancer une nouvelle analyse
 
+var premiereVisiteCryptanalyse = true;
+
 var app_language = 'fr';
 var text_language = 'fr';
 

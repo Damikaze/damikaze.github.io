@@ -54,7 +54,7 @@ function dessineHistogrammeInitial() {
 
     var indice_rows = [];
     for (var i = 1; i <= 20; i++) {
-        indice_rows.push( [i, indice_coincidence[text_language], 0.008 * i] );
+        indice_rows.push( [i, indice_coincidence[text_language], 0] );
     }
     indice_data.addRows(indice_rows);
 
@@ -235,6 +235,10 @@ function calculeIndicesCoincidenceParTaille() {
             indice_data.setValue(tailleCle - 1, 1, icLangue);
             indice_data.setValue(tailleCle - 1, 2, icTexteSimu);
         }
+    }
+    else {
+        indice_data.setValue(tailleCle - 1, 1, icLangue);
+        indice_data.setValue(tailleCle - 1, 2, 0);
     }
 
     indice_chart.draw(indice_data, indice_options);
