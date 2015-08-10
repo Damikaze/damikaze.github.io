@@ -263,6 +263,16 @@ $( ".goto_home" ).on("click", function() {
     $("#home").show(500);
 });
 
+
+$( "#menu-langues-appli" ).on("change", function() {
+    changeLangue( $(this).val() );
+    $(document).charcycle({
+        'target': '#titre',
+        'speed': 20
+    }); 
+});
+
+
 /*
  *  Evenement : Lorsque l'application est totalement chargée par le navigateur
  *  Résultat :
@@ -271,12 +281,24 @@ $( ".goto_home" ).on("click", function() {
  */
 $( document ).ready(function() {
     $( "#ic_theorique" ).html( indice_coincidence[text_language] );
+    changeLangue( $("#menu-langues-appli").val() );
 
     $( "#titre" ).css("visibility", "visible");
     $(this).charcycle({
         'target': '#titre',
         'speed': 20
     }); 
+});
+
+
+/*
+ *  Evenvement : Redimensionnement de la fenetre
+ *  Resultat : Retracer les histogrammes avec les memes données mais avec les nouvelles dimensions
+ */
+$( window ).resize(function() {
+    // TO DO : Modifier la hauteur de l'histogramme par palier (media query) et supprimer les légendes ?
+    freq_chart.draw(freq_data, freq_options);
+    indice_chart.draw(indice_data, indice_options);
 });
 
 
@@ -319,7 +341,7 @@ $( "#action1" ).on("click", function(){
  *       - On change l'indice de coincidence théorique
  *       - On redessine l'histogramme des fréquences théoriques
  */
-$( "#menu_langue" ).on("change", function() {
+$( "#menu-langues-texte" ).on("change", function() {
     text_language = $(this).val();
     $( "#ic_theorique" ).html( indice_coincidence[text_language] );
 
@@ -398,16 +420,6 @@ $( "#carrouselAide" ).on("slid.bs.carousel", function() {
 
     $( ".carousel-titres h4:nth-child(" + index_frame + ")" ).show();
     $( ".carousel-explications div:nth-child(" + index_frame + ")" ).show();
-});
-
-/*
- *  Evenvement : Redimensionnement de la fenetre
- *  Resultat : Retracer les histogrammes avec les memes données mais avec les nouvelles dimensions
- */
-$( window ).resize(function() {
-    // TO DO : Modifier la hauteur de l'histogramme par palier (media query) et supprimer les légendes ?
-    freq_chart.draw(freq_data, freq_options);
-    indice_chart.draw(indice_data, indice_options);
 });
 
 

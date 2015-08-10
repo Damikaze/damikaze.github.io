@@ -107,6 +107,28 @@ String.prototype.echapperAccents = function(){
  */
 function mod(n, m) { return ((n % m) + m) % m; }
 
+
+/*
+ *  Chargement des éléments texte correspondant à la langue choisie,
+ *  et modification des contenus HTML.
+ */
+function changeLangue(local) {
+    
+    if (textes_statiques[local] == undefined && console != null) {
+        console.log("Impossible de traduire l'application pour la langue '" + local + "'"); 
+    }
+    else {     
+        $( "*[data-lang]" ).each(function (i) {
+            if ( textes_statiques[local][ $(this).attr( "data-lang" ) ] == undefined ) {
+                $(this).html( $(this).attr( "data-lang" ) );
+            } else {
+                $(this).html( textes_statiques[local][ $(this).attr( "data-lang" ) ] );
+            }
+        });
+    }
+}
+
+
 /*
  *  Fonction principale de cryptage / decryptage
  *  @inputText : texte à crypter ou décrypter
