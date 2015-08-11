@@ -3,7 +3,7 @@ body {
     padding-bottom: 10px;
     background-image: url(../img/fond/home_4.jpg);
     background-size: cover;
-    font-family: "Trebuchet MS", Helvetica, sans-serif
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 body, legend {
@@ -14,9 +14,9 @@ body > .container {
     background-color: rgba(0, 0, 0, 0.7);
     padding-top: 15px;
     padding-bottom: 15px;
-    min-height: -moz-calc(100% - 40px);
-    min-height: -webkit-calc(100% - 40px);
-    min-height: calc(100% - 40px);
+    min-height: -moz-calc(100% - 70px);
+    min-height: -webkit-calc(100% - 70px);
+    min-height: calc(100% - 70px);
 }
 
 footer {
@@ -40,8 +40,13 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     border-radius: 0px;
 }
 
-.carousel-titres h4, .carousel-explications div {
+.carousel-div-text .carousel-active {
+    display: block;
+}
+
+.carousel-titres h4, .carousel-explications p {
     display: none;
+    margin-top: 0px;
 }
 
 .label-interrupteur {
@@ -54,12 +59,7 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
 }
 
 .modal-body h4 {
-    margin-top: 25px;
-    margin-bottom: 20px;
-}
-
-.modal-body h4:first-child {
-    margin-top: 0px;
+    margin-bottom: 25px;
 }
 
 .modal-body img {
@@ -114,12 +114,8 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     margin: 0 15px;
 }
 
-#liste-tab-cle {
+#liste-tab-cle, #oubliCryptage {
     margin-top: 10px;
-}
-
-#oubliCryptage {
-    margin-bottom: 10px;
 }
 
 #paragraph-help {
@@ -130,7 +126,7 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
 
 #row-apercu {
     display: none;
-    margin-top: -10px;
+    margin-bottom: 15px;
 }
 
 #table-pedagogie td {

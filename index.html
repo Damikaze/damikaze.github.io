@@ -135,21 +135,9 @@
 
                 <!-- Zone de texte -->
                 <div class="row">
-                    <button id="oubliCryptage" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalCryptage" data-lang="crypt-forget"></button>
-
                     <textarea rows=6 id="cryptedText" class="form-control"></textarea>
-                    <br/>
-
-                    <button id="restart" class="btn btn-default">
-                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-                        <span data-lang="restart-analysis"></span>
-                    </button>
-                    <button id="resultat_cryptanalyse" class="btn btn-success" data-toggle="modal" data-target="#modalResultat" disabled>
-                        <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
-                        <span data-lang="show-results"></span>
-                    </button>
+                    <button id="oubliCryptage" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalCryptage" data-lang="crypt-forget"></button>
                 </div>
-                <br/>
 
                 <legend data-lang="analysis-legend"></legend>
 
@@ -223,6 +211,15 @@
                 <div id="row-apercu" class="row">
                     <label for="apercu" data-lang="preview-label"></label>
                     <p id="apercu"></p>
+
+                    <button id="restart" class="btn btn-default">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        <span data-lang="restart-analysis"></span>
+                    </button>
+                    <button id="resultat_cryptanalyse" class="btn btn-success" data-toggle="modal" data-target="#modalResultat" disabled>
+                        <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                        <span data-lang="show-results"></span>
+                    </button>
                 </div>
 
                 <div class="row">
@@ -281,12 +278,13 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Présentation du chiffre de Vigenère</h4>
+                        <h4 class="modal-title" data-lang="modal-pres-title"></h4>
                     </div>
                     <div class="modal-body">
                         <img src="img/aide/tableau_chiffrage.svg" width="100%"/>
 
-                        <p data-lang="pres-p1"</p>
+                        <p data-lang="pres-p1"></p>
+                        <br/>
 
                         <h4 data-lang="pres-t1"></h4>
                         <p data-lang="pres-p2"></p>
@@ -294,13 +292,16 @@
                         </ul>
                         <p data-lang="pres-p3"></p>
                         <p data-lang="pres-p4"></p>
+                        <br/>
 
                         <h4 data-lang="pres-t2"></h4>
                         <p data-lang="pres-p5"></p>
+                        <br/>
 
                         <h4 data-lang="pres-t3"></h4>
                         <p data-lang="pres-p6"></p>
                         <p data-lang="pres-p7"></p>
+                        <br/>
 
                         <h4 data-lang="pres-t4"></h4>
                         <p data-lang="pres-p8"></p>
@@ -318,21 +319,17 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Résultat de la cryptanalyse</h4>
+                        <h4 class="modal-title" data-lang="modal-result-title"></h4>
                     </div>
                     <div class="modal-body">
                         <p>
-                            <span>Avec la clé</span>
-                             "<b id="cleDevinee"></b>", 
-                            <span>voici ce que donne le texte décrypté :</span>
+                            <span data-lang="res-p1"></span> "<b id="cleDevinee"></b>", <span data-lang="res-p2"></span>
                         </p>
                         <textarea id="texteDecrypte" class="form-control" rows=5></textarea>
                         <br/>
-                        <p>Ajoutez des espaces pour aérer et vérifier que le texte est correct.</p>
+                        <p data-lang="add-space"></p>
                     </div>
-                    <div class="modal-footer">
-                        Merci d'avoir utilisé notre application !
-                    </div>
+                    <div class="modal-footer" data-lang="thank-you"></div>
                 </div>
             </div>
         </div>
@@ -346,27 +343,20 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Comment utiliser l'application de cryptanalyse ?</h4>
+                        <h4 class="modal-title" data-lang="modal-help-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <a class="btn btn-danger col-xs-12" data-dismiss="modal" aria-label="Close">
-                                Je sais comment faire, merci !
-                            </a>
-                        </div>
-                        <br/>
-
                         <!-- Titres de slides -->
-                        <div class="carousel-titres">
-                            <h4>Le texte à analyser</h4>
-                            <h4>Le tableau de la clé </h4>
-                            <h4>L'histogramme</h4>
-                            <h4>Comment manipuler l'histogramme ?</h4>
-                            <h4>Les résultats</h4>
+                        <div class="carousel-div-text carousel-titres">
+                            <h4 data-lang="help-t1"></h4>
+                            <h4 data-lang="help-t2"></h4>
+                            <h4 data-lang="help-t3"></h4>
+                            <h4 data-lang="help-t4"></h4>
+                            <h4 data-lang="help-t5"></h4>
                         </div>
 
                         <!-- Carousel -->
-                        <div id="carrouselAide" class="carousel slide" data-ride="carousel">
+                        <div id="carrouselAide" class="carousel " data-ride="carousel">
                             <!-- Indicateurs -->
                             <ol class="carousel-indicators">
                                 <li data-target="#carrouselAide" data-slide-to="0" class="active"></li>
@@ -416,31 +406,15 @@
                                 <span class="glyphicon glyphicon-chevron-right"></span>
                             </a>
                         </div>
+                        <br/>
 
                         <!-- Les commentaires illustrés par les slides du carrousel au-dessus -->
-                        <div class="carousel-explications">
-                            <div>
-                                <p>Copiez-collez dans la zone de texte principale le texte crypté, l'analyse sera lancée automatiquement. Si le texte n'est pas crypté, depliez le panneau juste au-dessus.</p>
-                            </div>
-                            <div>
-                                <p>Les fonctionnalités résumées en 5 points pour percer la clé de chiffrement:</p>
-                                <ul class="list-unstyled">
-                                    <li>1) Ajouter ou retirer une lettre en fin de clé</li>
-                                    <li>2) La clé, avec en gras, la lettre ciblée de la clé, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>
-                                    <li>3) Déplacer le focus sur l'une des lettres de la clé, à gauche ou à droite</li>
-                                    <li>4) Les indices de coincidence, l'un théorique de la langue du texte crypté, l'autre propre au texte crypté. Ils représentent la probabilité que 2 lettres choisies au hasard dans le texte soient identiques</li>
-                                    <li>5) Un pronostic sur la taille probable de la clé de chiffrement</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <p>Il représente, en bleu, les fréquences d'apparition des lettres dans la langue du texte (modifiable via le menu déroulant en haut de page), et en rouge, les fréquences "partielles" du texte crypté, "partielles" car uniquement les lettres du texte crypté qui sont en principe chiffrés par le caractère ciblé de la clé, choisi dans le tableau.</p>
-                            </div>
-                            <div>
-                                <p>Vous pouvez manipuler l'histogramme pour superposer les deux histogrammes et deviner la valeur du caractère de la clé ciblé. En bougeant l'histogramme rouge, la caractère ciblé se modifie aussi. Voici les possibilités d'actions à exécuter sur l'histogramme :</p>
-                            </div>
-                            <div>
-                                <p>Dès que vous pensez avoir trouvé la bonne clé, vous pouvez retrouver le résultat complet en appuyant sur le bouton vert en-dessous de la zone de texte. Mais vous déjà voir un apercu du déchiffrage en direct en-dessous de l'histogramme, avec en gras les caractères du début du texte chiffrés par le caractère de la clé que vous avez ciblé.</p>
-                            </div>
+                        <div class="carousel-div-text carousel-explications">
+                            <p data-lang="help-p1"></p>
+                            <p data-lang="help-p2"></p>
+                            <p data-lang="help-p3"></p>
+                            <p data-lang="help-p4"></p>
+                            <p data-lang="help-p5"></p>
                         </div>
                     </div>
                 </div>
@@ -456,13 +430,13 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Analyser un texte crypté, c'est mieux !</h4>
+                        <h4 class="modal-title" data-lang="modal-crypt-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <p>Rentrez le texte original dans la zone de texte ci-dessous, et la clé de chiffrage dans le champ correspondant. Nous nous occupons du reste : formattage, cryptage, et analyse !</p>
+                        <p data-lang="crypt-paragraph"></p>
 
                         <div class="input-group">
-                            <span class="input-group-addon">Clé :</span>
+                            <span class="input-group-addon" data-lang="key-label"></span>
                             <input type="text" id="cle2" class="form-control">
                         </div>
                         <br/>
@@ -470,7 +444,7 @@
                         <textarea rows=6 id="texteACrypter" class="form-control"></textarea>
                         <br/>
 
-                        <button id="action2" class="btn btn-default" type="button">Crypter</button>
+                        <button id="action2" class="btn btn-default" type="button" data-lang="crypt"></button>
                     </div>
                 </div>
             </div>
@@ -485,31 +459,27 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Pour vous aiguiller sur la bonne taille de clé</h4>
+                        <h4 class="modal-title" data-lang="modal-stats-title"></h4>
                     </div>
                     <div class="modal-body">
-                        <h4>Indices de coincidence selon la taille de la clé</h4>
+                        <h4 data-lang="stats-t1"></h4>
                         <div class="row">
                             <div id="indice_chart_div" class="center-block"></div>
                         </div>
-                        <p>
-                            Si les courbes rouge et bleue sont proches à une abscisse N, alors il est très probable que la clé soit de taille N. A vous désormais de trouver les bons caractères !
-                        </p>
+                        <p data-lang="stats-p1"></p>
 
-                        <h4>Le devin</h4>
+                        <h4 data-lang="stats-t2"></h4>
                         <div class="row">
                             <img class="col-xs-4" src="img/stats/magicien_cartes.jpg"/>
                             <div class="col-xs-8">
-                                <p>
-                                    Une dernière statistique, un peu moins fiable et que nous appelerons "formule du devin", est calculée à partir de l'équation ci-dessous.
-                                </p>
+                                <p data-lang="stats-p2"></p>
                                 <img src="img/stats/formule_devin.svg" style="width: 100%"/>
+
+                                <p data-lang="stats-p3"></p>
                                 <p>
-                                    Alors, devin, dites-nous tout !
-                                </p>
-                                <p>
-                                    "Je vois, je vois ... une taille de la clé de chiffrement entre 
-                                    <span id="tailleDevinee"></span> caractères. J'ai bon ?"
+                                    "<span data-lang="stats-p4"></span> 
+                                     <span id="tailleDevinee"></span>
+                                     <span data-lang="stats-p5"></span>"
                                 </p>
                             </div>
                         </div>

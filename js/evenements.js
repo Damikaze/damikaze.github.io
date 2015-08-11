@@ -251,10 +251,6 @@ $( "#goto_part2" ).on("click", function() {
     // modale d'aide s'il s'agit d'une première visite
     setTimeout(function() { 
         freq_chart.draw(freq_data, freq_options);
-        if (premiereVisiteCryptanalyse) {
-            $( "#modalAide" ).modal('show');
-            premiereVisiteCryptanalyse = false;
-        }
     }, 500);
 });
 
@@ -380,6 +376,7 @@ $( "#restart" ).on("click", function() {
         $( "#cle_trouvee" ).html('<span id="focusedChar" style="font-weight: bold;">A</span>');
         calculFrequences();
         recupererEtAfficherFrequences();
+        apercuDecryptage();
     }
 });
 
@@ -402,24 +399,18 @@ $('#modalStatsPlus').on('shown.bs.modal', function() {
 
 
 $( "#modalAide" ).on("show.bs.modal", function() {
+    $( ".carousel-active" ).removeClass("carousel-active");
+    $( ".carousel-div-text *:first-child" ).addClass("carousel-active");
+    
     $( "#carrouselAide" ).carousel(0);
-
-    $( ".carousel-titres h4:visible" ).hide();
-    $( ".carousel-explications div:visible" ).hide();
-
-    $( ".carousel-titres h4:first-child" ).show();
-    $( ".carousel-explications div:first-child" ).show();
 });
 
 
 $( "#carrouselAide" ).on("slid.bs.carousel", function() {
     var index_frame = $( ".carousel-indicators .active" ).index() + 1;
 
-    $( ".carousel-titres h4:visible" ).hide();
-    $( ".carousel-explications div:visible" ).hide();
-
-    $( ".carousel-titres h4:nth-child(" + index_frame + ")" ).show();
-    $( ".carousel-explications div:nth-child(" + index_frame + ")" ).show();
+    $( ".carousel-active" ).removeClass("carousel-active");
+    $( ".carousel-div-text *:nth-child(" + index_frame + ")" ).addClass("carousel-active");
 });
 
 
