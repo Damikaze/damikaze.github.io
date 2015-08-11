@@ -194,14 +194,7 @@ function calculFrequences() {
     // Animation visuelle si l'indice de coincidence est proche de l'indice théorique
     // si l'écart est de moins de 10% de l'indice théorique
     if (Math.abs(icTexte - icLangue) <= 0.1 * icLangue) {
-        $("#ic_texte").parent().animate({'background-color': 'blue'}, 300, function(){
-            $(this).animate({'background-color': 'transparent'}, 600, function(){
-                $(this).animate({'background-color': 'blue'}, 300, function(){
-                    $(this).animate({'background-color': 'transparent'}, 600, function(){
-                    });
-                });
-            });
-        });
+        $("#ic_texte").twinkle(TWINKLE_OPTIONS);
     }
 }
 

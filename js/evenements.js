@@ -251,6 +251,7 @@ $( "#goto_part2" ).on("click", function() {
     // modale d'aide s'il s'agit d'une première visite
     setTimeout(function() { 
         freq_chart.draw(freq_data, freq_options);
+        $("#aide").twinkle(TWINKLE_OPTIONS);
     }, 500);
 });
 
@@ -283,7 +284,11 @@ $( document ).ready(function() {
     $(this).charcycle({
         'target': '#titre',
         'speed': 20
-    }); 
+    });
+    
+    if ( $(document).width() <= 450 ) {
+        $( "#petite-largeur" ).show();
+    }
 });
 
 
@@ -292,9 +297,16 @@ $( document ).ready(function() {
  *  Resultat : Retracer les histogrammes avec les memes données mais avec les nouvelles dimensions
  */
 $( window ).resize(function() {
-    // TO DO : Modifier la hauteur de l'histogramme par palier (media query) et supprimer les légendes ?
+    // TO DO : Modifier la HAUTEUR de l'histogramme par palier (media query) et supprimer les légendes ?
     freq_chart.draw(freq_data, freq_options);
     indice_chart.draw(indice_data, indice_options);
+
+    // Message pour les petits écrans à la page d'accueil
+    if ( $(document).width() <= 450 ) {
+        $( "#petite-largeur" ).show();
+    } else {
+        $( "#petite-largeur" ).hide();
+    }
 });
 
 

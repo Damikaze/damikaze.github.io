@@ -124,26 +124,20 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     margin-top: -10px;
 }
 
+#petite-largeur {
+    text-align: center;
+    display: none;
+}
+
 #row-apercu {
     display: none;
     margin-bottom: 15px;
 }
 
-#table-pedagogie td {
-    text-align: center;
-    /*width: 10px;*/
-}
-
-#table-pedagogie .small-row td {
-    text-align: center;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
 #titre {
     text-align: center;
     visibility: hidden;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 #goto_part1, #goto_part2, #restart, #resultat_cryptanalyse {

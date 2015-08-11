@@ -1,6 +1,15 @@
 var TAILLE_ALPHABET = 26;
 var TAILLE_APERCU = 40;
 var ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var TWINKLE_OPTIONS = {
+    'effect' : "drops",
+    'effectOptions' : {
+        'color' : 'rgba(255, 255, 255, 0.8)',
+        'radius' : 100,
+        'duration' : 2000,
+        'count' : 10
+    }
+}
 
 var regex_mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
 var texteADecrypter = ""; // memoriser pour savoir s'il faut lancer une nouvelle analyse
@@ -56,6 +65,7 @@ var textes_statiques = {
         'module-1-name': "Crypter / Décrypter",
         'module-2-name': "Cryptanalyse",
         'back-home': " Retour à la page d'accueil",
+        'small-screen': "Vous êtes sur mobile ou tablette ? Retournez l'écran pour profiter au mieux de l'application. Sur ordinateur, élargissez la fenêtre !",
         'what-is-it': "Le ' chiffre de Vigenère ' ? C'est quoi ?",
         'french': "Français",
         'english': "Anglais",
@@ -97,7 +107,7 @@ var textes_statiques = {
         'pres-t2': "Pourquoi ?",
         'pres-p5': "Tout simplement parce que deux mêmes lettres du texte initial ne seront pas forcément codées avec la même lettre de la clé selon leur position dans ce texte ! A l'inverse, deux lettres différentes chiffrées par deux caractères distincts de la clé peuvent, avec un peu de chance, aboutir à la même lettre dans le texte crypté (regardez les colonnes orange).",
         'pres-t3': "Comment décrypter alors ?",
-        'pres-p6': "Si vous utilisez une clé d'une seule lettre, le décalage appliqué est identique pour toutes les lettres, et donc chaque lettre de l'alphabet dans le texte crypté correspond à une seule lettre de l'alphabet dans le texte initial. Tout devient simple alors : trouvez la lettre qui apparaît le plus dans le texte crypté, et on est presque sûr qu'elle correspond à la lettre la plus fréquente théoriquement dans la langue du texte à déchiffrer. Une petite soustraction, et on a la \"taille\" de ce décalage unique ! Pour votre culture (et c'est cadeau), ce chiffrage monoalphabétique s'appelle <strong>chiffre de César.</strong>",
+        'pres-p6': "Si vous utilisez une clé d'une seule lettre, le décalage appliqué est identique pour toutes les lettres, et donc chaque lettre de l'alphabet dans le texte crypté correspond à une seule et unique lettre de l'alphabet dans le texte initial. Tout devient simple alors : trouvez la lettre qui apparaît le plus dans le texte crypté, et on est presque sûr qu'elle correspond à la lettre la plus fréquente théoriquement dans la langue du texte à déchiffrer. Une petite soustraction, et on a la \"taille\" de ce décalage unique ! Pour votre culture (et c'est cadeau), ce chiffrage monoalphabétique s'appelle <strong>chiffre de César.</strong>",
         'pres-p7': "Pour le chiffre de Vigenère (avec une clé de N lettres), l'astuce va etre la même, mais il va falloir au préalable deviner la taille de la clé. Et si on devine juste, on sait alors que, périodiquement (1 fois sur N), une lettre du texte crypté correspond toujours à la même lettre du texte à déchiffrer puisqu'elle a été codée avec le même caractère de la clé, (regardez les colonnes vertes).",
         'pres-t4': "J'ai toujours pas compris !",
         'pres-p8': "Et bien, il vous reste ... <a href=\"http://fr.wikipedia.org/wiki/Chiffre_de_Vigenere\" target=\"_blank\">la page Wikipédia !</a> On ne sait jamais.",
@@ -145,6 +155,7 @@ var textes_statiques = {
         'module-1-name': "Crypt / Decrypt",
         'module-2-name': "Cryptanalysis",
         'back-home': " Back to home page",
+        'small-screen': "You are on a phone or a pad ? Turn your screen vertically to enjoy the application at its best. On computer, widen the window !",
         'what-is-it': "What do you mean by ' Vigenere cipher ' ?",
         'french': "French",
         'english': "English",
@@ -164,7 +175,7 @@ var textes_statiques = {
         'restart-analysis': " Restart the analysis",
         'show-results': " Show the decrypted text",
         'analysis-legend': "Analysis",
-        'current-key': "Key to guess",
+        'current-key': "Keyword to guess",
         'key-size': "Size",
         'change-character': "Move focus on key character",
         'indices': "Indexes of coincidence",
@@ -178,15 +189,17 @@ var textes_statiques = {
         'pres-p1': "Here is the Vigenere cipher. Simple, isn't it ? Well, let's explain it more in details.",
         'pres-t1': "Definition and principle",
         'pres-p2': "The Vigenere cipher is a <strong>polyalphabetic</strong> encrypting method, that is to say it is based on a <strong>\"keyword\"</strong> of <strong>many</strong> letters (in the table above, the keyword is \"CODE\") to acheive the encryption. The process consists of a shift of each letter of the plaintext, along a number of places determined by characters of the keyword. By convention :",
-        'pres-list': "<li>'A' means a void shift, </li><li>'B' means a shift of 1, </li><li>'C' means a shift of 2, and so on ... </li>",
+        'pres-list': "<li>'A' means a void shift, </li>\
+            <li>'B' means a shift of 1, </li>\
+            <li>'C' means a shift of 2, and so on ... </li>",
         'pres-p3': "For instance in the table : for the 1st letter of the plaintext 'M', I'm encrypting with a 'C' (therefore a shift of 2), and it would become an 'O' (M -> N -> O). And if the shifting goes over the 'Z', then, we start for another lap : Y -> Z -> A -> B...",
         'pres-p4': "The process of shifting implies that a first letter ciphered by a second one always leads to a unique third letter, and the same goes for the deciphering. Though, the interest of the Vigenere cipher is that two same letters from the plaintext do not always end up at identical letters in the ciphertext and conversely.",
         'pres-t2': "Why ?",
         'pres-p5': "Simply because two same letters from the plaintext won't inevitably ciphered with the same character of the keyword according to their place in the text ! On the contrary, two different letters ciphered by two different letters of the keyword can, with a bit of luck, lead to the same letter in the ciphertext (see the orange columns in the table).",
         'pres-t3': "How to decipher then ?",
-// Traduction des paragraphes : RESTE A FAIRE !
-        'pres-p6': "Si vous utilisez une clé d'une seule lettre, le décalage appliqué est identique pour toutes les lettres, et donc chaque lettre de l'alphabet dans le texte crypté correspond à une seule lettre de l'alphabet dans le texte initial. Tout devient simple alors : trouvez la lettre qui apparaît le plus dans le texte crypté, et on est presque sûr qu'elle correspond à la lettre la plus fréquente théoriquement dans la langue du texte à déchiffrer. Une petite soustraction, et on a la \"taille\" de ce décalage unique ! Pour votre culture (et c'est cadeau), ce chiffrage monoalphabétique s'appelle <strong>chiffre de César.</strong>",
-        'pres-p7': "Pour le chiffre de Vigenère (avec une clé de N lettres), l'astuce va etre la même, mais il va falloir au préalable deviner la taille de la clé. Et si on devine juste, on sait alors que, périodiquement (1 fois sur N), une lettre du texte crypté correspond toujours à la même lettre du texte à déchiffrer puisqu'elle a été codée avec le même caractère de la clé, (regardez les colonnes vertes).",
+        'pres-p6': "If you choose to encrypt you text with an one-letter keyword, then the applied shift is identical for all the characters of the plaintext, therefore every letter of the alphabet in the ciphertext ties in with one and only one letter of the alphabet in the plaintext. \
+            The rest becomes very simple : find the most present letter in the ciphertext, and we can almost be sure it's the encryption of the most theoretically frequent letter in the language of the text to decrypt. A little substraction, and we get the \"size\" of this unique shift ! For your acknowledge (it's free !), this monoalphabetic encrypting method is called <strong>Caesar cipher.</strong>",
+        'pres-p7': "To break the Vigenere cipher (with a N-letter keyword), the trick is the same, but you should guess first the keyword's length. Once we guessed right, we know that, periodically (1 out of N times), a character from the ciphertext is always the encryption of the same letter from the plaintext, à déchiffrer since it was ciphered by the same character of the keyword (look at the green columns).",
         'pres-t4': "I still don't understand !",
         'pres-p8': "Well, have a look at ... <a href=\"https://en.wikipedia.org/wiki/Vigenere_cipher\" target=\"_blank\">the Wikipedia article !</a> Who knows ? ...",
         // Modal du résultat final
@@ -202,14 +215,14 @@ var textes_statiques = {
         'help-t3': "The histogram",
         'help-t4': "How to handle the histogram ?",
         'help-t5': "The results / The preview",
+        'help-p1': "Paste the ciphertext in the appropriate text area, this analysis will automatically start. If you forgot to encrypt the text, click on the button just below.",
 // Traduction des paragraphes : RESTE A FAIRE !
-        'help-p1': "Copiez-collez dans la zone de texte principale le texte crypté, l'analyse sera lancée automatiquement. Si le texte n'est pas crypté, depliez le panneau juste au-dessus.",
-        'help-p2': "Les fonctionnalités résumées en 5 points pour percer la clé de chiffrement:\
+        'help-p2': "All the features summarized in 5 points to break the cipher key :\
             <ul class=\"list-unstyled\">\
-                <li>1) Ajouter ou retirer une lettre en fin de clé</li>\
-                <li>2) La clé, avec en gras, la lettre ciblée de la clé, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>\
-                <li>3) Déplacer le focus sur l'une des lettres de la clé, à gauche ou à droite</li>\
-                <li>4) Les indices de coincidence, l'un théorique de la langue du texte crypté, l'autre propre au texte crypté. Ils représentent la probabilité que 2 lettres choisies au hasard dans le texte soient identiques</li>\
+                <li>1) Add or remove a letter at the end of the keyword</li>\
+                <li>2) The keyword area, with a letter in bold which has focus on it, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>\
+                <li>3) Move the focus either on the preceding or the following letter of the keyword</li>\
+                <li>4) Indexes of coincidence, the first one is this of the ciphertext, the second one is this of the text's language. They both stand for the probability that 2 letters selected at random in a text are identical</li>\
                 <li>5) Un pronostic sur la taille probable de la clé de chiffrement</li>\
             </ul>",
         'help-p3': "Il représente, en bleu, les fréquences d'apparition des lettres dans la langue du texte (modifiable via le menu déroulant en haut de page), et en rouge, les fréquences \"partielles\" du texte crypté, \"partielles\" car uniquement les lettres du texte crypté qui sont en principe chiffrés par le caractère ciblé de la clé, choisi dans le tableau.",
@@ -222,9 +235,8 @@ var textes_statiques = {
         'modal-stats-title': "To direct you towards the good keyword's length",
         'stats-t1': "Indexes of coincidence depending on keyword's length",
         'stats-t2': "The psychic",
-// Traduction des paragraphes : RESTE A FAIRE !
-        'stats-p1': "Si les courbes rouge et bleue sont proches à une abscisse N, alors il est très probable que la clé soit de taille N. A vous désormais de trouver les bons caractères !",
-        'stats-p2': "Une dernière statistique, un peu moins fiable et que nous appelerons \"psychic's formula\", est calculée à partir de l'équation ci-dessous.",
+        'stats-p1': "If the red and blue charts are close somewhere above the X axis (for a length equal to N), then the keyword is very bound to be N. From now on you should find the right characters !",
+        'stats-p2': "One last statistic, a bit less reliable so that we'll call it \"psychic's formula\", is computed thanks to the mathematic expression just below.",
         'stats-p3': "Tell us all, psychic !",
         'stats-p4': "I see, I see ... a keyword whose length is between",
         'stats-p5': "characters. Did I guess right ?"
