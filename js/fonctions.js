@@ -117,7 +117,9 @@ function changeLangue(local) {
     if (textes_statiques[local] == undefined && console != null) {
         console.log("Impossible de traduire l'application pour la langue '" + local + "'"); 
     }
-    else {     
+    else {
+        app_language = local;
+
         $( "*[data-lang]" ).each(function (i) {
             if ( textes_statiques[local][ $(this).attr( "data-lang" ) ] == undefined ) {
                 $(this).html( $(this).attr( "data-lang" ) );
@@ -125,6 +127,9 @@ function changeLangue(local) {
                 $(this).html( textes_statiques[local][ $(this).attr( "data-lang" ) ] );
             }
         });
+
+        POPUP_TEXT = textes_statiques[local]['popup'];
+        changeLibelleAction();
     }
 }
 
@@ -183,8 +188,7 @@ function calculFrequences() {
     $("#ic_texte").html(icTexte.toPrecision(3));
 
     if (tailleCle == 1) {
-        var tailleCleDevinee = (tailleTexte * (icLangue - 1/26)) / (icLangue - icTexte + tailleTexte * (icTexte - 1/26));
-        $("#tailleDevinee").html(Math.floor(tailleCleDevinee) + " et " + Math.ceil(tailleCleDevinee));
+        $("#tailleDevinee").html( formuleDevin(tailleTexte, icTexte, icLangue).join(" - ") );
         $("#row-apercu").slideDown();
     }
     else if (tailleCle == 0) {
@@ -196,6 +200,11 @@ function calculFrequences() {
     if (Math.abs(icTexte - icLangue) <= 0.1 * icLangue) {
         $("#ic_texte").twinkle(TWINKLE_OPTIONS);
     }
+}
+
+function formuleDevin(tailleTexte, icTexte, icLangue) {
+    var tailleCleDevinee = (tailleTexte * (icLangue - 1/26)) / (icLangue - icTexte + tailleTexte * (icTexte - 1/26));
+    return [ Math.floor(tailleCleDevinee), Math.ceil(tailleCleDevinee) ];
 }
 
 function prepareFrequences(longueurCle, texte) {
@@ -385,6 +394,12 @@ function apercuDecryptage() {
     else {
         $( "#apercu" ).html("");
     }
+}
+
+function changeLibelleAction() {
+    var libelle = $( "#interrupteur" ).prop("checked") ? 
+        textes_statiques[app_language]['crypt'] : textes_statiques[app_language]['decrypt']
+    $( "#action1" ).html(libelle);
 }
 
 /*

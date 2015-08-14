@@ -11,10 +11,13 @@ var TWINKLE_OPTIONS = {
     }
 }
 
+var POPUP_TEXT = "";
+
 var regex_mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
 var texteADecrypter = ""; // memoriser pour savoir s'il faut lancer une nouvelle analyse
 
-var text_language = 'fr';
+var app_language = "fr";
+var text_language = "fr";
 
 var freq_data; // Objet Google des données de l'histogramme
 var freq_chart; // Objet Google de l'histogramme
@@ -53,11 +56,6 @@ var indice_coincidence = {
     'en': 0.0667
 };
 
-var POPUP_TEXT = "Je remarque des caractères illégaux dans le texte. \
-Votre texte ne doit pas être encore crypté. Voulez-vous y remédier ? \
-\n\nOK : C'est un oubli. Je veux crypter le texte. \
-\nAnnuler : C'est une coquille. Nettoyez le texte, et analysez.";
-
 var textes_statiques = {
     'fr': {
         // Général
@@ -82,6 +80,8 @@ var textes_statiques = {
         'default-text-language': "Langue du texte ? (Défaut : fr)",
         'crypted-text-legend': "Texte crypté",
         'crypt-forget': "Je n'ai pas crypté mon texte !",
+        'popup': "Je remarque des caractères illégaux dans le texte. Votre texte ne doit pas être encore crypté. Voulez-vous y remédier ? \
+            \n\nOK : C'est un oubli. Je veux crypter le texte. \nAnnuler : C'est une coquille. Nettoyez le texte, et analysez.",
         'restart-analysis': " Recommencer l'analyse",
         'show-results': " Afficher le texte décrypté",
         'analysis-legend': "Analyse",
@@ -125,13 +125,12 @@ var textes_statiques = {
         'help-t4': "Comment manipuler l'histogramme ?",
         'help-t5': "Les résultats / L'aperçu",
         'help-p1': "Copiez-collez dans la zone de texte principale le texte crypté, l'analyse sera lancée automatiquement. Si le texte n'est pas crypté, depliez le panneau juste au-dessus.",
-        'help-p2': "Les fonctionnalités résumées en 5 points pour percer la clé de chiffrement:\
+        'help-p2': "Les fonctionnalités résumées en 4 points pour percer la clé de chiffrement:\
             <ul class=\"list-unstyled\">\
                 <li>1) Ajouter ou retirer une lettre en fin de clé</li>\
                 <li>2) La clé, avec en gras, la lettre ciblée de la clé, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>\
                 <li>3) Déplacer le focus sur l'une des lettres de la clé, à gauche ou à droite</li>\
                 <li>4) Les indices de coincidence, l'un théorique de la langue du texte crypté, l'autre propre au texte crypté. Ils représentent la probabilité que 2 lettres choisies au hasard dans le texte soient identiques</li>\
-                <li>5) Un pronostic sur la taille probable de la clé de chiffrement</li>\
             </ul>",
         'help-p3': "Il représente, en bleu, les fréquences d'apparition des lettres dans la langue du texte (modifiable via le menu déroulant en haut de page), et en rouge, les fréquences \"partielles\" du texte crypté, \"partielles\" car uniquement les lettres du texte crypté qui sont en principe chiffrés par le caractère ciblé de la clé, choisi dans le tableau.",
         'help-p4': "Vous pouvez manipuler l'histogramme pour superposer les deux histogrammes et deviner la valeur du caractère de la clé ciblé. En bougeant l'histogramme rouge, la caractère ciblé se modifie aussi. Voici les possibilités d'actions à exécuter sur l'histogramme :",
@@ -146,7 +145,7 @@ var textes_statiques = {
         'stats-p1': "Si les courbes rouge et bleue sont proches à une abscisse N, alors il est très probable que la clé soit de taille N. A vous désormais de trouver les bons caractères !",
         'stats-p2': "Une dernière statistique, un peu moins fiable et que nous appelerons \"formule du devin\", est calculée à partir de l'équation ci-dessous.",
         'stats-p3': "Alors, devin, dites-nous tout !",
-        'stats-p4': "Je vois, je vois ... une taille de la clé de chiffrement entre",
+        'stats-p4': "Je vois, je vois ... une taille de la clé de chiffrement d'environ",
         'stats-p5': "caractères. J'ai bon ?"
     },
     'en': {
@@ -172,6 +171,8 @@ var textes_statiques = {
         'default-text-language': "Text language ? (Default : fr)",
         'crypted-text-legend': "Crypted text",
         'crypt-forget': "I did not crypt my text",
+        'popup': "I detect non-alphabetic characters in your text. It may not have been encrypted. Do you want to correct that ? \
+            \n\nOK : I did forget. I want to cipher the text. \nAnnuler : That's a misprint. Clean the text, and analyse it.",
         'restart-analysis': " Restart the analysis",
         'show-results': " Show the decrypted text",
         'analysis-legend': "Analysis",
@@ -216,18 +217,18 @@ var textes_statiques = {
         'help-t4': "How to handle the histogram ?",
         'help-t5': "The results / The preview",
         'help-p1': "Paste the ciphertext in the appropriate text area, this analysis will automatically start. If you forgot to encrypt the text, click on the button just below.",
-// Traduction des paragraphes : RESTE A FAIRE !
-        'help-p2': "All the features summarized in 5 points to break the cipher key :\
+        'help-p2': "All the features summarized in 4 points to break the cipher key :\
             <ul class=\"list-unstyled\">\
                 <li>1) Add or remove a letter at the end of the keyword</li>\
                 <li>2) The keyword area, with a letter in bold which has focus on it, pour laquelle on affiche les fréquences d'apparition des lettres du texte codées avec cette lettre de la clé</li>\
                 <li>3) Move the focus either on the preceding or the following letter of the keyword</li>\
                 <li>4) Indexes of coincidence, the first one is this of the ciphertext, the second one is this of the text's language. They both stand for the probability that 2 letters selected at random in a text are identical</li>\
-                <li>5) Un pronostic sur la taille probable de la clé de chiffrement</li>\
             </ul>",
-        'help-p3': "Il représente, en bleu, les fréquences d'apparition des lettres dans la langue du texte (modifiable via le menu déroulant en haut de page), et en rouge, les fréquences \"partielles\" du texte crypté, \"partielles\" car uniquement les lettres du texte crypté qui sont en principe chiffrés par le caractère ciblé de la clé, choisi dans le tableau.",
-        'help-p4': "Vous pouvez manipuler l'histogramme pour superposer les deux histogrammes et deviner la valeur du caractère de la clé ciblé. En bougeant l'histogramme rouge, la caractère ciblé se modifie aussi. Voici les possibilités d'actions à exécuter sur l'histogramme :",
-        'help-p5': "Dès que vous pensez avoir trouvé la bonne clé, vous pouvez retrouver le résultat complet en appuyant sur le bouton vert en-dessous de la zone de texte. Mais vous déjà voir un apercu du déchiffrage en direct en-dessous de l'histogramme, avec en gras les caractères du début du texte chiffrés par le caractère de la clé que vous avez ciblé.",
+        'help-p3': "The series of blue columns stands for the appearance frequency of alphabet letters in the language of the text (which you can change through the menu at the top of page). \
+            The red one shows the \"partial\" frequencies of the ciphertext, by \"partial\" we mean frequencies computed on the supposed ciphertext's letters encrypted by the keyword's character which has the focus.",
+        'help-p4': "You can handle the chart in order to superimpose the two series and guess the value of the focused keyword's character. By moving the red columns, the focused character is changing too. Here are the different ways to handle the chart, according to your device.",
+        'help-p5': "As soon as you think you guessed the correct keyword, you can fully decrypt the text by clicking on the green button. Meanwhile, you get a live preview of the decryption, with in bold the supposed ciphertext's letters encrypted by the keyword's character which has the focus. \
+            Finally, you're able to restart analysis and get more statistic information to find the right keyword.",
         // Modal de cryptage de secours
         'modal-crypt-title': "Analysing a crypted text, that's better !",
         'crypt-paragraph': "Type the original text in the field just below, and the cipher key in the appropriate field. We deal with the rest : text formatting, ciphering, et analysis !",
@@ -238,7 +239,7 @@ var textes_statiques = {
         'stats-p1': "If the red and blue charts are close somewhere above the X axis (for a length equal to N), then the keyword is very bound to be N. From now on you should find the right characters !",
         'stats-p2': "One last statistic, a bit less reliable so that we'll call it \"psychic's formula\", is computed thanks to the mathematic expression just below.",
         'stats-p3': "Tell us all, psychic !",
-        'stats-p4': "I see, I see ... a keyword whose length is between",
+        'stats-p4': "I see, I see ... a keyword whose length is around",
         'stats-p5': "characters. Did I guess right ?"
     }
 };

@@ -125,7 +125,7 @@
                     </div>
 
                     <button id="aide" class="btn btn-warning pull-right col-sm-offset-1 col-sm-2 col-xs-2" data-toggle="modal" data-target="#modalAide">
-                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        <span id="icone-info" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                         <span class="hidden-xs hidden-sm" data-lang="help"></span>
                     </button>
                 </div>
@@ -354,7 +354,7 @@
                         </div>
 
                         <!-- Carousel -->
-                        <div id="carrouselAide" class="carousel " data-ride="carousel">
+                        <div id="carrouselAide" class="carousel slide" data-ride="carousel">
                             <!-- Indicateurs -->
                             <ol class="carousel-indicators">
                                 <li data-target="#carrouselAide" data-slide-to="0" class="active"></li>
@@ -367,19 +367,19 @@
                             <!-- Wrapper de slides -->
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <img src="img/aide/texte_crypte.png" width="100%"></img>
+                                    <img src="img/aide/imp1.jpg" width="100%"></img>
                                 </div>
                                 <div class="item">
-                                    <img src="img/aide/tab_cle.png" width="100%"></img>
+                                    <img src="img/aide/imp2.jpg" width="100%"></img>
                                 </div>
                                 <div class="item">
-                                    <img src="img/aide/histogramme.gif" width="100%"></img>
+                                    <img src="img/aide/imp3.gif" width="100%"></img>
                                 </div>
                                 <div class="item">
-                                    <img src="img/aide/actions.jpg" width="100%"></img>
+                                    <img src="img/aide/imp4.jpg" width="100%"></img>
                                 </div>
                                 <div class="item">
-                                    <img src="img/aide/apercu.png" width="100%"></img>
+                                    <img src="img/aide/imp5.jpg" width="100%"></img>
                                 </div>
                                 <!-- <div>
                                     <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg" width="100%"></img>
@@ -476,7 +476,7 @@
                                 <p data-lang="stats-p3"></p>
                                 <p>
                                     "<span data-lang="stats-p4"></span> 
-                                     <span id="tailleDevinee"></span>
+                                     <b id="tailleDevinee"></b>
                                      <span data-lang="stats-p5"></span>"
                                 </p>
                             </div>

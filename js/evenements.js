@@ -251,7 +251,7 @@ $( "#goto_part2" ).on("click", function() {
     // modale d'aide s'il s'agit d'une première visite
     setTimeout(function() { 
         freq_chart.draw(freq_data, freq_options);
-        $("#aide").twinkle(TWINKLE_OPTIONS);
+        $("#icone-info").twinkle(TWINKLE_OPTIONS);
     }, 500);
 });
 
@@ -318,7 +318,7 @@ $( window ).resize(function() {
 
 
 $( "#interrupteur" ).on("click", function() {
-    $( "#action1" ).html($(this).prop("checked") ? "Crypter" : "Décrypter");
+    changeLibelleAction();
 });
 
 $( "#action1" ).on("click", function(){
