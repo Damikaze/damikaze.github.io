@@ -1,0 +1,152 @@
+body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-image: url(../img/fond/home_4.jpg);
+    background-size: cover;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+body, legend {
+    color: white;
+}
+
+body > .container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    min-height: -moz-calc(100% - 70px);
+    min-height: -webkit-calc(100% - 70px);
+    min-height: calc(100% - 70px);
+}
+
+footer {
+    height: 31px;
+}
+
+footer > .container {
+    margin-top: 8px;
+}
+
+footer .col-xs-9, footer .col-xs-3 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+select, option, #div_cryptage, .modal-content, #table-pedagogie {
+    color: black;
+}
+
+.btn {
+    border-radius: 0px;
+}
+
+.carousel-div-text .carousel-active {
+    display: block;
+}
+
+.carousel-titres h4, .carousel-explications p {
+    display: none;
+    margin-top: 0px;
+}
+
+.label-interrupteur {
+    text-align: center;
+    padding: 0px;
+}
+
+.modal-body {
+    text-align: justify;
+}
+
+.modal-body h4 {
+    margin-bottom: 25px;
+}
+
+.modal-body img {
+    margin-bottom: 10px;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+#apercu {
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    min-height: 31px;
+}
+
+#cle1 {
+    margin-bottom: 5px;
+}
+
+#cle_trouvee_div {
+    color: black;
+    height: 1.75em;
+    background-color: white;
+    padding-top: 4px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#credits a {
+    text-decoration: none;
+    color: wheat;
+}
+
+#decryptedText {
+    word-wrap: break-word;
+}
+
+#label_action {
+    padding: 0px;
+    text-align: center;
+}
+
+#label_cle {
+    text-align: right;
+}
+
+#lien_presentation {
+    margin: 0 15px;
+}
+
+#liste-tab-cle, #oubliCryptage {
+    margin-top: 10px;
+}
+
+#paragraph-help {
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: -10px;
+}
+
+#petite-largeur {
+    text-align: center;
+    display: none;
+}
+
+#row-apercu {
+    display: none;
+    margin-bottom: 15px;
+}
+
+#titre {
+    text-align: center;
+    visibility: hidden;
+    margin-bottom: 30px;
+}
+
+#goto_part1, #goto_part2, #restart, #resultat_cryptanalyse {
+    margin: 0px auto 5px auto;
+}
+
+@media (min-width: 768px) {
+    .nopadding {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

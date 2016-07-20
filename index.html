@@ -1,0 +1,502 @@
+<html>
+    <head>
+        <title>Application du chiffre de Vigenère : cryptage, décryptage, et analyse de textes chiffrés par la table de Vigenère</title>
+
+        <meta name="description" content="Découvrez, sans rien n'y connaitre, le chiffre de Vigenère et son fonctionnement pour crypter des textes. Mettez à l'épreuve l'application pour retrouver la clé de cryptage d'un texte grâce à nos outils perfectionnés !" />
+        <meta name="keywords" content="Vigenère, application, cryptage, décryptage, chiffrage, analyse, cryptanalyse, clé" />
+        <meta name="robots" content="index, nofollow" />
+
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+        <link rel="stylesheet" href="css/carousel.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/switch.css">
+        <link rel="shortcut icon" href="img/favicon.ico">
+    </head>
+    <body>
+        <div class="container">
+            <!-- -- Accueil -- -->
+
+            <div id="home">
+                <div class="row">
+                    <div class="col-xs-offset-8 col-sm-offset-10">
+                        <select id="menu-langues-appli" class="form-control">
+                            <option value="fr" selected>Français</option>
+                            <option value="en">English</option>
+                            <!-- Bientot ! <option value="es">Español</option>-->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h1 id="titre" data-lang="title">Chiffre de Vigenère : l'application</h1>
+                </div>
+
+                <p id="petite-largeur" data-lang="small-screen"></p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="btn btn-default center-block" id="goto_part1" data-lang="module-1-name">Crypter / Décrypter</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-default center-block" id="goto_part2" data-lang="module-2-name">Cryptanalyse</a>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <a id="lien_presentation" class="btn btn-warning center-block" data-toggle="modal" data-target="#modalPresentation" data-lang="what-is-it">Le ' chiffre de Vigenère ' ? C'est quoi ?</a>
+                </div>
+            </div>
+
+            <!-- -- Cryptage / Décryptage -- -->
+
+            <div id="part1" style="display:none;">
+                <div class="row">
+                    <button class="goto_home btn btn-primary col-xs-3">
+                        <div class="hidden-xs hidden-sm">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span data-lang="back-home"></span>
+                        </div>
+                        <span class="visible-xs visible-sm glyphicon glyphicon-home"></span>
+                    </button>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <legend data-lang="input-legend"></legend>
+                    <label data-lang="text-label"></label>
+                    <textarea rows=5 id="input" class="form-control"></textarea>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <div class="form-group col-xs-3">
+                        <label id="label_action" class="col-xs-12 margin-top" data-lang="action-label"></label>
+                        <br/>
+                        <span class="col-xs-12 label-interrupteur" data-lang="crypt"></span>
+                        <br/>
+                        <div class="switch demo">
+                            <input type="checkbox" id="interrupteur" checked="checked">
+                            <label></label>
+                        </div>
+                        <span class="col-xs-12 label-interrupteur" data-lang="decrypt"></span>
+                    </div>
+                    <div class="form-group col-xs-9">
+                        <label for="cle" id="label_cle" class="col-sm-2 margin-top" data-lang="key-label"></label>
+                        <div class="col-sm-7 nopadding">
+                            <input type="text" id="cle1" class="form-control"/>
+                        </div>
+                        <div class="col-sm-3">
+                            <a id="action1" class="btn btn-primary col-xs-12">Crypter</a>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                    <legend data-lang="output-legend"></legend>
+                    <textarea rows=5 id="output" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <!-- -- Cryptanalyse -- -->
+
+            <div id="part2" style="display:none;">
+                <!-- Boutons du haut -->
+                <div class="row">
+                    <button class="goto_home btn btn-primary col-sm-3 col-xs-2">
+                        <div class="hidden-xs hidden-sm">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span data-lang="back-home"></span>
+                        </div>
+                        <span class="visible-xs visible-sm glyphicon glyphicon-home"></span>
+                    </button>
+
+                    <div class="col-sm-offset-1 col-sm-5 col-xs-8">
+                        <select id="menu-langues-texte" class="form-control">
+                            <option selected="selected" disabled="true" style="display:none;" data-lang="default-text-language"></option>
+                            <option value="fr" data-lang="french"></option>
+                            <option value="en" data-lang="english"></option>
+                        </select>
+                    </div>
+
+                    <button id="aide" class="btn btn-warning pull-right col-sm-offset-1 col-sm-2 col-xs-2" data-toggle="modal" data-target="#modalAide">
+                        <span id="icone-info" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        <span class="hidden-xs hidden-sm" data-lang="help"></span>
+                    </button>
+                </div>
+                <br/>
+
+                <legend data-lang="crypted-text-legend"></legend>
+
+                <!-- Zone de texte -->
+                <div class="row">
+                    <textarea rows=6 id="cryptedText" class="form-control"></textarea>
+                    <button id="oubliCryptage" class="btn btn-default pull-right" data-toggle="modal" data-target="#modalCryptage" data-lang="crypt-forget"></button>
+                </div>
+
+                <legend data-lang="analysis-legend"></legend>
+
+                <!-- Tableau de la clé à deviner -->
+                <h4 data-lang="current-key"></h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-2 text-center" data-lang="key-size"></th>
+                            <th class="col-xs-7 text-center" data-lang="change-character"></th>
+                            <th class="col-xs-3 text-center" data-lang="indices" colspan=2></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr>
+                            <!-- Colonne +/- pour changer la taille de la clé -->
+                            <td rowspan=2>
+                                <div class="btn-group btn-group-lg hidden-xs hidden-sm">
+                                    <button class="btn btn-danger cle_moins">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                    </button>
+                                    <button class="btn btn-primary cle_plus">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div class="btn-group-vertical btn-group-lg visible-xs visible-sm">
+                                    <button class="btn btn-primary cle_plus">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                    <button class="btn btn-danger cle_moins">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                            </td>
+
+                            <!-- Clé courante avec navigation sur les caractères -->
+                            <td rowspan=2>
+                                <div class="row">
+                                    <div class="col-sm-2 hidden-xs">
+                                        <button class="btn btn-default pull-right cle_gauche">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8" id="cle_trouvee_div">
+                                        <p id="cle_trouvee"></p>
+                                    </div>
+                                    <div class="col-sm-2 hidden-xs">
+                                        <button class="btn btn-default pull-left cle_droite">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <br/>
+                                    <a class="btn btn-default col-xs-6 visible-xs cle_gauche"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+                                    <a class="btn btn-default col-xs-6 visible-xs cle_droite"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                                </div>
+                            </td>
+
+                        <!-- Indices de coincidence -->
+                            <td>Texte</td>
+                            <td> <span id="ic_texte"></span> </td>
+                        </tr>
+                        <tr>
+                            <td>Langue</td>
+                            <td> <span id="ic_theorique"></span> </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div id="row-apercu" class="row">
+                    <label for="apercu" data-lang="preview-label"></label>
+                    <p id="apercu"></p>
+
+                    <button id="restart" class="btn btn-default">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        <span data-lang="restart-analysis"></span>
+                    </button>
+                    <button id="resultat_cryptanalyse" class="btn btn-success" data-toggle="modal" data-target="#modalResultat" disabled>
+                        <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
+                        <span data-lang="show-results"></span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <h4 class="col-xs-6" style="padding-left:0px;" data-lang="stats-label"></h4>
+                    <button id="statsPlus" class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalStatsPlus">
+                        <span class="hidden-xs" data-lang="more-stats"></span>
+                        <span class="glyphicon glyphicon-stats"></span>
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+
+                <!--<div class="row">
+                    <br/>
+                    <div class="slider"></div>
+                    <br/>
+                    <a id="btn_decalage_gauche" class="btn btn-info col-xs-6">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </a>
+                    <a id="btn_decalage_droite" class="btn btn-info col-xs-6">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </a>
+                </div>-->
+
+                <!-- Dans ce bloc, l'histogramme des fréquences -->
+                <div class="row">
+                    <div id="freq_chart_div" class="center-block"></div>
+                </div>
+                <br/>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-9 col-sm-10">
+                        <p id="credits">
+                            <span data-lang="img-credits-1"></span>
+                            <a href="https://www.flickr.com/">flickr.com</a>
+                            <span data-lang="img-credits-2"></span>
+                            <a href="http://creativecommons.org/">CreativeCommons</a>
+                        </p>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                        <img id="E" class="pull-right" width="90" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"></img>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- -- Modal de présentation du chiffre de Vigenere -- -->
+
+        <div class="modal fade" id="modalPresentation" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" data-lang="modal-pres-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <img src="img/aide/tableau_chiffrage.svg" width="100%"/>
+
+                        <p data-lang="pres-p1"></p>
+                        <br/>
+
+                        <h4 data-lang="pres-t1"></h4>
+                        <p data-lang="pres-p2"></p>
+                        <ul class="list-unstyled" data-lang="pres-list">
+                        </ul>
+                        <p data-lang="pres-p3"></p>
+                        <p data-lang="pres-p4"></p>
+                        <br/>
+
+                        <h4 data-lang="pres-t2"></h4>
+                        <p data-lang="pres-p5"></p>
+                        <br/>
+
+                        <h4 data-lang="pres-t3"></h4>
+                        <p data-lang="pres-p6"></p>
+                        <p data-lang="pres-p7"></p>
+                        <br/>
+
+                        <h4 data-lang="pres-t4"></h4>
+                        <p data-lang="pres-p8"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal de présentation du texte décrypté par cryptanalyse -- -->
+
+        <div class="modal fade" id="modalResultat" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" data-lang="modal-result-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <span data-lang="res-p1"></span> "<b id="cleDevinee"></b>", <span data-lang="res-p2"></span>
+                        </p>
+                        <textarea id="texteDecrypte" class="form-control" rows=5></textarea>
+                        <br/>
+                        <p data-lang="add-space"></p>
+                    </div>
+                    <div class="modal-footer" data-lang="thank-you"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal d'aide à l'utilisation du module de cryptanalyse -- -->
+
+        <div class="modal fade" id="modalAide" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" data-lang="modal-help-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Titres de slides -->
+                        <div class="carousel-div-text carousel-titres">
+                            <h4 data-lang="help-t1"></h4>
+                            <h4 data-lang="help-t2"></h4>
+                            <h4 data-lang="help-t3"></h4>
+                            <h4 data-lang="help-t4"></h4>
+                            <h4 data-lang="help-t5"></h4>
+                        </div>
+
+                        <!-- Carousel -->
+                        <div id="carrouselAide" class="carousel slide" data-ride="carousel">
+                            <!-- Indicateurs -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#carrouselAide" data-slide-to="0" class="active"></li>
+                                <li data-target="#carrouselAide" data-slide-to="1"></li>
+                                <li data-target="#carrouselAide" data-slide-to="2"></li>
+                                <li data-target="#carrouselAide" data-slide-to="3"></li>
+                                <li data-target="#carrouselAide" data-slide-to="4"></li>
+                            </ol>
+
+                            <!-- Wrapper de slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="img/aide/imp1.jpg" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/imp2.jpg" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/imp3.gif" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/imp4.jpg" width="100%"></img>
+                                </div>
+                                <div class="item">
+                                    <img src="img/aide/imp5.jpg" width="100%"></img>
+                                </div>
+                                <!-- <div>
+                                    <img src="http://unsplash.s3.amazonaws.com/batch%209/barcelona-boardwalk.jpg" width="100%"></img>
+                                    <div class="header-text hidden-xs">
+                                        <div class="col-md-12 text-center">
+                                            <h2> <span>Welcome to LOREM IPSUM</span> </h2> <br>
+                                            <h3> <span>Lorem ipsum dolor sit amet.</span> </h3> <br>
+                                            <div class="">
+                                                <a class="btn btn-theme btn-sm btn-min-block">Login</a>
+                                                <a class="btn btn-theme btn-sm btn-min-block">Register</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <!-- Controles -->
+                            <a class="left carousel-control" href="#carrouselAide" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carrouselAide" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
+                        <br/>
+
+                        <!-- Les commentaires illustrés par les slides du carrousel au-dessus -->
+                        <div class="carousel-div-text carousel-explications">
+                            <p data-lang="help-p1"></p>
+                            <p data-lang="help-p2"></p>
+                            <p data-lang="help-p3"></p>
+                            <p data-lang="help-p4"></p>
+                            <p data-lang="help-p5"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal de cryptage de secours dans le module de cryptanalyse -- -->
+
+        <div class="modal fade" id="modalCryptage" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" data-lang="modal-crypt-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p data-lang="crypt-paragraph"></p>
+
+                        <div class="input-group">
+                            <span class="input-group-addon" data-lang="key-label"></span>
+                            <input type="text" id="cle2" class="form-control">
+                        </div>
+                        <br/>
+
+                        <textarea rows=6 id="texteACrypter" class="form-control"></textarea>
+                        <br/>
+
+                        <button id="action2" class="btn btn-default" type="button" data-lang="crypt"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -- Modal de statistiques supplémentaires -- -->
+
+        <div class="modal fade" id="modalStatsPlus" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" data-lang="modal-stats-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4 data-lang="stats-t1"></h4>
+                        <div class="row">
+                            <div id="indice_chart_div" class="center-block"></div>
+                        </div>
+                        <p data-lang="stats-p1"></p>
+
+                        <h4 data-lang="stats-t2"></h4>
+                        <div class="row">
+                            <img class="col-xs-4" src="img/stats/magicien_cartes.jpg"/>
+                            <div class="col-xs-8">
+                                <p data-lang="stats-p2"></p>
+                                <img src="img/stats/formule_devin.svg" style="width: 100%"/>
+
+                                <p data-lang="stats-p3"></p>
+                                <p>
+                                    "<span data-lang="stats-p4"></span> 
+                                     <b id="tailleDevinee"></b>
+                                     <span data-lang="stats-p5"></span>"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scripts exterieurs : jQuery, Bootstrap et Google Charts -->
+        <script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+        <!-- Scripts internes -->
+        <script type="text/javascript" src="js/anim-titre.js"></script>
+        <script type="text/javascript" src="js/variables.js"></script>
+        <script type="text/javascript" src="js/fonctions.js"></script>
+        <script type="text/javascript" src="js/evenements.js"></script>
+        <script type="text/javascript" src="js/twinkle.js"></script>
+    </body>
+</html>
