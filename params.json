@@ -1,6 +1,0 @@
-{
-  "name": "vigenere",
-  "tagline": "Application du chiffre de Vigenère : cryptage, décryptage, et analyse de textes chiffrés par la table de Vigenère",
-  "body": "### Application Vigenere\r\n",
-  "note": "Don't delete this file! It's used internally to help with page regeneration."
-}
