@@ -1,4 +1,4 @@
-var TAILLE_ALPHABET = 26;
+﻿var TAILLE_ALPHABET = 26;
 var TAILLE_APERCU = 40;
 var ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var TWINKLE_OPTIONS = {
@@ -67,6 +67,9 @@ var textes_statiques = {
         'what-is-it': "Le ' chiffre de Vigenère ' ? C'est quoi ?",
         'french': "Français",
         'english': "Anglais",
+        'credits-1': "Images récupérées sur ",
+        'credits-2': " sous licence ",
+        'author': "Réalisé par ",
         // Module 1
         'input-legend': "Informations d'entrée",
         'crypt': "Crypter",
@@ -92,8 +95,6 @@ var textes_statiques = {
         'preview-label': "Voici ce que donne le décryptage si la clé ci-dessus est correcte ...",
         'stats-label': "Outils statistiques",
         'more-stats': "Encore plus de statistiques !",
-        'img-credits-1': "Images récupérées sur ",
-        'img-credits-2': " sous licence ",
         // Modal de présentation
         'modal-pres-title': "Présentation du chiffre de Vigenère",
         'pres-p1': "Voilà ! C'est simple le chiffre de Vigenere. Des questions ? Bon, on va expliquer plus en détails.",
@@ -158,6 +159,9 @@ var textes_statiques = {
         'what-is-it': "What do you mean by ' Vigenere cipher ' ?",
         'french': "French",
         'english': "English",
+        'credits-1': "Images imported from ",
+        'credits-2': " under license ",
+        'author': "Developped by ",
         // Module 1
         'input-legend': "Input information",
         'crypt': "Crypt",
@@ -183,8 +187,6 @@ var textes_statiques = {
         'preview-label': "Below is the beginning of the decrypted text if the current key is correct ...",
         'stats-label': "Statistic tools",
         'more-stats': "More statistics !",
-        'img-credits-1': "Images imported from ",
-        'img-credits-2': " under license ",
         // Modal de présentation
         'modal-pres-title': "Introduction to the Vigenere cipher",
         'pres-p1': "Here is the Vigenere cipher. Simple, isn't it ? Well, let's explain it more in details.",

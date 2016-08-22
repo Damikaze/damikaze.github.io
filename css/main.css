@@ -32,6 +32,11 @@ footer .col-xs-9, footer .col-xs-3 {
     padding-right: 0px;
 }
 
+footer .container a.footer-link {
+    text-decoration: none;
+    color: wheat;
+}
+
 select, option, #div_cryptage, .modal-content, #table-pedagogie {
     color: black;
 }
@@ -90,11 +95,6 @@ select, option, #div_cryptage, .modal-content, #table-pedagogie {
     padding-top: 4px;
     margin-bottom: 10px;
     text-align: center;
-}
-
-#credits a {
-    text-decoration: none;
-    color: wheat;
 }
 
 #decryptedText {
